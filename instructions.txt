@@ -19,3 +19,29 @@ ENDING WORK:
 2. Deactivate virtual environments in both terminals
 3. Stop the postgres server
     pg_ctl -D /usr/local/var/postgres stop
+
+
+FILES:
+runserver.py:
+- will automatically start a flask server when it calls app.run
+
+sql file:
+- our actual database
+- edits to this file DO AFFECT outputs of our calls to database methods
+- need to confirm that updating the database via the cursor will edit
+this file
+
+database.py:
+- will house our methods that query the database
+- right now only has a search students method
+
+tigertravel.py
+- the actual app
+- right now heavily copied off Penny
+
+display.py:
+- not used in our app, but useful for debugging (prints the database)
+
+html files:
+- one for each page (index, searchform, searchresults)
+- some might be pieces (header, footer) to include in larger files
