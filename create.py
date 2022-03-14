@@ -18,7 +18,7 @@ def main():
 
     try:
         with connect(
-            host='localhost', port=5432, user='otravis', password='otravis62737696',
+            host='localhost', port=5432, user='ttadmins', password='071020010307200204262002oms',
             database='tigertravel') as connection:
 
             with connection.cursor() as cursor:
