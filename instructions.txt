@@ -1,0 +1,21 @@
+Making this to remind myself how to get started
+
+STARTING WORK:
+1. Open two terminals
+2. cd into TigerTravel on both
+3. Activate the postgres server (doesn't matter where):
+    pg_ctl -D /usr/local/var/postgres start
+4. In one terminal, start the server for our app and specify a port
+    python runserver.py [port]
+5. In the other terminal, run the app with the same port
+    python tigertravel.py [port]
+6. On a web browser, navigate to
+    localhost:[port]
+7. Get to work!
+
+
+ENDING WORK:
+1. Ctrl+C in the terminal where the server is running
+2. Deactivate virtual environments in both terminals
+3. Stop the postgres server
+    pg_ctl -D /usr/local/var/postgres stop
