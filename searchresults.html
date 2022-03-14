@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>TigerTravel</title>
+   </head>
+   <body>
+      {% include 'header.html' %}
+      <h1>Student Search Results</h1>
+      <h2>Student with netid {{netid}}:</h2>
+      {% if student|length == 0: %}
+            (None)
+      {% else %}
+         <strong>{{student}}</strong>
+         <br>
+      {% endif %}
+      <br>
+      <br>
+      Click here to do another
+      <a href="searchform">student search</a>.
+      <br>
+      <br>
+      <br>
+      <br>
+       {% include 'footer.html' %}
+   </body>
+</html>

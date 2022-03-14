@@ -9,6 +9,8 @@ INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
    VALUES ('manyaz','Manya', 'Zhu', 'manyaz@princeton.edu', '(609)-456-2795', 0);
 INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
    VALUES ('otravis','Owen', 'Travis', 'otravis@princeton.edu', '(847)-691-8322', 1);
+INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
+   VALUES ('bbob','Billy', 'Bob', 'bbob@bob.com', '(888)-888-8888', 20);
 
 -- ---------------------------------------------------------------------
 
