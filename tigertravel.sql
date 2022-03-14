@@ -10,7 +10,9 @@ INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
 INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
    VALUES ('otravis','Owen', 'Travis', 'otravis@princeton.edu', '(847)-691-8322', 1);
 INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
-   VALUES ('bbob','Billy', 'Bob', 'bbob@bob.com', '(888)-888-8888', 20);
+   VALUES ('bbob','Billy', 'Bob', 'bbob@bob.com', '(111)-111-1111', 1);
+INSERT INTO students (netid, firstname, lastname, email, phone, strikes)
+   VALUES ('jbob','Joey', 'Bob', 'jbob@bob.com', '(222)-222-2222', 2);
 
 -- ---------------------------------------------------------------------
 
