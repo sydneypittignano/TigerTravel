@@ -26,10 +26,21 @@ runserver.py:
 - will automatically start a flask server when it calls app.run
 
 sql file:
-- our actual database
-- edits to this file DO AFFECT outputs of our calls to database methods
-- need to confirm that updating the database via the cursor will edit
-this file
+- Text file that, when run, will create a local Postgres database
+EXPORTING to this file:
+$ pg_dump bookstore bookstore.sql
+$ 
+
+CREATING THE DB from this file:
+$ psql -h localhost -p 5432 -U rmd -d bookstore
+bookstore=> drop table authors;
+bookstore=> drop table books;
+bookstore=> drop table customers;
+bookstore=> drop table orders;
+bookstore=> drop table zipcodes;
+bookstore=> \q
+$ psql -h localhost -p 5432 -U rmd -d bookstore < bookstore.sql
+$
 
 database.py:
 - will house our methods that query the database
