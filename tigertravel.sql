@@ -72,6 +72,7 @@ ALTER TABLE public.students OWNER TO ttadmins;
 
 COPY public.riders (rideid, netid) FROM stdin;
 1	sydneyp
+2	otravis
 \.
 
 
@@ -81,6 +82,7 @@ COPY public.riders (rideid, netid) FROM stdin;
 
 COPY public.rides (rideid, startdate, enddate, origin, dest, starttime, endtime, num) FROM stdin;
 1	2-6-2022	2-6-2022	Princeton	JFK	100	300	1
+2	2-7-2022	2-7-2022	Princeton	LGA	200	500	1
 \.
 
 

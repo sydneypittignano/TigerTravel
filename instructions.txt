@@ -28,7 +28,7 @@ runserver.py:
 sql file:
 - Text file that, when run, will create a local Postgres database
 EXPORTING to this file:
-$ pg_dump tigertravel tigertravel.sql
+$ pg_dump tigertravel -f tigertravel.sql
 $ 
 
 CREATING THE DB from this file:
