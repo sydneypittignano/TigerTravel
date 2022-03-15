@@ -28,18 +28,16 @@ runserver.py:
 sql file:
 - Text file that, when run, will create a local Postgres database
 EXPORTING to this file:
-$ pg_dump bookstore bookstore.sql
+$ pg_dump tigertravel tigertravel.sql
 $ 
 
 CREATING THE DB from this file:
-$ psql -h localhost -p 5432 -U rmd -d bookstore
-bookstore=> drop table authors;
-bookstore=> drop table books;
-bookstore=> drop table customers;
-bookstore=> drop table orders;
-bookstore=> drop table zipcodes;
-bookstore=> \q
-$ psql -h localhost -p 5432 -U rmd -d bookstore < bookstore.sql
+$ psql -h localhost -p 5432 -U ttadmins -d tigertravel
+tigertravel=> drop table students;
+tigertravel=> drop table rides;
+tigertravel=> drop table riders;
+tigertravel=> \q
+$ psql -h localhost -p 5432 -U ttadmins -d tigertravel < tigertravel.sql
 $
 
 database.py:
