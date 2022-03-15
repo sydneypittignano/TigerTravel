@@ -1,13 +1,42 @@
 <!DOCTYPE html>
- <html>
-   <head>
-      <title>TigerTravel</title>
-      </head>
-   <body>
-      {% include 'header.html' %}
-      <br>
-      <a href="searchform">Let's Ride</a>.<br>
-      <br>
-      {% include 'footer.html' %}
-   </body>
- </html>
+<!-- =============================================================== -->
+<!-- main.html                                                   -->
+<!-- Author: Sydney Pittignano                                       -->
+<!-- =============================================================== -->
+<html>
+    <head>
+        <title>TigerTravel</title>
+    </head>
+
+    <body>
+        <!-- ======================================================= -->
+
+        <h3 style="text-align:left">
+            TigerTravel
+            <span style="float:right">
+                <form
+                    action="login" method = "get"
+                    style="display:inline-block">
+                    <input type="submit" value="login">
+                </form>
+            </span>
+        </h3>
+
+        <hr>
+        
+        <!-- ======================================================= -->
+
+        <h1 align="center">TigerTravel</h1>
+        <h3 align="center">a platform to help Princeton students find a group to share a ride</h3>
+        <h2 align="center">
+            <form
+                action="login" method="get">
+                <input type="submit" value="let's ride">
+            </form>
+        </h2>
+        <h6 align="center">login requires CAS authentication</h6>
+
+        <!-- ======================================================= -->
+
+    </body>
+</html>

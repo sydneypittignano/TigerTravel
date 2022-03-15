@@ -8,7 +8,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from database import search_students
+from database import search_students, filter_rides
 
 #-----------------------------------------------------------------------
 
@@ -30,9 +30,63 @@ def get_current_time():
 @app.route('/index', methods=['GET'])
 def index():
 
-    html = render_template('index.html',
-        ampm=get_ampm(),
-        current_time=get_current_time())
+    html = render_template('index.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/login', methods=['GET'])
+def login():
+
+    html = render_template('login.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/add', methods=['GET'])
+def add():
+    
+    html = render_template('add.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/browse', methods=['GET'])
+def browse():
+
+    rides = filter_rides()
+    
+    html = render_template('browse.html', rides=rides)
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/about', methods=['GET'])
+def about():
+    
+    html = render_template('about.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/tutorial', methods=['GET'])
+def tutorial():
+    
+    html = render_template('tutorial.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/account', methods=['GET'])
+def account():
+    
+    html = render_template('account.html')
     response = make_response(html)
     return response
 

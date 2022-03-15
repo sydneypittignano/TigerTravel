@@ -29,6 +29,28 @@ def search_students(netid):
 
 #-----------------------------------------------------------------------
 
+def filter_rides():
+
+    rides = []
+    with connect(
+        host='localhost', port=5432, user='ttadmins', 
+        password='071020010307200204262002oms', database='tigertravel') as connection:
+
+        with connection.cursor() as cursor:
+
+            query_str = "SELECT * FROM rides"
+            cursor.execute(query_str)
+
+            row = cursor.fetchone()
+            while row is not None:
+                print("row")
+                rides.append(row)
+                row = cursor.fetchone()
+
+    return rides
+
+#-----------------------------------------------------------------------
+
 # For testing:
 
 def _test():
