@@ -11,36 +11,7 @@
     <body>
         <!-- ======================================================= -->
         
-        <h3 style="text-align:left">
-            TigerTravel
-            <span style="float:right">
-                <form
-                    action="browse" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="browse">
-                </form>
-                <form
-                    action="add" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="add ride">
-                </form>
-                <form
-                    action="about" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="about">
-                </form>
-                <form
-                    action="tutorial" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="tutorial">
-                </form>
-                <form
-                    action="account" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="my account">
-                </form>
-            </span>
-        </h3>
+        {% include 'header.html' %}
         
         <!-- ======================================================= -->
 

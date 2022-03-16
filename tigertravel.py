@@ -57,7 +57,14 @@ def add():
 @app.route('/browse', methods=['GET'])
 def browse():
 
-    rides = filter_rides()
+    startdate = request.args.get('startdate')
+    enddate = request.args.get('enddate')
+    origin = request.args.get('origin')
+    dest = request.args.get('dest')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+
+    rides = filter_rides(startdate, enddate, origin, dest, starttime, endtime)
     
     html = render_template('browse.html', rides=rides)
     response = make_response(html)

@@ -11,48 +11,28 @@
     <body>
         <!-- ======================================================= -->
 
-        <h3 style="text-align:left">
-            TigerTravel
-            <span style="float:right">
-                <form
-                    action="browse" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="browse">
-                </form>
-                <form
-                    action="add" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="add ride">
-                </form>
-                <form
-                    action="about" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="about">
-                </form>
-                <form
-                    action="tutorial" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="tutorial">
-                </form>
-                <form
-                    action="account" method="get"
-                    style="display:inline-block">
-                    <input type="submit" value="my account">
-                </form>
-            </span>
-        </h3>
-        
+        {% include 'header.html' %}
+    
         <!-- ======================================================= -->
 
         <hr>
         <h1>BROWSE RIDES</h1>
         <h3>filter by:</h3>
         <h3>origin destination date time range GO</h3>
+        <form action="browse" method="get">
+            Start date: <input type="text" name="startdate">
+            End date: <input type="text" name="enddate">
+            Origin: <input type="text" name="origin">
+            Destination: <input type="text" name="dest">
+            Start time: <input type="text" name="starttime">
+            End time: <input type="text" name="endtime">
+            <input type="submit" value="GO">
+         </form>
 
         <!-- ======================================================= -->
 
         <hr>
-        <h3>netID(s) date origin destination time range</h3>
+        <h3>netID(s) start date end date origin destination start time end time</h3>
         {% if rides|length == 0: %}
             (None)
         {% else %}
