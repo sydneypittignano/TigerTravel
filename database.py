@@ -32,12 +32,12 @@ def search_students(netid):
 def filter_rides(startdate, enddate, origin, dest, starttime, endtime):
 
     rides = []
-    list = []
-    i = 0
-    if startdate is not None:
-        list.append(startdate)
-    if enddate is not None:
-        list.append(enddate)
+    #list = []
+    #i = 0
+    #if startdate is not None:
+        #list.append(startdate)
+    #if enddate is not None:
+        #list.append(enddate)
     
     with connect(
         host='localhost', port=5432, user='ttadmins', 
@@ -47,17 +47,18 @@ def filter_rides(startdate, enddate, origin, dest, starttime, endtime):
 
             query_str = "SELECT * FROM rides"
             
-            if startdate is not None:
-                query_str += " WHERE startdate = %s"
-                i = i + 1
-            if enddate is not None:
-                if (i != 0):
-                    query_str += " AND enddate = %s"
-                else:
-                    query_str += " WHERE enddate = %s"
+            #if startdate is not None:
+                #query_str += " WHERE startdate = %s"
+                #i = i + 1
+            #if enddate is not None:
+                #if (i != 0):
+                    #query_str += " AND enddate = %s"
+                #else:
+                    #query_str += " WHERE enddate = %s"
             
-            print(list)
-            cursor.execute(query_str, list)
+            #print(list)
+            #cursor.execute(query_str, list)
+            cursor.execute(query_str)
 
             row = cursor.fetchone()
             while row is not None:
