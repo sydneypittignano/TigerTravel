@@ -7,7 +7,7 @@
  
 class Ride:
  
-   def __init__(rideid, startdate, enddate, origin, dest, starttime, endtime, num):
+   def __init__(self, rideid, startdate, enddate, origin, dest, starttime, endtime, num):
        self._rideid = rideid
        self._startdate = startdate
        self._enddate = enddate

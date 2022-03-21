@@ -5,6 +5,7 @@
 # Author: Owen Travis
 #-----------------------------------------------------------------------
 
+from sys import stderr
 from psycopg2 import connect
 from ride import Ride
 
@@ -111,11 +112,11 @@ def add_ride(netid, rideid, startdate, enddate, origin, dest, starttime, endtime
  
            info = [rideid, startdate, enddate, origin, dest, starttime, endtime, num]
            query_str = "INSERT INTO rides (rideid, startdate, enddate, origin, dest, "
-           query_str += "starttime, endtime, num) VALUES ?;"
+           query_str += "starttime, endtime, num) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
  
            cursor.execute(query_str, info)
  
-           query_str = "INSERT INTO riders (rideid, netid) VALUES ?;"
+           query_str = "INSERT INTO riders (rideid, netid) VALUES (%s, %s);"
           
            cursor.execute(query_str, [rideid, netid])
  
@@ -143,18 +144,18 @@ def join_ride(netid, prev_rideid, new_rideid):
  
 def filter_rides(startdate, enddate, origin, dest, starttime, endtime):
    list = []
-   if startdate is not None:
-       list.append(startdate)
-   if enddate is not None:
-       list.append(enddate)
-   if origin is not None:
-       list.append(origin)
-   if dest is not None:
-       list.append(dest)
-   if starttime is not None:
-       list.append(starttime)
-   if endtime is not None:
-       list.append(endtime)
+   if (startdate is not None) and (startdate != ''):
+       list.append('%'+str(startdate)+'%')
+   if (enddate is not None) and (enddate != ''):
+       list.append('%'+str(enddate)+'%')
+   if (origin is not None) and (origin != ''):
+       list.append('%'+str(origin)+'%')
+   if (dest is not None) and (dest != ''):
+       list.append('%'+str(dest)+'%')
+   if (starttime is not None) and (starttime != ''):
+       list.append('%'+str(starttime)+'%')
+   if (endtime is not None) and (endtime != ''):
+       list.append('%'+str(endtime)+'%')
  
    with connect(
        host='localhost', port=5432, user='ttadmins',
@@ -162,41 +163,49 @@ def filter_rides(startdate, enddate, origin, dest, starttime, endtime):
  
        with connection.cursor() as cursor:
  
-           stmt_str = "SELECT riders.netid, rides.startdate, rides.enddate, rides.origin, "
-           stmt_str += "rides.dest, rides.starttime, rides.endtime FROM rides, riders "
-           stmt_str += "WHERE rides.rideid=riders.rideid "
+            stmt_str = "SELECT rides.rideid, rides.startdate, rides.enddate, rides.origin, "
+            stmt_str += "rides.dest, rides.starttime, rides.endtime, rides.num FROM rides, riders "
+            stmt_str += "WHERE rides.rideid=riders.rideid "
  
-           if startdate is not None:
-               stmt_str += "AND rides.startdate LIKE ? "
-           if enddate is not None:
+            if (startdate is not None) and (startdate != ''):
+                stmt_str += "AND rides.startdate LIKE %s "
+            if (enddate is not None) and (enddate != ''):
                stmt_str += "AND rides.enddate "
-               stmt_str += "LIKE ? "
-           if origin is not None:
-               stmt_str += "AND rides.origin LIKE ? "
-           if dest is not None:
-               stmt_str += "AND rides.dest LIKE ? "
-           if starttime is not None:
-               stmt_str += "AND rides.starttime LIKE ? "
-           if endtime is not None:
-               stmt_str += "AND rides.endtime LIKE ? "
+               stmt_str += "LIKE %s "
+            if (origin is not None) and (origin != ''):
+               stmt_str += "AND rides.origin LIKE %s "
+            if (dest is not None) and (dest != ''):
+               stmt_str += "AND rides.dest LIKE %s "
+            if (starttime is not None) and (starttime != ''):
+               stmt_str += "AND rides.starttime LIKE %s "
+            if (endtime is not None) and (endtime != ''):
+               stmt_str += "AND rides.endtime LIKE %s "
  
-           stmt_str += "ORDER BY rides.startdate ASC, "
-           stmt_str += "rides.starttime ASC, "
-           stmt_str += "rides.origin ASC;"
+            stmt_str += "ORDER BY rides.startdate ASC, "
+            stmt_str += "rides.starttime ASC, "
+            stmt_str += "rides.origin ASC;"
  
-           cursor.execute(stmt_str, list)
-           row = cursor.fetchone()
+            cursor.execute(stmt_str, list)
+            row = cursor.fetchone()
  
-           table = []
+            table = []
  
-           while row is not None:
+            while row is not None:
+               print(row[0], file=stderr)
+               print(row[1], file=stderr)
+               print(row[2], file=stderr)
+               print(row[3], file=stderr)
+               print(row[4], file=stderr)
+               print(row[5], file=stderr)
+               print(row[6], file=stderr)
+               print(row[7], file=stderr)
                ride_row = Ride(str(row[0]), str(row[1]),
                str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]),
                str(row[7]))
                table.append(ride_row)
                row = cursor.fetchone()
  
-           return table
+            return table
  
 #-----------------------------------------------------------------------
 

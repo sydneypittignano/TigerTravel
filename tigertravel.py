@@ -8,7 +8,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from database import search_students, filter_rides
+from database import search_students, filter_rides, add_ride
 
 #-----------------------------------------------------------------------
 
@@ -47,6 +47,19 @@ def login():
 
 @app.route('/add', methods=['GET'])
 def add():
+    netid = request.args.get('netid')
+    rideid = request.args.get('rideid')
+    startdate = request.args.get('startdate')
+    enddate = request.args.get('enddate')
+    origin = request.args.get('origin')
+    dest = request.args.get('dest')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    num = request.args.get('num')
+
+    # including this for now, to stop lots of inserts
+    if (netid is not None):
+        add_ride(netid, rideid, startdate, enddate, origin, dest, starttime, endtime, num)
     
     html = render_template('add.html')
     response = make_response(html)
