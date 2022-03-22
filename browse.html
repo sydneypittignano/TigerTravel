@@ -19,8 +19,6 @@
         <h1>BROWSE RIDES</h1>
         <h3>filter by:</h3>
         <form action="browse" method="get">
-            Start date: <input type="text" name="startdate">
-            End date: <input type="text" name="enddate">
             Origin: <input type="text" name="origin">
             Destination: <input type="text" name="dest">
             Start time: <input type="text" name="starttime">
@@ -36,25 +34,21 @@
         {% else %}
         <table border="1" width="100%">
             <tr>
-                <th align="left">RideID</th>
-                <th align="left">Start Date</th>
-                <th align="left">Start Time</th>
-                <th align="left">End Date</th>
-                <th align="left">End Time</th>
+                <th align="left">Current Riders</th>
                 <th align="left">Origin</th>
                 <th align="left">Destination</th>
+                <th align="left">Start Time</th>
+                <th align="left">End Time</th>
                 <th align="left"># of Riders</th>
             </tr>
-            {% for ride in rides: %}
+            {% for i in range(0, rides|length): %}
             <tr>
-                <td>{{ride.get_rideid()}}</td>
-                <td>{{ride.get_startdate()}}</td>
-                <td>{{ride.get_starttime()}}</td>
-                <td>{{ride.get_enddate()}}</td>
-                <td>{{ride.get_endtime()}}</td>
-                <td>{{ride.get_origin()}}</td>
-                <td>{{ride.get_dest()}}</td>
-                <td>{{ride.get_num()}}</td>
+                <td>{{all_riders[i]}}</td>
+                <td>{{rides[i].get_origin()}}</td>
+                <td>{{rides[i].get_dest()}}</td>
+                <td>{{rides[i].get_starttime()}}</td>
+                <td>{{rides[i].get_endtime()}}</td>
+                <td>{{rides[i].get_num()}}</td>
             </tr>
             {% endfor %}
         </table>

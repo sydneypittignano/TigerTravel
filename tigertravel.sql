@@ -38,12 +38,10 @@ ALTER TABLE public.riders OWNER TO ttadmins;
 
 CREATE TABLE public.rides (
     rideid integer,
-    startdate text,
-    enddate text,
     origin text,
     dest text,
-    starttime integer,
-    endtime integer,
+    starttime timestamp without time zone,
+    endtime timestamp without time zone,
     num integer
 );
 
@@ -73,6 +71,9 @@ ALTER TABLE public.students OWNER TO ttadmins;
 COPY public.riders (rideid, netid) FROM stdin;
 1	sydneyp
 2	otravis
+3	manyaz
+4	bbob
+5	jbob
 \.
 
 
@@ -80,9 +81,12 @@ COPY public.riders (rideid, netid) FROM stdin;
 -- Data for Name: rides; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.rides (rideid, startdate, enddate, origin, dest, starttime, endtime, num) FROM stdin;
-1	2-6-2022	2-6-2022	Princeton	JFK	100	300	1
-2	2-7-2022	2-7-2022	Princeton	LGA	200	500	1
+COPY public.rides (rideid, origin, dest, starttime, endtime, num) FROM stdin;
+1	Princeton	JFK	2020-06-22 19:00:00	2020-06-22 21:00:00	1
+2	Princeton	JFK	2020-06-24 12:00:00	2020-06-24 14:00:00	1
+3	LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1
+4	Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1
+5	Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1
 \.
 
 
@@ -92,10 +96,6 @@ COPY public.rides (rideid, startdate, enddate, origin, dest, starttime, endtime,
 
 COPY public.students (netid, firstname, lastname, email, phone, strikes) FROM stdin;
 sydneyp	Sydney	Pittignano	sydneyp@princeton.edu	(203)-914-7848	0
-manyaz	Manya	Zhu	manyaz@princeton.edu	(609)-456-2795	0
-otravis	Owen	Travis	otravis@princeton.edu	(847)-691-8322	1
-bbob	Billy	Bob	bbob@bob.com	(111)-111-1111	1
-jbob	Joey	Bob	jbob@bob.com	(222)-222-2222	2
 \.
 
 
