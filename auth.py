@@ -12,7 +12,7 @@ from re import sub
 from flask import request, redirect
 from flask import session, abort
 
-from penny import app
+from tigertravel import app
 
 #-----------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #-----------------------------------------------------------------------
-# penny.py
+# tigertravel.py
 # Author: Bob Dondero
 #-----------------------------------------------------------------------
 
@@ -24,20 +24,7 @@ import auth
 @app.route('/index', methods=['GET'])
 def index():
 
-    username = auth.authenticate()
-
     html = render_template('index.html')
-    response = make_response(html)
-    return response
-
-#-----------------------------------------------------------------------
-
-@app.route('/login', methods=['GET'])
-def login():
-
-    username = auth.authenticate()
-
-    html = render_template('login.html')
     response = make_response(html)
     return response
 
