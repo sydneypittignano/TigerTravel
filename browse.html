@@ -43,7 +43,7 @@
             </tr>
             {% for i in range(0, rides|length): %}
             <tr>
-                <td>{{all_riders[i]}}</td>
+                <td>{{rides[i].get_riders()}}</td>
                 <td>{{rides[i].get_origin()}}</td>
                 <td>{{rides[i].get_dest()}}</td>
                 <td>{{rides[i].get_starttime()}}</td>

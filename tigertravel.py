@@ -10,8 +10,8 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from keys import APP_SECRET_KEY
-from database import filter_rides, add_ride, from_netid_get_rides
-from database import from_rideid_get_riders, from_netid_get_rides
+from database import filter_rides, add_ride, from_netid_get_reqinfos
+from database import from_rideid_get_riders
 
 #-----------------------------------------------------------------------
 
@@ -65,14 +65,8 @@ def browse():
 
     # array of Ride objects
     rides = filter_rides(None, origin, dest, starttime, endtime)
-    # list of lists
-    all_riders = []
-    for ride in rides:
-        rideid = ride.get_rideid()
-        riders = from_rideid_get_riders(rideid)
-        all_riders.append(riders)
 
-    html = render_template('browse.html', rides=rides, all_riders=all_riders)
+    html = render_template('browse.html', rides=rides)
     response = make_response(html)
     return response
 
@@ -104,10 +98,32 @@ def tutorial():
 def account():
 
     my_netid = auth.authenticate().strip()
-    print(my_netid)
-    my_rides = from_netid_get_rides(my_netid)
-    for ride in my_rides:
-        rides = filter_rides(ride[0], None, None, None, None)
-    html = render_template('account.html', my_rides=rides)
+
+    # array of rideid, reqrec, reqsent for each ride matching my_netid
+    reqinfos = from_netid_get_reqinfos(my_netid)
+    
+    all_ride_infos = []
+    for reqinfo in reqinfos:
+        my_ride = filter_rides(reqinfo[0], None, None, None, None)[0]
+        incoming = []
+        outgoing = []
+        for reqrec in reqinfo[1]:
+            incoming.append(filter_rides(reqrec, None, None, None, None)[0])
+        for reqsent in reqinfo[2]:
+            outgoing.append(filter_rides(reqsent, None, None, None, None)[0])
+        ride_info = [my_ride, incoming, outgoing]
+        all_ride_infos.append(ride_info)
+
+    html = render_template('account.html', all_ride_infos=all_ride_infos)
     response = make_response(html)
     return response
+
+#-----------------------------------------------------------------------
+
+def get_all_riders(rides):
+    all_riders = []
+    for ride in rides:
+        rideid = ride.get_rideid()
+        riders = from_rideid_get_riders(rideid)
+        all_riders.append(riders)
+    return all_riders

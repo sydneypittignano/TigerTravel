@@ -18,12 +18,49 @@
         <hr>
         <h1>MY ACCOUNT</h1>
         <hr>
-        {% if my_rides|length == 0: %}
+        
+        {% if all_ride_infos|length == 0: %}
             (None)
         {% else %}
-            {% for ride in my_rides: %}
-                {{ride}}
-            {% endfor %}
+        {% for ride_info in all_ride_infos %}
+            <table border="1" width="100%">
+                <tr><td>My Ride</td></tr>
+                <tr>
+                    <th align="left">Current Riders</th>
+                    <th align="left">Origin</th>
+                    <th align="left">Destination</th>
+                    <th align="left">Start Time</th>
+                    <th align="left">End Time</th>
+                    <th align="left"># of Riders</th>
+                </tr>
+                <tr>
+                    <td>{{ride_info[0].get_riders()}}</td>
+                    <td>{{ride_info[0].get_origin()}}</td>
+                    <td>{{ride_info[0].get_dest()}}</td>
+                    <td>{{ride_info[0].get_starttime()}}</td>
+                    <td>{{ride_info[0].get_endtime()}}</td>
+                    <td>{{ride_info[0].get_num()}}</td>
+                </tr>
+                <tr><td>Incoming Requests</td></tr>
+                {% for incoming_ride in ride_info[1] %}
+                <tr>
+                    <th align="left">Current Riders</th>
+                    <th align="left">Origin</th>
+                    <th align="left">Destination</th>
+                    <th align="left">Start Time</th>
+                    <th align="left">End Time</th>
+                    <th align="left"># of Riders</th>
+                </tr>
+                <tr>
+                    <td>{{incoming_ride.get_riders()}}</td>
+                    <td>{{incoming_ride.get_origin()}}</td>
+                    <td>{{incoming_ride.get_dest()}}</td>
+                    <td>{{incoming_ride.get_starttime()}}</td>
+                    <td>{{incoming_ride.get_endtime()}}</td>
+                    <td>{{incoming_ride.get_num()}}</td>
+                </tr>
+                {% endfor %}
+        {% endfor %}
         {% endif %}
 
         <!-- ======================================================= -->

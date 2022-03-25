@@ -7,8 +7,9 @@
  
 class Ride:
  
-   def __init__(self, rideid, origin, dest, starttime, endtime, num):
+   def __init__(self, rideid, riders, origin, dest, starttime, endtime, num):
        self._rideid = rideid
+       self._riders = riders
        self._origin = origin
        self._dest = dest
        self._starttime = starttime
@@ -17,6 +18,9 @@ class Ride:
  
    def get_rideid(self):
        return self._rideid
+
+   def get_riders(self):
+       return self._riders
  
    def get_origin(self):
        return self._origin
@@ -34,18 +38,18 @@ class Ride:
        return self._num
  
    def to_tuple(self):
-       return (self._rideid, self._origin,
+       return (self._rideid, self._riders, self._origin,
        self._dest, self._starttime, self._endtime, self._num)
  
    def to_dict(self):
-       return {'rideid': self._rideid, 
+       return {'rideid': self._rideid, 'riders': self._riders,
        'origin': self._origin, 'dest': self._dest, 'starttime': self._starttime,
        'endtime': self._endtime, 'num': self._num}
  
 #-----------------------------------------------------------------------
  
 def _test():
-   ride = Ride('1', 'princeton', 'JFK', '2020-06-23 15:00:00', '2020-06-23 19:00:00', 1)
+   ride = Ride('1', ['otravis'], 'princeton', 'JFK', '2020-06-23 15:00:00', '2020-06-23 19:00:00', 1)
    print(ride.to_tuple())
    print()
    print(ride.to_dict())

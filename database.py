@@ -38,7 +38,7 @@ def from_rideid_get_riders(rideid):
 # SELECT from the RIDERS table
 # Given the netid of the current user, return a list of
 # [rideid, reqrec, reqsent] for each matching row
-def from_netid_get_rides(my_netid):
+def from_netid_get_reqinfos(my_netid):
     with connect(
         host='localhost', port=5432, user='ttadmins', 
         password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -49,14 +49,13 @@ def from_netid_get_rides(my_netid):
             stmt_str += "WHERE netid LIKE %s"
 
             cursor.execute(stmt_str, ['%'+my_netid+'%'])
-            rides = []
-            ride = cursor.fetchone()
-            while ride is not None:
-                rides.append(list(ride))
-                ride = cursor.fetchone()
+            reqinfos = []
+            reqinfo = cursor.fetchone()
+            while reqinfo is not None:
+                reqinfos.append(reqinfo)
+                reqinfo = cursor.fetchone()
 
-
-    return rides
+    return reqinfos
 
 #-----------------------------------------------------------------------
  
@@ -176,8 +175,9 @@ def fetch_rides(cursor, rideid, origin, dest, starttime, endtime):
         row = list(row)
         row[3] = row[3].strftime("%c")
         row[4] = row[4].strftime("%c")
-        ride = Ride(str(row[0]), str(row[1]),
-        str(row[2]), row[3], row[4], str(row[5]))
+        riders = from_rideid_get_riders(row[0])
+        ride = Ride(row[0], riders, str(row[1]),
+        str(row[2]), row[3], row[4], row[5])
         rides.append(ride)
         row = cursor.fetchone()
 
