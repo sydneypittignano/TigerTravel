@@ -8,10 +8,12 @@
 from sys import stderr
 from psycopg2 import connect
 from ride import Ride
-from datetime import datetime
 
 #-----------------------------------------------------------------------
 
+# SELECT from the RIDERS table
+# Given a rideid, return a list containing the netids of all riders
+# that are associated with that rideid
 def from_rideid_get_riders(rideid):
     with connect(
         host='localhost', port=5432, user='ttadmins', 
@@ -19,10 +21,10 @@ def from_rideid_get_riders(rideid):
 
         with connection.cursor() as cursor:
 
-            query_str = "SELECT netid FROM riders "
-            query_str += "WHERE rideid = %s"
+            stmt_str = "SELECT netid FROM riders "
+            stmt_str += "WHERE rideid = %s"
 
-            cursor.execute(query_str, [rideid])
+            cursor.execute(stmt_str, [rideid])
             riders = []
             rider = cursor.fetchone()
             while rider is not None:
@@ -30,6 +32,31 @@ def from_rideid_get_riders(rideid):
                 rider = cursor.fetchone()
 
     return riders
+
+#-----------------------------------------------------------------------
+
+# SELECT from the RIDERS table
+# Given the netid of the current user, return a list of
+# [rideid, reqrec, reqsent] for each matching row
+def from_netid_get_rides(my_netid):
+    with connect(
+        host='localhost', port=5432, user='ttadmins', 
+        password='071020010307200204262002oms', database='tigertravel') as connection:
+
+        with connection.cursor() as cursor:
+
+            stmt_str = "SELECT rideid, reqrec, reqsent FROM riders "
+            stmt_str += "WHERE netid LIKE %s"
+
+            cursor.execute(stmt_str, ['%'+my_netid+'%'])
+            rides = []
+            ride = cursor.fetchone()
+            while ride is not None:
+                rides.append(list(ride))
+                ride = cursor.fetchone()
+
+
+    return rides
 
 #-----------------------------------------------------------------------
  
@@ -41,10 +68,10 @@ def add_student(netid, firstname, lastname, email, phone, strikes):
        with connection.cursor() as cursor:
  
            info = [netid, firstname, lastname, email, phone, strikes]
-           query_str = "INSERT INTO students (netid, firstname, lastname, "
-           query_str += "email, phone, strikes) VALUES ?;"
+           stmt_str = "INSERT INTO students (netid, firstname, lastname, "
+           stmt_str += "email, phone, strikes) VALUES ?;"
  
-           cursor.execute(query_str, info)
+           cursor.execute(stmt_str, info)
  
    return
   
@@ -57,9 +84,9 @@ def add_strike(netid):
  
        with connection.cursor() as cursor:
 
-           query_str = "UPDATE students SET strikes=strikes+1 WHERE netid=?;"
+           stmt_str = "UPDATE students SET strikes=strikes+1 WHERE netid=?;"
  
-           cursor.execute(query_str, [netid])
+           cursor.execute(stmt_str, [netid])
  
    return
  
@@ -73,14 +100,14 @@ def add_ride(netid, rideid, origin, dest, starttime, endtime):
        with connection.cursor() as cursor:
  
            info = [rideid, origin, dest, starttime, endtime]
-           query_str = "INSERT INTO rides (rideid, origin, dest, "
-           query_str += "starttime, endtime, num) VALUES (%s, %s, %s, %s, %s, 1);"
+           stmt_str = "INSERT INTO rides (rideid, origin, dest, "
+           stmt_str += "starttime, endtime, num) VALUES (%s, %s, %s, %s, %s, 1);"
  
-           cursor.execute(query_str, info)
+           cursor.execute(stmt_str, info)
  
-           query_str = "INSERT INTO riders (rideid, netid) VALUES (%s, %s);"
+           stmt_str = "INSERT INTO riders (rideid, netid) VALUES (%s, %s);"
           
-           cursor.execute(query_str, [rideid, netid])
+           cursor.execute(stmt_str, [rideid, netid])
  
    return
  
@@ -93,10 +120,10 @@ def join_ride(netid, prev_rideid, new_rideid):
  
        with connection.cursor() as cursor:
  
-           query_str = "UPDATE riders SET rideid = ? WHERE "
-           query_str += "netid = ? AND rideid = ?;"
+           stmt_str = "UPDATE riders SET rideid = ? WHERE "
+           stmt_str += "netid = ? AND rideid = ?;"
  
-           cursor.execute(query_str, [prev_rideid, netid, new_rideid])
+           cursor.execute(stmt_str, [prev_rideid, netid, new_rideid])
  
            #should the old ride in rides stay the same? should we change rideid?
  
@@ -104,16 +131,7 @@ def join_ride(netid, prev_rideid, new_rideid):
  
 #-----------------------------------------------------------------------
  
-def filter_rides(origin, dest, starttime, endtime):
-   filters = []
-   if (origin is not None) and (origin != ''):
-       filters.append('%'+str(origin)+'%')
-   if (dest is not None) and (dest != ''):
-       filters.append('%'+str(dest)+'%')
-   if (starttime is not None) and (starttime != ''):
-       filters.append('%'+str(starttime)+'%')
-   if (endtime is not None) and (endtime != ''):
-       filters.append('%'+str(endtime)+'%')
+def filter_rides(rideid, origin, dest, starttime, endtime):
  
    with connect(
        host='localhost', port=5432, user='ttadmins',
@@ -121,40 +139,49 @@ def filter_rides(origin, dest, starttime, endtime):
  
        with connection.cursor() as cursor:
  
-            stmt_str = "SELECT rides.rideid, rides.origin, "
-            stmt_str += "rides.dest, rides.starttime, rides.endtime, rides.num FROM rides, riders "
-            stmt_str += "WHERE rides.rideid=riders.rideid "
- 
-            if (origin is not None) and (origin != ''):
-               stmt_str += "AND rides.origin LIKE %s "
-            if (dest is not None) and (dest != ''):
-               stmt_str += "AND rides.dest LIKE %s "
-            if (starttime is not None) and (starttime != ''):
-               stmt_str += "AND rides.starttime LIKE %s "
-            if (endtime is not None) and (endtime != ''):
-               stmt_str += "AND rides.endtime LIKE %s "
- 
-            stmt_str += "ORDER BY rides.starttime ASC, "
-            stmt_str += "rides.origin ASC;"
- 
-            cursor.execute(stmt_str, filters)
-            row = cursor.fetchone()
- 
-            table = []
- 
-            while row is not None:
-                row = list(row)
-                row[3] = row[3].strftime("%c")
-                row[4] = row[4].strftime("%c")
-                ride_row = Ride(str(row[0]), str(row[1]),
-                str(row[2]), row[3], row[4], str(row[5]))
-                table.append(ride_row)
-                row = cursor.fetchone()
- 
-            return table
+            rides = fetch_rides(cursor, rideid, origin, dest, starttime, endtime)
+            return rides
  
 #-----------------------------------------------------------------------
 
+def fetch_rides(cursor, rideid, origin, dest, starttime, endtime):
+    filters = []
+
+    stmt_str = "SELECT * FROM rides WHERE true "
+    if (rideid is not None) and (rideid != ''):
+        stmt_str += "AND rides.rideid=%s "
+        filters.append(rideid)
+    if (origin is not None) and (origin != ''):
+        filters.append('%'+str(origin)+'%')
+        stmt_str += "AND rides.origin LIKE %s "
+    if (dest is not None) and (dest != ''):
+        filters.append('%'+str(dest)+'%')
+        stmt_str += "AND rides.dest LIKE %s "
+    if (starttime is not None) and (starttime != ''):
+        filters.append('%'+str(starttime)+'%')
+        stmt_str += "AND rides.starttime LIKE %s "
+    if (endtime is not None) and (endtime != ''):
+        filters.append('%'+str(endtime)+'%')
+        stmt_str += "AND rides.endtime LIKE %s "
+
+    stmt_str += "ORDER BY rides.starttime ASC, "
+    stmt_str += "rides.origin ASC;"
+
+    cursor.execute(stmt_str, filters)
+    row = cursor.fetchone()
+
+    rides = []
+
+    while row is not None:
+        row = list(row)
+        row[3] = row[3].strftime("%c")
+        row[4] = row[4].strftime("%c")
+        ride = Ride(str(row[0]), str(row[1]),
+        str(row[2]), row[3], row[4], str(row[5]))
+        rides.append(ride)
+        row = cursor.fetchone()
+
+    return rides
 
 # For testing:
 

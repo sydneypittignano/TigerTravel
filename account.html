@@ -17,6 +17,14 @@
 
         <hr>
         <h1>MY ACCOUNT</h1>
+        <hr>
+        {% if my_rides|length == 0: %}
+            (None)
+        {% else %}
+            {% for ride in my_rides: %}
+                {{ride}}
+            {% endfor %}
+        {% endif %}
 
         <!-- ======================================================= -->
 
