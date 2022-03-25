@@ -26,7 +26,9 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.riders (
     rideid integer,
-    netid text
+    netid text,
+    reqrec integer[],
+    reqsent integer[]
 );
 
 
@@ -68,12 +70,14 @@ ALTER TABLE public.students OWNER TO ttadmins;
 -- Data for Name: riders; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.riders (rideid, netid) FROM stdin;
-1	sydneyp
-2	otravis
-3	manyaz
-4	bbob
-5	jbob
+COPY public.riders (rideid, netid, reqrec, reqsent) FROM stdin;
+3	manyaz	{}	{}
+4	bbob	{}	{}
+5	jbob	{}	{}
+6	cpm6	{}	{}
+7	akleiman	{}	{}
+2	otravis	{1}	{}
+1	sydneyp	{}	{2}
 \.
 
 
@@ -87,6 +91,8 @@ COPY public.rides (rideid, origin, dest, starttime, endtime, num) FROM stdin;
 3	LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1
 4	Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1
 5	Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1
+6	Forbes	Dinky	2022-03-23 10:00:00	2022-03-23 10:01:00	1
+7	Bowen	Newark	2022-03-24 10:00:00	2022-03-24 12:00:00	1
 \.
 
 
