@@ -25,10 +25,8 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.riders (
-    rideid integer,
     netid text,
-    reqrec integer[],
-    reqsent integer[]
+    rideid text
 );
 
 
@@ -39,12 +37,14 @@ ALTER TABLE public.riders OWNER TO ttadmins;
 --
 
 CREATE TABLE public.rides (
-    rideid integer,
     origin text,
     dest text,
     starttime timestamp without time zone,
     endtime timestamp without time zone,
-    num integer
+    num integer,
+    rideid text,
+    reqrec text[],
+    reqsent text[]
 );
 
 
@@ -60,7 +60,8 @@ CREATE TABLE public.students (
     lastname text,
     email text,
     phone text,
-    strikes integer
+    strikes integer,
+    count integer
 );
 
 
@@ -70,14 +71,13 @@ ALTER TABLE public.students OWNER TO ttadmins;
 -- Data for Name: riders; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.riders (rideid, netid, reqrec, reqsent) FROM stdin;
-3	manyaz	{}	{}
-4	bbob	{}	{}
-5	jbob	{}	{}
-6	cpm6	{}	{}
-7	akleiman	{}	{}
-2	otravis	{1}	{}
-1	sydneyp	{}	{2}
+COPY public.riders (netid, rideid) FROM stdin;
+cpm6	cpm6-1
+jbob	jbob-1
+bbob	bbob-1
+manyaz	manyaz-1
+sydneyp	sydneyp-1
+otravis	otravis-1
 \.
 
 
@@ -85,14 +85,13 @@ COPY public.riders (rideid, netid, reqrec, reqsent) FROM stdin;
 -- Data for Name: rides; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.rides (rideid, origin, dest, starttime, endtime, num) FROM stdin;
-1	Princeton	JFK	2020-06-22 19:00:00	2020-06-22 21:00:00	1
-2	Princeton	JFK	2020-06-24 12:00:00	2020-06-24 14:00:00	1
-3	LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1
-4	Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1
-5	Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1
-6	Forbes	Dinky	2022-03-23 10:00:00	2022-03-23 10:01:00	1
-7	Bowen	Newark	2022-03-24 10:00:00	2022-03-24 12:00:00	1
+COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
+LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1	manyaz-1	{}	{}
+Princeton	JFK	2020-06-24 12:00:00	2020-06-24 14:00:00	1	sydneyp-1	{}	{}
+Forbes	Dinky	2022-03-23 10:00:00	2022-03-23 10:01:00	1	cpm6-1	{}	{}
+Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1	jbob-1	{}	{}
+Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1	bbob-1	{}	{}
+Princeton	JFK	2020-06-24 10:00:00	2020-06-24 13:00:00	1	otravis-1	{}	{}
 \.
 
 
@@ -100,8 +99,13 @@ COPY public.rides (rideid, origin, dest, starttime, endtime, num) FROM stdin;
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.students (netid, firstname, lastname, email, phone, strikes) FROM stdin;
-sydneyp	Sydney	Pittignano	sydneyp@princeton.edu	(203)-914-7848	0
+COPY public.students (netid, firstname, lastname, email, phone, strikes, count) FROM stdin;
+sydneyp	Sydney	Pittignano	sydneyp@princeton.edu	(203)-914-7848	0	1
+cpm6					0	1
+manyaz					0	1
+bbob					0	1
+jbob					0	1
+otravis					0	1
 \.
 
 

@@ -10,8 +10,8 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from keys import APP_SECRET_KEY
-from database import filter_rides, add_ride, from_netid_get_reqinfos
-from database import from_rideid_get_riders
+from database import get_rides, add_ride, from_netid_get_rides
+from database import check_student
 
 #-----------------------------------------------------------------------
 
@@ -20,6 +20,7 @@ app.secret_key = APP_SECRET_KEY
 import auth
 
 #-----------------------------------------------------------------------
+
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
@@ -35,17 +36,16 @@ def index():
 def add():
 
     my_netid = auth.authenticate().strip()
+    check_student(my_netid)
 
-    netid = request.args.get('netid')
-    rideid = request.args.get('rideid')
     origin = request.args.get('origin')
     dest = request.args.get('dest')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
 
     # including this for now, to stop lots of inserts
-    if (netid is not None):
-        add_ride(netid, rideid, origin, dest, starttime, endtime)
+    if (origin is not None):
+        add_ride(my_netid, origin, dest, starttime, endtime)
     
     html = render_template('add.html')
     response = make_response(html)
@@ -57,6 +57,7 @@ def add():
 def browse():
 
     my_netid = auth.authenticate().strip()
+    check_student(my_netid)
 
     origin = request.args.get('origin')
     dest = request.args.get('dest')
@@ -64,7 +65,7 @@ def browse():
     endtime = request.args.get('endtime')
 
     # array of Ride objects
-    rides = filter_rides(None, origin, dest, starttime, endtime)
+    rides = get_rides(None, origin, dest, starttime, endtime)
 
     html = render_template('browse.html', rides=rides)
     response = make_response(html)
@@ -76,6 +77,7 @@ def browse():
 def about():
 
     my_netid = auth.authenticate().strip()
+    check_student(my_netid)
     
     html = render_template('about.html')
     response = make_response(html)
@@ -87,6 +89,7 @@ def about():
 def tutorial():
 
     my_netid = auth.authenticate().strip()
+    check_student(my_netid)
     
     html = render_template('tutorial.html')
     response = make_response(html)
@@ -98,32 +101,24 @@ def tutorial():
 def account():
 
     my_netid = auth.authenticate().strip()
+    # Make sure the student is in our database
+    check_student(my_netid)
 
-    # array of rideid, reqrec, reqsent for each ride matching my_netid
-    reqinfos = from_netid_get_reqinfos(my_netid)
+    rides = from_netid_get_rides(my_netid)
     
-    all_ride_infos = []
-    for reqinfo in reqinfos:
-        my_ride = filter_rides(reqinfo[0], None, None, None, None)[0]
+    full_rides = []
+    for ride in rides:
         incoming = []
         outgoing = []
-        for reqrec in reqinfo[1]:
-            incoming.append(filter_rides(reqrec, None, None, None, None)[0])
-        for reqsent in reqinfo[2]:
-            outgoing.append(filter_rides(reqsent, None, None, None, None)[0])
-        ride_info = [my_ride, incoming, outgoing]
-        all_ride_infos.append(ride_info)
+        for reqrec in ride.get_reqrec():
+            incoming.append(get_rides(reqrec, None, None, None, None)[0])
+        for reqsent in ride.get_reqsent():
+            outgoing.append(get_rides(reqsent, None, None, None, None)[0])
+        full_ride = [ride, incoming, outgoing]
+        full_rides.append(full_ride)
 
-    html = render_template('account.html', all_ride_infos=all_ride_infos)
+    html = render_template('account.html', full_rides=full_rides)
     response = make_response(html)
     return response
 
-#-----------------------------------------------------------------------
 
-def get_all_riders(rides):
-    all_riders = []
-    for ride in rides:
-        rideid = ride.get_rideid()
-        riders = from_rideid_get_riders(rideid)
-        all_riders.append(riders)
-    return all_riders
