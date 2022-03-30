@@ -16,7 +16,7 @@
     <body>
         <!-- ======================================================= -->
 
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #eb891a; color:rgb(0, 0, 0)">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:sandybrown; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand fw-bold" href="#">TigerTravel</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,52 +35,99 @@
           </nav>
         
         <!-- ======================================================= -->
+        <br>
+        <div class="container-fluid">
+          <h1>MY ACCOUNT</h1>
+        </div>
+        <br>
 
-        <hr>
-        <h1>MY ACCOUNT</h1>
-        <hr>
-        
         {% if full_rides|length == 0: %}
             (None)
         {% else %}
+
         {% for full_ride in full_rides %}
-            <table border="1" width="100%">
-                <tr><td>My Ride</td></tr>
-                <tr>
-                    <th align="left">Current Riders</th>
-                    <th align="left">Origin</th>
-                    <th align="left">Destination</th>
-                    <th align="left">Start Time</th>
-                    <th align="left">End Time</th>
-                    <th align="left"># of Riders</th>
+        <div class="container-fluid">
+          <table class="table" class = "table-bordered">
+            <tbody>
+                <tr style="background-color: sandybrown">
+                  <th colspan="7">My Ride</th>
                 </tr>
                 <tr>
-                    <td>{{full_ride[0].get_riders()}}</td>
-                    <td>{{full_ride[0].get_origin()}}</td>
-                    <td>{{full_ride[0].get_dest()}}</td>
-                    <td>{{full_ride[0].get_starttime()}}</td>
-                    <td>{{full_ride[0].get_endtime()}}</td>
-                    <td>{{full_ride[0].get_num()}}</td>
-                </tr>
-                <tr><td>Incoming Requests</td></tr>
-                {% for incoming_ride in full_ride[1] %}
-                <tr>
-                    <th align="left">Current Riders</th>
-                    <th align="left">Origin</th>
-                    <th align="left">Destination</th>
-                    <th align="left">Start Time</th>
-                    <th align="left">End Time</th>
-                    <th align="left"># of Riders</th>
+                    <th>Current Riders</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Start time</th>
+                    <th>End time</th>
+                    <th># of Riders</th>
+                    <th></th>
                 </tr>
                 <tr>
-                    <td>{{incoming_ride.get_riders()}}</td>
-                    <td>{{incoming_ride.get_origin()}}</td>
-                    <td>{{incoming_ride.get_dest()}}</td>
-                    <td>{{incoming_ride.get_starttime()}}</td>
-                    <td>{{incoming_ride.get_endtime()}}</td>
-                    <td>{{incoming_ride.get_num()}}</td>
+                  <td>{{''.join(full_ride[0].get_riders())}}</td>
+                  <td>{{full_ride[0].get_origin()}}</td>
+                  <td>{{full_ride[0].get_dest()}}</td>
+                  <td>{{full_ride[0].get_starttime()}}</td>
+                  <td>{{full_ride[0].get_endtime()}}</td>
+                  <td>{{full_ride[0].get_num()}}</td>
+                  <td></td>
                 </tr>
-                {% endfor %}
+              <tr style="background-color: sandybrown">
+                <th colspan="7">Incoming Requests: Others have requested to join your ride!</th>
+              </tr>
+              <tr>
+                <th>Current Riders</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th># of Riders</th>
+                <th></th>
+              </tr>
+              {% for incoming_ride in full_ride[1] %}
+              <tr>
+                <td>{{''.join(incoming_ride.get_riders())}}</td>
+                <td>{{incoming_ride.get_origin()}}</td>
+                <td>{{incoming_ride.get_dest()}}</td>
+                <td>{{incoming_ride.get_starttime()}}</td>
+                <td>{{incoming_ride.get_endtime()}}</td>
+                <td>{{incoming_ride.get_num()}}</td>
+                <td>
+                  <form action="">
+                    <input type="submit" value="ACCEPT" style="background-color:lawngreen">
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+              <tr style="background-color:sandybrown">
+                <th colspan="7">Outgoing Requests: You have requested to join these rides!</th>
+              </tr>
+              <tr>
+                <th>Current Riders</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th># of Riders</th>
+                <th></th>
+              </tr>
+              {% for incoming_ride in full_ride[2] %}
+              <tr>
+                <td>{{''.join(incoming_ride.get_riders())}}</td>
+                <td>{{incoming_ride.get_origin()}}</td>
+                <td>{{incoming_ride.get_dest()}}</td>
+                <td>{{incoming_ride.get_starttime()}}</td>
+                <td>{{incoming_ride.get_endtime()}}</td>
+                <td>{{incoming_ride.get_num()}}</td>
+                <td>
+                  <form action="">
+                    <input type="submit" value="CANCEL" style="background-color:tomato">
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <br>
+        </div>
         {% endfor %}
         {% endif %}
 
