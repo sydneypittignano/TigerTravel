@@ -5,11 +5,11 @@
 # Author: Bob Dondero
 #-----------------------------------------------------------------------
 
+import os
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
-from keys import APP_SECRET_KEY
 from database import get_rides, add_ride, from_netid_get_rides
 from database import check_student
 
