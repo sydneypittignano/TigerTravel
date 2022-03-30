@@ -16,7 +16,7 @@
     <body>
         <!-- ======================================================= -->
         
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #eb891a; color:rgb(0, 0, 0)">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: sandybrown; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand fw-bold" href="#">TigerTravel</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,22 +33,32 @@
               </div>
             </div>
           </nav>
-        
-        <!-- ======================================================= -->
 
-        <h1>ADD RIDE</h1>
+        <br>
 
-        <!-- ======================================================= -->
-
-        <hr>
-        <h1>ADD</h1>
-        <form action="add" method="get">
-            Origin: <input type="text" name="origin"><br>
-            Destination: <input type="text" name="dest"><br>
-            Start time: <input type="text" name="starttime"><br>
-            End time: <input type="text" name="endtime"><br>
-            <input type="submit" value="GO">
+        <div class="container-fluid">
+          <h1>ADD RIDE</h1>
+          <br>
+          <form action="add" method="get">
+            <div class="row">
+              <div class="col-sm-2">
+                <input type="text" name="origin" placeholder="Origin">
+              </div>
+              <div class="col-sm-2">
+                <input type="text" name="dest" placeholder="Destination">
+              </div>
+              <div class="col-sm-2">
+                <input type="text" name="starttime" placeholder="Start time">
+              </div>
+              <div class="col-sm-2">
+                <input type="text" name="endtime" placeholder="End time">
+              </div>
+              <div class="col-sm-2">
+                <input type="submit" value="GO">
+              </div>
+            </div>
          </form>
+        </div>
 
         <!-- ======================================================= -->
 
