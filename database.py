@@ -12,12 +12,15 @@ from ride import Ride
 
 #-----------------------------------------------------------------------
 
+DATABASE_URL = os.environ['DATABASE_URL']
+
+#-----------------------------------------------------------------------
+
 # returns a list of Ride objects that contain all relevant information
 # about the rides. takes filters as arguments.
 def get_rides(rideid, origin, dest, starttime, endtime):
     with connect(
-    host='localhost', port=5432, user='ttadmins',
-    password='071020010307200204262002oms', database='tigertravel') as connection:
+    DATABASE_URL, sslmode='require') as connection:
 
         with connection.cursor() as cursor:
             filters = []
@@ -59,8 +62,7 @@ def get_rides(rideid, origin, dest, starttime, endtime):
 
 def from_netid_get_rides(my_netid):
     with connect(
-        host='localhost', port=5432, user='ttadmins', 
-        password='071020010307200204262002oms', database='tigertravel') as connection:
+        DATABASE_URL, sslmode='require') as connection:
 
         with connection.cursor() as cursor:
 
@@ -83,8 +85,7 @@ def from_netid_get_rides(my_netid):
 # that are associated with that rideid
 def from_rideid_get_riders(rideid):
     with connect(
-        host='localhost', port=5432, user='ttadmins', 
-        password='071020010307200204262002oms', database='tigertravel') as connection:
+        DATABASE_URL, sslmode='require') as connection:
 
         with connection.cursor() as cursor:
 
@@ -104,8 +105,7 @@ def from_rideid_get_riders(rideid):
 
 def check_student(netid):
         with connect(
-        host='localhost', port=5432, user='ttadmins',
-        password='071020010307200204262002oms', database='tigertravel') as connection:
+        DATABASE_URL, sslmode='require') as connection:
  
             with connection.cursor() as cursor:
  
@@ -129,8 +129,7 @@ def add_student(cursor, netid):
  
 def add_ride(netid, origin, dest, starttime, endtime):
    with connect(
-       host='localhost', port=5432, user='ttadmins',
-       password='071020010307200204262002oms', database='tigertravel') as connection:
+       DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
 
