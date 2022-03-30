@@ -16,7 +16,7 @@ from database import check_student
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='.')
-app.secret_key = APP_SECRET_KEY
+app.secret_key = os.environ['APP_SECRET_KEY']
 import auth
 
 #-----------------------------------------------------------------------
