@@ -5,10 +5,10 @@
 # Author: Owen Travis
 #-----------------------------------------------------------------------
 
+import os
 from sys import stderr
 from psycopg2 import connect
 from ride import Ride
-from time import time, asctime
 
 #-----------------------------------------------------------------------
 
