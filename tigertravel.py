@@ -47,8 +47,10 @@ def add():
     # including this for now, to stop lots of inserts
     if (origin is not None):
         add_ride(my_netid, origin, dest, starttime, endtime)
-
-    return redirect(url_for('account'))
+    
+    html = render_template('add.html')
+    response = make_response(html)
+    return response
 
 #-----------------------------------------------------------------------
 
