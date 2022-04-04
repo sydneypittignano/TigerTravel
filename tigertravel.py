@@ -136,10 +136,10 @@ def tryrequest():
     for ride in rides:
         if joining_ride.hasOverlapWith(ride):
             send_request(joining_rideid, ride.get_rideid())
-            break
+            return redirect(url_for('account'))
         else:
             print('Nay')
-    return redirect(url_for('account'))
+            return redirect(url_for('browse'))
 
 #-----------------------------------------------------------------------
 
