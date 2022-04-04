@@ -76,7 +76,7 @@
             (None)
         {% else %}
         <div class="container-fluid">
-          <table class="table">
+          <table class="table table-striped">
             <tbody>
               <tr>
                   <th>Current Riders</th>
@@ -85,6 +85,7 @@
                   <th>Start time</th>
                   <th>End time</th>
                   <th># of Riders</th>
+                  <th></th>
               </tr>
               {% for i in range(0, rides|length): %}
               <tr>
@@ -94,6 +95,12 @@
                 <td>{{rides[i].get_starttime()}}</td>
                 <td>{{rides[i].get_endtime()}}</td>
                 <td>{{rides[i].get_num()}}</td>
+                <td>
+                  <form action="tryjoin" method="get">
+                    <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
+                    <input type="submit" value="Request to Join">
+                  </form>
+                </td>
               </tr>
               {% endfor %}
             </tbody>

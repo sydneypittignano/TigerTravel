@@ -11,7 +11,7 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from olddatabase import get_rides, add_ride, from_netid_get_rides
-from olddatabase import check_student
+from olddatabase import check_student, from_rideid_get_ride
 from keys import APP_SECRET_KEY
 
 #-----------------------------------------------------------------------
@@ -22,7 +22,6 @@ app.secret_key = APP_SECRET_KEY
 import auth
 
 #-----------------------------------------------------------------------
-
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
@@ -123,4 +122,20 @@ def account():
     response = make_response(html)
     return response
 
+#-----------------------------------------------------------------------
 
+@app.route('/tryjoin', methods=['GET'])
+def tryjoin():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    joining_rideid = request.args.get('rideid')
+    joining_ride = from_rideid_get_ride(joining_rideid)
+    rides = from_netid_get_rides(my_netid)
+
+    for ride in rides:
+        if joining_ride.hasOverlapWith(ride):
+            print('Yay')
+        else:
+            print('Nay')
+    return redirect(url_for('browse'))

@@ -72,15 +72,21 @@ def from_netid_get_rides(my_netid):
             stmt_str += "WHERE netid LIKE %s"
 
             cursor.execute(stmt_str, ['%'+my_netid+'%'])
-            rideid = cursor.fetchone()
+            rideid = cursor.fetchone()[0]
             rides = []
             while rideid is not None:
-                rides.append(get_rides(rideid, None, None, None, None)[0])
+                rides.append(from_rideid_get_ride(rideid))
                 rideid = cursor.fetchone()
 
     return rides
 
 #-----------------------------------------------------------------------
+
+def from_rideid_get_ride(rideid):
+    return get_rides(rideid, None, None, None, None)[0]
+
+#-----------------------------------------------------------------------
+
 
 # SELECT from the RIDERS table
 # Given a rideid, return a list containing the netids of all riders

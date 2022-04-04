@@ -73,10 +73,15 @@ def from_netid_get_rides(my_netid):
             rideid = cursor.fetchone()
             rides = []
             while rideid is not None:
-                rides.append(get_rides(rideid, None, None, None, None)[0])
+                rides.append(from_rideid_get_ride(rideid))
                 rideid = cursor.fetchone()
 
     return rides
+
+#-----------------------------------------------------------------------
+
+def from_rideid_get_ride(rideid):
+    return get_rides(rideid, None, None, None, None)[0]
 
 #-----------------------------------------------------------------------
 

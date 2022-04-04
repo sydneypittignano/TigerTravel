@@ -55,7 +55,15 @@ class Ride:
        'origin': self._origin, 'dest': self._dest, 'starttime': self._starttime,
        'endtime': self._endtime, 'num': self._num, 'reqrec': self._reqrec, 'reqsent': self._reqsent
        }
- 
+    
+   def hasOverlapWith(self, other):
+       selfstart = self.get_starttime()
+       selfend = self.get_endtime()
+       otherstart = other.get_starttime()
+       otherend = other.get_endtime()
+       lateststart = max(selfstart, otherstart)
+       return True
+
 #-----------------------------------------------------------------------
  
 def _test():
