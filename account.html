@@ -37,7 +37,7 @@
         <!-- ======================================================= -->
         <br>
         <div class="container-fluid">
-          <h1>MY ACCOUNT</h1>
+          <h1>MY RIDES</h1>
         </div>
         <br>
 
@@ -47,29 +47,36 @@
 
         {% for full_ride in full_rides %}
         <div class="container-fluid">
-          <table class="table" class = "table-bordered">
+          <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
             <tbody>
                 <tr style="background-color: sandybrown">
-                  <th colspan="7">My Ride</th>
+                  <th colspan="5" align-right>My Ride</th>
+                  <th colspan="2" class="text-end">
+                    <form action="deleteride" method="get">
+                      <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
+                      <input type="submit" value="Delete Ride" style="background-color:tomato">
+                    </form>
+                  </th>
                 </tr>
                 <tr>
                     <th>Current Riders</th>
                     <th>Origin</th>
                     <th>Destination</th>
-                    <th>Start time</th>
-                    <th>End time</th>
+                    <th>Earliest Departure Time</th>
+                    <th>Latest Departure Time</th>
                     <th># of Riders</th>
                     <th></th>
                 </tr>
                 <tr>
-                  <td>{{''.join(full_ride[0].get_riders())}}</td>
+                  <td>{{', '.join(full_ride[0].get_riders())}}</td>
                   <td>{{full_ride[0].get_origin()}}</td>
                   <td>{{full_ride[0].get_dest()}}</td>
-                  <td>{{full_ride[0].get_starttime()}}</td>
-                  <td>{{full_ride[0].get_endtime()}}</td>
+                  <td>{{full_ride[0].get_starttime().strftime('%c')}}</td>
+                  <td>{{full_ride[0].get_endtime().strftime('%c')}}</td>
                   <td>{{full_ride[0].get_num()}}</td>
                   <td></td>
                 </tr>
+              {% if full_ride[1]|length != 0 %}
               <tr style="background-color: sandybrown">
                 <th colspan="7">Incoming Requests: Others have requested to join your ride!</th>
               </tr>
@@ -77,26 +84,34 @@
                 <th>Current Riders</th>
                 <th>Origin</th>
                 <th>Destination</th>
-                <th>Start time</th>
-                <th>End time</th>
+                <th>Earliest Departure Time</th>
+                <th>Latest Departure Time</th>
                 <th># of Riders</th>
                 <th></th>
               </tr>
               {% for incoming_ride in full_ride[1] %}
               <tr>
-                <td>{{''.join(incoming_ride.get_riders())}}</td>
+                <td>{{', '.join(incoming_ride.get_riders())}}</td>
                 <td>{{incoming_ride.get_origin()}}</td>
                 <td>{{incoming_ride.get_dest()}}</td>
                 <td>{{incoming_ride.get_starttime()}}</td>
                 <td>{{incoming_ride.get_endtime()}}</td>
                 <td>{{incoming_ride.get_num()}}</td>
                 <td>
-                  <form action="">
+                  <form action="acceptrequest" method="get">
+                    <input type = "hidden" name = "joining_rideid" value = {{full_ride[0].get_rideid()}} />
+                    <input type = "hidden" name = "sending_rideid" value = {{incoming_ride.get_rideid()}} />
                     <input type="submit" value="ACCEPT" style="background-color:lawngreen">
                   </form>
                 </td>
               </tr>
               {% endfor %}
+              {% else %}
+              <tr style="background-color: sandybrown">
+                <th colspan="7">Incoming Requests: (None)</th>
+              </tr>
+              {% endif %}
+              {% if full_ride[2]|length != 0 %}
               <tr style="background-color:sandybrown">
                 <th colspan="7">Outgoing Requests: You have requested to join these rides!</th>
               </tr>
@@ -104,28 +119,38 @@
                 <th>Current Riders</th>
                 <th>Origin</th>
                 <th>Destination</th>
-                <th>Start time</th>
-                <th>End time</th>
+                <th>Earliest Departure Time</th>
+                <th>Latest Departure Time</th>
                 <th># of Riders</th>
                 <th></th>
               </tr>
-              {% for incoming_ride in full_ride[2] %}
+              {% for outgoing_ride in full_ride[2] %}
               <tr>
-                <td>{{''.join(incoming_ride.get_riders())}}</td>
-                <td>{{incoming_ride.get_origin()}}</td>
-                <td>{{incoming_ride.get_dest()}}</td>
-                <td>{{incoming_ride.get_starttime()}}</td>
-                <td>{{incoming_ride.get_endtime()}}</td>
-                <td>{{incoming_ride.get_num()}}</td>
+                <td>{{''.join(outgoing_ride.get_riders())}}</td>
+                <td>{{outgoing_ride.get_origin()}}</td>
+                <td>{{outgoing_ride.get_dest()}}</td>
+                <td>{{outgoing_ride.get_starttime()}}</td>
+                <td>{{outgoing_ride.get_endtime()}}</td>
+                <td>{{outgoing_ride.get_num()}}</td>
                 <td>
-                  <form action="">
+                  <form action="cancelrequest" method="get">
+                    <input type = "hidden" name = "joining_rideid" value = {{outgoing_ride.get_rideid()}} />
+                    <input type = "hidden" name = "sending_rideid" value = {{full_ride[0].get_rideid()}} />
                     <input type="submit" value="CANCEL" style="background-color:tomato">
                   </form>
                 </td>
               </tr>
               {% endfor %}
+              {% else %}
+              <tr style="background-color:sandybrown">
+                <th colspan="7">Outgoing Requests: (None)</th>
+              </tr>
+              {% endif %}
             </tbody>
           </table>
+          <br>
+          <br>
+          <br>
           <br>
         </div>
         {% endfor %}

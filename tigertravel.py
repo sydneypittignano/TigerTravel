@@ -10,15 +10,15 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
-from olddatabase import get_rides, add_ride, from_netid_get_rides
-from olddatabase import check_student, from_rideid_get_ride
+from database import get_rides, add_ride, from_netid_get_rides
+from database import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride
 from keys import APP_SECRET_KEY
 
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='.')
-# app.secret_key = os.environ['APP_SECRET_KEY']
-app.secret_key = APP_SECRET_KEY
+app.secret_key = os.environ['APP_SECRET_KEY']
+# app.secret_key = APP_SECRET_KEY
 import auth
 
 #-----------------------------------------------------------------------
@@ -125,7 +125,7 @@ def account():
 #-----------------------------------------------------------------------
 
 @app.route('/tryrequest', methods=['GET'])
-def tryjoin():
+def tryrequest():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
@@ -135,7 +135,42 @@ def tryjoin():
 
     for ride in rides:
         if joining_ride.hasOverlapWith(ride):
-            print('Yay')
+            send_request(joining_rideid, ride.get_rideid())
+            break
         else:
             print('Nay')
     return redirect(url_for('browse'))
+
+#-----------------------------------------------------------------------
+
+@app.route('/cancelrequest', methods=['GET'])
+def cancelrequest():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    joining_rideid = request.args.get('joining_rideid')
+    sending_rideid = request.args.get('sending_rideid')
+    cancel_request(joining_rideid, sending_rideid)
+    return redirect(url_for('account'))
+
+#-----------------------------------------------------------------------
+@app.route('/acceptrequest', methods=['GET'])
+def acceptrequest():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    joining_rideid = request.args.get('joining_rideid')
+    sending_rideid = request.args.get('sending_rideid')
+
+    accept_request(joining_rideid, sending_rideid)
+    return redirect(url_for('account'))
+
+#-----------------------------------------------------------------------
+@app.route('/deleteride', methods=['GET'])
+def delteride():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    rideid = request.args.get('rideid')
+    delete_ride(rideid)
+    return redirect(url_for('account'))

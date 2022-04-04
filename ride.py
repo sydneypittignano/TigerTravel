@@ -62,7 +62,8 @@ class Ride:
        otherstart = other.get_starttime()
        otherend = other.get_endtime()
        lateststart = max(selfstart, otherstart)
-       return True
+       earliestend = min(selfend, otherend)
+       return (lateststart <= earliestend)
 
 #-----------------------------------------------------------------------
  
