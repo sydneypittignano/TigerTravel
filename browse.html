@@ -96,7 +96,7 @@
                 <td>{{rides[i].get_endtime()}}</td>
                 <td>{{rides[i].get_num()}}</td>
                 <td>
-                  <form action="tryjoin" method="get">
+                  <form action="tryrequest" method="get">
                     <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
                     <input type="submit" value="Request to Join">
                   </form>

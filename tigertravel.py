@@ -124,7 +124,7 @@ def account():
 
 #-----------------------------------------------------------------------
 
-@app.route('/tryjoin', methods=['GET'])
+@app.route('/tryrequest', methods=['GET'])
 def tryjoin():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
