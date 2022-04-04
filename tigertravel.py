@@ -11,7 +11,7 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from olddatabase import get_rides, add_ride, from_netid_get_rides
-from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride
+from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
 from keys import APP_SECRET_KEY
 
 #-----------------------------------------------------------------------
@@ -166,11 +166,24 @@ def acceptrequest():
     return redirect(url_for('account'))
 
 #-----------------------------------------------------------------------
+
 @app.route('/deleteride', methods=['GET'])
-def delteride():
+def deleteride():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
     rideid = request.args.get('rideid')
     delete_ride(rideid)
+    return redirect(url_for('account'))
+
+#-----------------------------------------------------------------------
+@app.route('/declinerequest', methods=['GET'])
+def declinerequest():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    joining_rideid = request.args.get('joining_rideid')
+    sending_rideid = request.args.get('sending_rideid')
+
+    decline_request(joining_rideid, sending_rideid)
     return redirect(url_for('account'))

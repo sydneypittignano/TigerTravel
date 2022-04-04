@@ -50,7 +50,7 @@
           <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
             <tbody>
                 <tr style="background-color: sandybrown">
-                  <th colspan="5" align-right>My Ride</th>
+                  <th colspan="6" align-right>My Ride from {{full_ride[0].get_origin()}} to {{full_ride[0].get_dest()}}</th>
                   <th colspan="2" class="text-end">
                     <form action="deleteride" method="get">
                       <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
@@ -66,6 +66,7 @@
                     <th>Latest Departure Time</th>
                     <th># of Riders</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 <tr>
                   <td>{{', '.join(full_ride[0].get_riders())}}</td>
@@ -75,10 +76,11 @@
                   <td>{{full_ride[0].get_endtime().strftime('%c')}}</td>
                   <td>{{full_ride[0].get_num()}}</td>
                   <td></td>
+                  <td></td>
                 </tr>
               {% if full_ride[1]|length != 0 %}
               <tr style="background-color: sandybrown">
-                <th colspan="7">Incoming Requests: Others have requested to join your ride!</th>
+                <th colspan="8">Incoming requests: Others have requested to join your ride!</th>
               </tr>
               <tr>
                 <th>Current Riders</th>
@@ -87,6 +89,7 @@
                 <th>Earliest Departure Time</th>
                 <th>Latest Departure Time</th>
                 <th># of Riders</th>
+                <th></th>
                 <th></th>
               </tr>
               {% for incoming_ride in full_ride[1] %}
@@ -104,16 +107,23 @@
                     <input type="submit" value="ACCEPT" style="background-color:lawngreen">
                   </form>
                 </td>
+                <td>
+                  <form action="declinerequest" method="get">
+                    <input type = "hidden" name = "joining_rideid" value = {{full_ride[0].get_rideid()}} />
+                    <input type = "hidden" name = "sending_rideid" value = {{incoming_ride.get_rideid()}} />
+                    <input type="submit" value="DECLINE" style="background-color:tomato">
+                  </form>
+                </td>
               </tr>
               {% endfor %}
               {% else %}
               <tr style="background-color: sandybrown">
-                <th colspan="7">Incoming Requests: (None)</th>
+                <th colspan="8">Incoming requests to join this ride: (None)</th>
               </tr>
               {% endif %}
               {% if full_ride[2]|length != 0 %}
               <tr style="background-color:sandybrown">
-                <th colspan="7">Outgoing Requests: You have requested to join these rides!</th>
+                <th colspan="8">Outgoing requests: You have requested to join these rides!</th>
               </tr>
               <tr>
                 <th>Current Riders</th>
@@ -122,6 +132,7 @@
                 <th>Earliest Departure Time</th>
                 <th>Latest Departure Time</th>
                 <th># of Riders</th>
+                <th></th>
                 <th></th>
               </tr>
               {% for outgoing_ride in full_ride[2] %}
@@ -143,7 +154,7 @@
               {% endfor %}
               {% else %}
               <tr style="background-color:sandybrown">
-                <th colspan="7">Outgoing Requests: (None)</th>
+                <th colspan="8">Outgoing requests to join another ride: (None)</th>
               </tr>
               {% endif %}
             </tbody>
