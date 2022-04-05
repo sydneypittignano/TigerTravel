@@ -7,8 +7,7 @@
         <th>Current Riders</th>
         <th>Origin</th>
         <th>Destination</th>
-        <th>Earliest Departure Time</th>
-        <th>Latest Departure Time</th>
+        <th>Departure Time</th>
         <th># of Riders</th>
         <th></th>
     </tr>
@@ -17,8 +16,22 @@
     <td>{{', '.join(rides[i].get_riders())}}</td>
     <td>{{rides[i].get_origin()}}</td>
     <td>{{rides[i].get_dest()}}</td>
-    <td>{{rides[i].get_starttime().strftime('%c')}}</td>
-    <td>{{rides[i].get_endtime().strftime('%c')}}</td>
+
+
+    {% if  rides[i].get_starttime().date() == rides[i].get_endtime().date() %}
+    <td>
+        {{rides[i].get_starttime().strftime('%A')}}, {{rides[i].get_starttime().strftime('%B')}} {{rides[i].get_starttime().strftime('%d')}} between
+        {{rides[i].get_starttime().strftime('%I')}}:{{rides[i].get_starttime().strftime('%M')}} {{rides[i].get_starttime().strftime('%p')}} and {{rides[i].get_endtime().strftime('%I')}}:{{rides[i].get_endtime().strftime('%M')}} {{rides[i].get_endtime().strftime('%p')}}        
+    </td>
+    {% else %}
+    <td>
+        Between {{rides[i].get_starttime().strftime('%A')}}, {{rides[i].get_starttime().strftime('%B')}} {{rides[i].get_starttime().strftime('%d')}} at 
+        {{rides[i].get_starttime().strftime('%I')}}:{{rides[i].get_starttime().strftime('%M')}} {{rides[i].get_starttime().strftime('%p')}} and 
+        {{rides[i].get_endtime().strftime('%A')}}, {{rides[i].get_endtime().strftime('%B')}} {{rides[i].get_endtime().strftime('%d')}} at 
+        {{rides[i].get_endtime().strftime('%I')}}:{{rides[i].get_endtime().strftime('%M')}} {{rides[i].get_endtime().strftime('%p')}}
+    </td>
+    {% endif %}
+
     <td>{{rides[i].get_num()}}</td>
     {% if my_netid in rides[i].get_riders() %}
     <td><i>My Ride</i></td>

@@ -65,8 +65,7 @@
                     <th>Current Riders</th>
                     <th>Origin</th>
                     <th>Destination</th>
-                    <th>Earliest Departure Time</th>
-                    <th>Latest Departure Time</th>
+                    <th>Departure Time</th>
                     <th># of Riders</th>
                     <th></th>
                     <th></th>
@@ -75,8 +74,22 @@
                   <td>{{', '.join(full_ride[0].get_riders())}}</td>
                   <td>{{full_ride[0].get_origin()}}</td>
                   <td>{{full_ride[0].get_dest()}}</td>
-                  <td>{{full_ride[0].get_starttime().strftime('%c')}}</td>
-                  <td>{{full_ride[0].get_endtime().strftime('%c')}}</td>
+
+
+                  {% if  full_ride[0].get_starttime().date() == full_ride[0].get_endtime().date() %}
+                  <td>
+                      {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} between
+                      {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}        
+                  </td>
+                  {% else %}
+                  <td>
+                      Between {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} at 
+                      {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and 
+                      {{full_ride[0].get_endtime().strftime('%A')}}, {{full_ride[0].get_endtime().strftime('%B')}} {{full_ride[0].get_endtime().strftime('%d')}} at 
+                      {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}
+                  </td>
+                  {% endif %}
+
                   <td>{{full_ride[0].get_num()}}</td>
                   <td></td>
                   <td></td>
@@ -89,8 +102,7 @@
                 <th>Current Riders</th>
                 <th>Origin</th>
                 <th>Destination</th>
-                <th>Earliest Departure Time</th>
-                <th>Latest Departure Time</th>
+                <th>Departure Time</th>
                 <th># of Riders</th>
                 <th></th>
                 <th></th>
@@ -100,8 +112,21 @@
                 <td>{{', '.join(incoming_ride.get_riders())}}</td>
                 <td>{{incoming_ride.get_origin()}}</td>
                 <td>{{incoming_ride.get_dest()}}</td>
-                <td>{{incoming_ride.get_starttime()}}</td>
-                <td>{{incoming_ride.get_endtime()}}</td>
+
+                {% if  incoming_ride.get_starttime().date() == incoming_ride.get_endtime().date() %}
+                <td>
+                    {{incoming_ride.get_starttime().strftime('%A')}}, {{incoming_ride.get_starttime().strftime('%B')}} {{incoming_ride.get_starttime().strftime('%d')}} between
+                    {{incoming_ride.get_starttime().strftime('%I')}}:{{incoming_ride.get_starttime().strftime('%M')}} {{incoming_ride.get_starttime().strftime('%p')}} and {{incoming_ride.get_endtime().strftime('%I')}}:{{incoming_ride.get_endtime().strftime('%M')}} {{incoming_ride.get_endtime().strftime('%p')}}        
+                </td>
+                {% else %}
+                <td>
+                    Between {{incoming_ride.get_starttime().strftime('%A')}}, {{incoming_ride.get_starttime().strftime('%B')}} {{incoming_ride.get_starttime().strftime('%d')}} at 
+                    {{incoming_ride.get_starttime().strftime('%I')}}:{{incoming_ride.get_starttime().strftime('%M')}} {{incoming_ride.get_starttime().strftime('%p')}} and 
+                    {{incoming_ride.get_endtime().strftime('%A')}}, {{incoming_ride.get_endtime().strftime('%B')}} {{incoming_ride.get_endtime().strftime('%d')}} at 
+                    {{incoming_ride.get_endtime().strftime('%I')}}:{{incoming_ride.get_endtime().strftime('%M')}} {{incoming_ride.get_endtime().strftime('%p')}}
+                </td>
+                {% endif %}
+
                 <td>{{incoming_ride.get_num()}}</td>
                 <td>
                   <form action="acceptrequest" method="get">
@@ -143,8 +168,22 @@
                 <td>{{''.join(outgoing_ride.get_riders())}}</td>
                 <td>{{outgoing_ride.get_origin()}}</td>
                 <td>{{outgoing_ride.get_dest()}}</td>
-                <td>{{outgoing_ride.get_starttime()}}</td>
-                <td>{{outgoing_ride.get_endtime()}}</td>
+
+                {% if  outgoing_ride.get_starttime().date() == outgoing_ride.get_endtime().date() %}
+                <td>
+                    {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} between
+                    {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}        
+                </td>
+                {% else %}
+                <td>
+                    Between {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} at 
+                    {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and 
+                    {{outgoing_ride.get_endtime().strftime('%A')}}, {{outgoing_ride.get_endtime().strftime('%B')}} {{outgoing_ride.get_endtime().strftime('%d')}} at 
+                    {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}
+                </td>
+                {% endif %}
+
+
                 <td>{{outgoing_ride.get_num()}}</td>
                 <td>
                   <form action="cancelrequest" method="get">
