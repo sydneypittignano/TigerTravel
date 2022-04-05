@@ -230,6 +230,9 @@ def delete_ride(rideid):
        DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
+           # ERROR HERE
+           # AND REMOVE ANY REQUESTS SENT/RECEIVED
+
            # delete from rides table
            stmt_str = "DELETE FROM rides WHERE rideid = %s"
            cursor.execute(stmt_str, [rideid])
