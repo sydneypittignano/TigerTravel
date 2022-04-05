@@ -10,15 +10,15 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
-from olddatabase import get_rides, add_ride, from_netid_get_rides
-from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
-from keys import APP_SECRET_KEY
+from database import get_rides, add_ride, from_netid_get_rides
+from database import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
+# from keys import APP_SECRET_KEY
 
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='.')
-# app.secret_key = os.environ['APP_SECRET_KEY']
-app.secret_key = APP_SECRET_KEY
+app.secret_key = os.environ['APP_SECRET_KEY']
+# app.secret_key = APP_SECRET_KEY
 import auth
 
 #-----------------------------------------------------------------------
