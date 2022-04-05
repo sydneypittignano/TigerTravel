@@ -16,9 +16,6 @@ DATABASE_URL = os.environ['DATABASE_URL']
 
 #-----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
-
-
 # returns a list of Ride objects that contain all relevant information
 # about the rides. takes filters as arguments.
 def get_rides(rideid, origin, dest, starttime, endtime):
@@ -38,11 +35,11 @@ def get_rides(rideid, origin, dest, starttime, endtime):
                 filters.append('%'+str(dest)+'%')
                 stmt_str += "AND rides.dest LIKE %s "
             if (starttime is not None) and (starttime != ''):
-                filters.append('%'+str(starttime)+'%')
-                stmt_str += "AND rides.starttime LIKE %s "
+                filters.append(starttime)
+                stmt_str += "AND rides.endtime >= %s "
             if (endtime is not None) and (endtime != ''):
-                filters.append('%'+str(endtime)+'%')
-                stmt_str += "AND rides.endtime LIKE %s "
+                filters.append(endtime)
+                stmt_str += "AND rides.starttime <= %s "
 
             stmt_str += "ORDER BY rides.starttime ASC, "
             stmt_str += "rides.origin ASC;"
@@ -242,6 +239,12 @@ def delete_ride(rideid):
            cursor.execute(stmt_str, [rideid])
 
 #-----------------------------------------------------------------------
+
+def decline_request(joining_rideid, sending_rideid):
+    cancel_request(joining_rideid, sending_rideid)
+
+#-----------------------------------------------------------------------
+
 
 
 # For testing:
