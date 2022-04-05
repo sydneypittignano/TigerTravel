@@ -41,12 +41,15 @@
         </div>
         <br>
 
-        {% if full_rides|length == 0: %}
-            (None)
-        {% else %}
 
-        {% for full_ride in full_rides %}
+
         <div class="container-fluid">
+        {% if full_rides|length == 0: %}
+          <h3 style="color:red"> You don't have any rides yet! Go to "Add Ride" to add your first ride.</h3>
+        {% else %}
+        <h3 style="color:green">{{ msg }}</h3>
+        <br>
+        {% for full_ride in full_rides %}
           <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
             <tbody>
                 <tr style="background-color: sandybrown">
@@ -163,9 +166,9 @@
           <br>
           <br>
           <br>
-        </div>
         {% endfor %}
         {% endif %}
+        </div>
 
         <!-- ======================================================= -->
 

@@ -41,28 +41,57 @@
         <div class="container-fluid">
           <h1>BROWSE RIDES</h1>
           <br>
-          <h3>Filter by:</h3>
+          <h3>Filter by...</h3>
+          <br>
           <form action="browse" method="get">
+            <div class="row">
+              <div class="col-sm-2">
+                <h5>Origin:</h5>
+              </div>
+              <div class="col-sm-2">
+                <h5>Destination:</h5>
+              </div>
+              <div class="col-sm-2">
+                <h5>Rides that leave after:</h5>
+              </div>
+              <div class="col-sm-2">
+                <h5>Rides that leave before:</h5>
+              </div>
+            </div>
             <div class="row">
 
               <div class="col-sm-2">
-                <input type="text" name="origin" placeholder="Origin">
+                <select class="form-select" id="origin">
+                  <option selected></option>
+                  <option>Princeton University</option>
+                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                  <option>Trenton-Mercer Airport (TTN)</option>
+                  <option>Phildelphia International Airport (PHL)</option>
+                  <option>LaGuardia Airport (LGA)</option>
+                  <option>Newark Liberty International Airport (EWR)</option>
+                  <option>John F. Kennedy International Airport (JFK)</option>
+                </select>
               </div>
 
               <div class="col-sm-2">
-                <input type="text" name="dest" placeholder="Destination">
+                <select class="form-select" id="dest">
+                  <option selected></option>
+                  <option>Princeton University</option>
+                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                  <option>Trenton-Mercer Airport (TTN)</option>
+                  <option>Phildelphia International Airport (PHL)</option>
+                  <option>LaGuardia Airport (LGA)</option>
+                  <option>Newark Liberty International Airport (EWR)</option>
+                  <option>John F. Kennedy International Airport (JFK)</option>
+                </select>
               </div>
 
               <div class="col-sm-2">
-                <input type="text" name="starttime" placeholder="I need to leave after...">
+                <input type="text" class="form-control" id="starttime" placeholder="YYYY-MM-DD HH:MM:SS">
               </div>
 
               <div class="col-sm-2">
-                <input type="text" name="endtime" placeholder="I need to leave before...">
-              </div>
-
-              <div class="col-sm-2">
-                <input type="submit" value="GO">
+                <input type="text" class = "form-control" id="endtime" placeholder="YYYY-MM-DD HH:MM:SS">
               </div>
 
             </div>
@@ -72,44 +101,63 @@
 
         <!-- ======================================================= -->
 
-        {% if rides|length == 0: %}
-            (None)
-        {% else %}
-        <div class="container-fluid">
-          <table class="table table-striped">
-            <tbody>
-              <tr>
-                  <th>Current Riders</th>
-                  <th>Origin</th>
-                  <th>Destination</th>
-                  <th>Earliest Departure Time</th>
-                  <th>Latest Departure Time</th>
-                  <th># of Riders</th>
-                  <th></th>
-              </tr>
-              {% for i in range(0, rides|length): %}
-              <tr>
-                <td>{{', '.join(rides[i].get_riders())}}</td>
-                <td>{{rides[i].get_origin()}}</td>
-                <td>{{rides[i].get_dest()}}</td>
-                <td>{{rides[i].get_starttime()}}</td>
-                <td>{{rides[i].get_endtime()}}</td>
-                <td>{{rides[i].get_num()}}</td>
-                {% if my_netid in rides[i].get_riders() %}
-                <td><i>My Ride</i></td>
-                {% else %}
-                <td>
-                  <form action="tryrequest" method="get">
-                    <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
-                    <input type="submit" value="Request to Join">
-                  </form>
-                </td>
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          {% endif %}
-        </div>
+        <div class="container-fluid" id="browseresults"></div>
+
+        <script src=
+        "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+          </script>
+
+          <script>
+
+            'use strict';
+
+            function handleResponse(response)
+            {
+                $('#browseresults').html(response);
+            }
+
+            let request = null;
+
+            function getResults()
+            {
+                let origin = $('#origin').val();
+                let dest = $('#dest').val();
+                let starttime = $('#starttime').val();
+                let endtime = $('#endtime').val();
+                origin = encodeURIComponent(origin);
+                dest = encodeURIComponent(dest);
+                starttime = encodeURIComponent(starttime);
+                endtime = encodeURIComponent(endtime);
+
+                let url = '/browseresults?origin=' + origin;
+                url += '&dest=' + dest;
+                url += '&starttime=' + starttime;
+                url += '&endtime=' + endtime;
+
+                if (request != null)
+                  request.abort();
+
+                request = $.ajax(
+                  {
+                      type: 'GET',
+                      url: url,
+                      success: handleResponse
+                  }
+                );
+            }
+
+            function setup()
+            {
+                getResults()
+                $('#origin').on('input', getResults);
+                $('#dest').on('input', getResults);
+                $('#starttime').on('input', getResults);
+                $('#endtime').on('input', getResults);
+            }
+
+            $('document').ready(setup);
+
+          </script>
+
     </body>
 </html>

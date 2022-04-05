@@ -39,33 +39,82 @@
         <div class="container-fluid">
           <h1>ADD RIDE</h1>
           <br>
-          <form action="add" method="get">
+          <h3 style="color:red">{{ msg }}</h3>
+          <br>
+          {% if joining_ride != "" %}
+          <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
+            <tbody>
+                <tr style="background-color: sandybrown">
+                  <th colspan="6" align-right>Ride from {{joining_ride.get_origin()}} to {{joining_ride.get_dest()}}</th>
+                </tr>
+                <tr>
+                    <th>Current Riders</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Earliest Departure Time</th>
+                    <th>Latest Departure Time</th>
+                    <th># of Riders</th>
+                </tr>
+                <tr>
+                  <td>{{', '.join(joining_ride.get_riders())}}</td>
+                  <td>{{joining_ride.get_origin()}}</td>
+                  <td>{{joining_ride.get_dest()}}</td>
+                  <td>{{joining_ride.get_starttime().strftime('%c')}}</td>
+                  <td>{{joining_ride.get_endtime().strftime('%c')}}</td>
+                  <td>{{joining_ride.get_num()}}</td>
+                </tr>
+            </tbody>
+          </table>
+          <br>
+          <h3 style="color:red">To do this, create a ride below! Then you can request to join it.</h3>
+          <br>
+          <br>
+          {% endif %}
+          <form action="addride" method="get">
             <div class="row">
               <div class="col-sm-2">
-                I'm leaving from:
+                <h5>I'm leaving from:</h5>
               </div>
               <div class="col-sm-2">
-                I'm going to:
+                <h5>I'm going to:</h5>
               </div>
               <div class="col-sm-2">
-                The earliest I would be willing to leave is:
+                <h5>The earliest I would be willing to leave is:</h5>
               </div>
               <div class="col-sm-2">
-                The latest I would be willing to leave is:
+                <h5>The latest I would be willing to leave is:</h5>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-2">
-                <input type="text" class = "form-control" name="origin" placeholder="Origin">
+                <select class="form-select" name="origin">
+                  <option selected></option>
+                  <option>Princeton University</option>
+                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                  <option>Trenton-Mercer Airport (TTN)</option>
+                  <option>Phildelphia International Airport (PHL)</option>
+                  <option>LaGuardia Airport (LGA)</option>
+                  <option>Newark Liberty International Airport (EWR)</option>
+                  <option>John F. Kennedy International Airport (JFK)</option>
+                </select>
               </div>
               <div class="col-sm-2">
-                <input type="text" class="form-control" name="dest" placeholder="Destination">
+                <select class="form-select" name="dest">
+                  <option selected></option>
+                  <option>Princeton University</option>
+                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                  <option>Trenton-Mercer Airport (TTN)</option>
+                  <option>Phildelphia International Airport (PHL)</option>
+                  <option>LaGuardia Airport (LGA)</option>
+                  <option>Newark Liberty International Airport (EWR)</option>
+                  <option>John F. Kennedy International Airport (JFK)</option>
+                </select>
               </div>
               <div class="col-sm-2">
-                <input type="text" name="starttime" placeholder="Start time" class="form-control">
+                <input type="text" name="starttime" placeholder="YYYY-MM-DD HH:MM:SS" class="form-control">
               </div>
               <div class="col-sm-2">
-                <input type="text" name="endtime" placeholder="End time" class="form-control">
+                <input type="text" name="endtime" placeholder="YYYY-MM-DD HH:MM:SS" class="form-control">
               </div>
               <div class="col-sm-2">
                 <input type="submit" value="GO">

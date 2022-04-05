@@ -36,6 +36,27 @@ def index():
 @app.route('/add', methods=['GET'])
 def add():
 
+    msg = request.args.get('msg')
+    if msg is None:
+        msg = ''
+
+    joining_rideid = request.args.get('joining_rideid')
+    joining_ride = ""
+    if joining_rideid is not None:
+        joining_ride = from_rideid_get_ride(joining_rideid)
+        msg = 'You want to join this ride:'
+
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+    
+    html = render_template('add.html', msg=msg, joining_ride = joining_ride)
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/addride', methods=['GET'])
+def addride():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
@@ -45,18 +66,34 @@ def add():
     endtime = request.args.get('endtime')
 
     # including this for now, to stop lots of inserts
-    if (origin is not None):
+    if (origin is not None and dest is not None and starttime is not None and endtime is not None
+    and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest
+    and starttime <= endtime):
         add_ride(my_netid, origin, dest, starttime, endtime)
-    
-    html = render_template('add.html')
-    response = make_response(html)
-    return response
+        return redirect(url_for('account', msg="Ride successfully added!"))
+    else:
+        return redirect(url_for('add', msg="Ride not added!"))
 
 #-----------------------------------------------------------------------
 
 @app.route('/browse', methods=['GET'])
 def browse():
 
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    msg = request.args.get('msg')
+    if msg is None:
+        msg = ''
+
+    html = render_template('browse.html', msg=msg)
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/browseresults', methods=['GET'])
+def browseresults():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
@@ -67,8 +104,7 @@ def browse():
 
     # array of Ride objects
     rides = get_rides(None, origin, dest, starttime, endtime)
-
-    html = render_template('browse.html', rides=rides, my_netid=my_netid)
+    html = render_template('browseresults.html', rides=rides, my_netid=my_netid)
     response = make_response(html)
     return response
 
@@ -105,6 +141,10 @@ def account():
     # Make sure the student is in our database
     check_student(my_netid)
 
+    msg = request.args.get('msg')
+    if msg is None:
+        msg = ''
+
     rides = from_netid_get_rides(my_netid)
     
     full_rides = []
@@ -118,7 +158,7 @@ def account():
         full_ride = [ride, incoming, outgoing]
         full_rides.append(full_ride)
 
-    html = render_template('account.html', full_rides=full_rides)
+    html = render_template('account.html', full_rides=full_rides, msg=msg)
     response = make_response(html)
     return response
 
@@ -134,12 +174,11 @@ def tryrequest():
     rides = from_netid_get_rides(my_netid)
 
     for ride in rides:
-        if joining_ride.hasOverlapWith(ride):
+        if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
             send_request(joining_rideid, ride.get_rideid())
             return redirect(url_for('account'))
-        else:
-            print('Nay')
-            return redirect(url_for('browse'))
+    
+    return redirect(url_for('add', joining_rideid=joining_rideid))
 
 #-----------------------------------------------------------------------
 

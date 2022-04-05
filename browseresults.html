@@ -1,0 +1,37 @@
+{% if rides|length == 0: %}
+<h3 style="color:red">No rides match your filtering criteria!</h3>
+{% else %}
+<table class="table table-striped">
+<tbody>
+    <tr>
+        <th>Current Riders</th>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Earliest Departure Time</th>
+        <th>Latest Departure Time</th>
+        <th># of Riders</th>
+        <th></th>
+    </tr>
+    {% for i in range(0, rides|length): %}
+    <tr>
+    <td>{{', '.join(rides[i].get_riders())}}</td>
+    <td>{{rides[i].get_origin()}}</td>
+    <td>{{rides[i].get_dest()}}</td>
+    <td>{{rides[i].get_starttime().strftime('%c')}}</td>
+    <td>{{rides[i].get_endtime().strftime('%c')}}</td>
+    <td>{{rides[i].get_num()}}</td>
+    {% if my_netid in rides[i].get_riders() %}
+    <td><i>My Ride</i></td>
+    {% else %}
+    <td>
+        <form action="tryrequest" method="get">
+        <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
+        <input type="submit" value="Request to Join">
+        </form>
+    </td>
+    {% endif %}
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endif %}
