@@ -95,12 +95,16 @@
                 <td>{{rides[i].get_starttime()}}</td>
                 <td>{{rides[i].get_endtime()}}</td>
                 <td>{{rides[i].get_num()}}</td>
+                {% if my_netid in rides[i].get_riders() %}
+                <td><i>My Ride</i></td>
+                {% else %}
                 <td>
                   <form action="tryrequest" method="get">
                     <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
                     <input type="submit" value="Request to Join">
                   </form>
                 </td>
+                {% endif %}
               </tr>
               {% endfor %}
             </tbody>

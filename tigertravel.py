@@ -68,7 +68,7 @@ def browse():
     # array of Ride objects
     rides = get_rides(None, origin, dest, starttime, endtime)
 
-    html = render_template('browse.html', rides=rides)
+    html = render_template('browse.html', rides=rides, my_netid=my_netid)
     response = make_response(html)
     return response
 
