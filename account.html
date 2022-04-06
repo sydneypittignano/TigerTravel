@@ -165,7 +165,7 @@
               </tr>
               {% for outgoing_ride in full_ride[2] %}
               <tr>
-                <td>{{''.join(outgoing_ride.get_riders())}}</td>
+                <td>{{', '.join(outgoing_ride.get_riders())}}</td>
                 <td>{{outgoing_ride.get_origin()}}</td>
                 <td>{{outgoing_ride.get_dest()}}</td>
 
