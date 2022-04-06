@@ -65,14 +65,15 @@ def addride():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
 
+    print(origin)
+    print(dest)
+    print(starttime)
+    print(endtime)
+
     # including this for now, to stop lots of inserts
     if (origin is not None and dest is not None and starttime is not None and endtime is not None
     and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest
     and starttime <= endtime):
-        print(origin)
-        print(dest)
-        print(starttime)
-        print(endtime)
         add_ride(my_netid, origin, dest, starttime, endtime)
         return redirect(url_for('account', msg="Ride successfully added!"))
     else:
