@@ -176,7 +176,7 @@ def tryrequest():
     for ride in rides:
         if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
             send_request(joining_rideid, ride.get_rideid())
-            return redirect(url_for('account'))
+            return redirect(url_for('account', msg="Request successfully sent!"))
     
     return redirect(url_for('add', joining_rideid=joining_rideid))
 

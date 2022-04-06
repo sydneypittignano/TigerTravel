@@ -216,6 +216,8 @@
                 dest = encodeURIComponent(dest);
                 starttime = encodeURIComponent(starttime);
                 endtime = encodeURIComponent(endtime);
+                console.log(starttime)
+                console.log(endtime)
 
                 let url = '/browseresults?origin=' + origin;
                 url += '&dest=' + dest;
@@ -239,7 +241,7 @@
                 getResults()
                 $('#origin').on('input', getResults);
                 $('#dest').on('input', getResults);
-                document.body.addEventListener('click', getResults); 
+                document.body.addEventListener('click', getResults);
             }
 
             $('document').ready(setup);
