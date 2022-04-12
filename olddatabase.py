@@ -158,6 +158,8 @@ def add_ride(netid, origin, dest, starttime, endtime):
            cursor.execute(stmt_str, [rideid, netid])
 
            from_netid_increment_count(cursor, netid)
+
+           return rideid
  
 #-----------------------------------------------------------------------
 

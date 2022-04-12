@@ -10,15 +10,16 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
-from database import get_rides, add_ride, from_netid_get_rides
-from database import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
-# from keys import APP_SECRET_KEY
+from olddatabase import get_rides, add_ride, from_netid_get_rides
+from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
+from ride import Ride
+from keys import APP_SECRET_KEY
 
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='.')
-app.secret_key = os.environ['APP_SECRET_KEY']
-# app.secret_key = APP_SECRET_KEY
+#app.secret_key = os.environ['APP_SECRET_KEY']
+app.secret_key = APP_SECRET_KEY
 import auth
 
 #-----------------------------------------------------------------------
@@ -39,6 +40,10 @@ def add():
     msg = request.args.get('msg')
     if msg is None:
         msg = ''
+    
+    msg2 = request.args.get('msg2')
+    if msg2 is None:
+        msg2 = ''
 
     joining_rideid = request.args.get('joining_rideid')
     joining_ride = ""
@@ -49,7 +54,7 @@ def add():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
     
-    html = render_template('add.html', msg=msg, joining_ride = joining_ride)
+    html = render_template('add.html', msg=msg, joining_ride = joining_ride, msg2=msg2)
     response = make_response(html)
     return response
 
@@ -65,11 +70,6 @@ def addride():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
 
-    print(origin)
-    print(dest)
-    print(starttime)
-    print(endtime)
-
     # including this for now, to stop lots of inserts
     if (origin is not None and dest is not None and starttime is not None and endtime is not None
     and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest):
@@ -77,6 +77,35 @@ def addride():
         return redirect(url_for('account', msg="Ride successfully added!"))
     else:
         return redirect(url_for('add', msg="Ride not added!"))
+
+#-----------------------------------------------------------------------
+@app.route('/addandjoin', methods=['GET'])
+def addandjoin():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    origin = request.args.get('origin')
+    dest = request.args.get('dest')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+
+    # including this for now, to stop lots of inserts
+    if (origin is not None and dest is not None and starttime is not None and endtime is not None
+    and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest):
+        my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
+        my_ride = from_rideid_get_ride(my_rideid)
+
+        joining_rideid = request.args.get('joining_rideid')
+        joining_ride = from_rideid_get_ride(joining_rideid)
+
+        if joining_ride.hasOverlapWith(my_ride) and joining_ride.matchesRouteOf(my_ride):
+            send_request(joining_rideid, my_rideid)
+            return redirect(url_for('account', msg="Request successfully sent!"))
+        else:
+            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="The ride you just tried to add is not compatible with the following ride."))
+    else:
+        return redirect(url_for('add', msg="Ride not added!"))
+
 
 #-----------------------------------------------------------------------
 
@@ -182,7 +211,7 @@ def tryrequest():
             send_request(joining_rideid, ride.get_rideid())
             return redirect(url_for('account', msg="Request successfully sent!"))
     
-    return redirect(url_for('add', joining_rideid=joining_rideid))
+    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your current rides are not compatible with this one."))
 
 #-----------------------------------------------------------------------
 

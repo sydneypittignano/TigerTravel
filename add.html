@@ -107,11 +107,15 @@
             </tbody>
           </table>
           <br>
-          <h3 style="color:red">To do this, create a ride below! Then you can request to join it.</h3>
+          <h3 style="color:red">{{msg2}}</h3>
+          <h3 style="color:red">Add a compatible ride below and press the "ADD & JOIN" button.</h3>
           <br>
           <br>
-          {% endif %}
+          <form action="addandjoin" method="get">
+            <input type="hidden" name="joining_rideid" id="joining_rideid" value="{{joining_ride.get_rideid()}}">
+          {% else %}
           <form action="addride" method="get">
+            {% endif %}
             <input type="hidden" name="starttime" id="starttime">
             <input type="hidden" name="endtime" id="endtime">
             <div class="row">
@@ -199,9 +203,15 @@
                   </span>
                 </div>
               </div>
+              {% if joining_ride != "" %}
               <div class="col-sm-2">
-                <input type="submit" value="GO">
+                <input type="submit" value="ADD & JOIN">
               </div>
+              {% else %}
+              <div class="col-sm-2">
+                <input type="submit" value="ADD">
+              </div>
+              {% endif %}
               </div>
          </form>
         </div>

@@ -72,12 +72,11 @@ ALTER TABLE public.students OWNER TO ttadmins;
 --
 
 COPY public.riders (netid, rideid) FROM stdin;
-cpm6	cpm6-1
-jbob	jbob-1
-bbob	bbob-1
-manyaz	manyaz-1
-sydneyp	sydneyp-1
-otravis	otravis-1
+sydneyp	sydneyp-2
+otravis	otravis-3
+otravis	otravis-4
+otravis	otravis-5
+otravis	otravis-6
 \.
 
 
@@ -86,12 +85,11 @@ otravis	otravis-1
 --
 
 COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
-LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1	manyaz-1	{}	{}
-Princeton	JFK	2020-06-24 12:00:00	2020-06-24 14:00:00	1	sydneyp-1	{}	{}
-Forbes	Dinky	2022-03-23 10:00:00	2022-03-23 10:01:00	1	cpm6-1	{}	{}
-Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1	jbob-1	{}	{}
-Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1	bbob-1	{}	{}
-Princeton	JFK	2020-06-24 10:00:00	2020-06-24 13:00:00	1	otravis-1	{}	{}
+Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-16 01:00:00	2022-04-17 01:00:00	1	sydneyp-2	{}	{}
+Princeton University	Trenton-Mercer Airport (TTN)	2022-04-17 01:00:00	2022-04-17 03:00:00	1	otravis-3	{}	{}
+LaGuardia Airport (LGA)	John F. Kennedy International Airport (JFK)	2022-04-30 16:30:00	2022-04-30 20:30:00	1	otravis-4	{}	{}
+Trenton-Mercer Airport (TTN)	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-28 14:30:00	2022-04-28 16:30:00	1	otravis-5	{}	{}
+LaGuardia Airport (LGA)	John F. Kennedy International Airport (JFK)	2022-04-25 19:15:00	2022-04-25 22:15:00	1	otravis-6	{}	{}
 \.
 
 
@@ -100,12 +98,8 @@ Princeton	JFK	2020-06-24 10:00:00	2020-06-24 13:00:00	1	otravis-1	{}	{}
 --
 
 COPY public.students (netid, firstname, lastname, email, phone, strikes, count) FROM stdin;
-sydneyp	Sydney	Pittignano	sydneyp@princeton.edu	(203)-914-7848	0	1
-cpm6					0	1
-manyaz					0	1
-bbob					0	1
-jbob					0	1
-otravis					0	1
+sydneyp					0	2
+otravis					0	6
 \.
 
 
