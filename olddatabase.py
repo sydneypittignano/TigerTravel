@@ -155,9 +155,9 @@ def add_ride(netid, origin, dest, starttime, endtime):
  
            cursor.execute(stmt_str, info)
  
-           stmt_str = "INSERT INTO riders (rideid, netid) VALUES (%s, %s);"
+           stmt_str = "INSERT INTO riders (rideid, netid, starttime, endtime) VALUES (%s, %s, %s, %s);"
           
-           cursor.execute(stmt_str, [rideid, netid])
+           cursor.execute(stmt_str, [rideid, netid, starttime, endtime])
 
            from_netid_increment_count(cursor, netid)
 

@@ -69,7 +69,7 @@ class Ride:
        if (self.get_dest() != other.get_dest()) or (self.get_origin() != other.get_origin()):
            return False
        return True
-
+       
 #-----------------------------------------------------------------------
  
 def _test():

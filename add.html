@@ -92,23 +92,33 @@
                     <th>Current Riders</th>
                     <th>Origin</th>
                     <th>Destination</th>
-                    <th>Earliest Departure Time</th>
-                    <th>Latest Departure Time</th>
+                    <th>Departure Time</th>
                     <th># of Riders</th>
                 </tr>
                 <tr>
                   <td>{{', '.join(joining_ride.get_riders())}}</td>
                   <td>{{joining_ride.get_origin()}}</td>
                   <td>{{joining_ride.get_dest()}}</td>
-                  <td>{{joining_ride.get_starttime().strftime('%c')}}</td>
-                  <td>{{joining_ride.get_endtime().strftime('%c')}}</td>
+                  {% if  joining_ride.get_starttime().date() == joining_ride.get_endtime().date() %}
+                  <td>
+                      {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} between
+                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}        
+                  </td>
+                  {% else %}
+                  <td>
+                      Between {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} at 
+                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and 
+                      {{joining_ride.get_endtime().strftime('%A')}}, {{joining_ride.get_endtime().strftime('%B')}} {{joining_ride.get_endtime().strftime('%d')}} at 
+                      {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}
+                  </td>
+                  {% endif %}
                   <td>{{joining_ride.get_num()}}</td>
                 </tr>
             </tbody>
           </table>
           <br>
           <h3 style="color:red">{{msg2}}</h3>
-          <h3 style="color:red">Add a compatible ride below and press the "ADD & JOIN" button.</h3>
+          <h3 style="color:red">Add a compatible ride below and press the "ADD & REQUEST" button.</h3>
           <br>
           <br>
           <form action="addandjoin" method="get">
@@ -205,7 +215,7 @@
               </div>
               {% if joining_ride != "" %}
               <div class="col-sm-2">
-                <input type="submit" value="ADD & JOIN">
+                <input type="submit" value="ADD & REQUEST">
               </div>
               {% else %}
               <div class="col-sm-2">

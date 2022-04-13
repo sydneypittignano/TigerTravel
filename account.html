@@ -143,12 +143,12 @@
               {% endfor %}
               {% else %}
               <tr style="background-color: sandybrown">
-                <th colspan="8">Incoming requests to join this ride: (None)</th>
+                <th colspan="8">Nobody has requested to join your ride.</th>
               </tr>
               {% endif %}
               {% if full_ride[2]|length != 0 %}
               <tr style="background-color:sandybrown">
-                <th colspan="8">Outgoing requests: You have requested to join these rides!</th>
+                <th colspan="8">You have requested to join the following rides:</th>
               </tr>
               <tr>
                 <th>Current Riders</th>
@@ -156,8 +156,6 @@
                 <th>Destination</th>
                 <th>Departure Time</th>
                 <th># of Riders</th>
-                <th></th>
-                <th></th>
               </tr>
               {% for outgoing_ride in full_ride[2] %}
               <tr>
@@ -181,18 +179,18 @@
 
 
                 <td>{{outgoing_ride.get_num()}}</td>
-                <td>
+                <td rowspan="2">
                   <form action="cancelrequest" method="get">
                     <input type = "hidden" name = "joining_rideid" value = {{outgoing_ride.get_rideid()}} />
                     <input type = "hidden" name = "sending_rideid" value = {{full_ride[0].get_rideid()}} />
-                    <input type="submit" value="CANCEL" style="background-color:tomato">
+                    <input type="submit" value="CANCEL REQUEST" style="background-color:tomato">
                   </form>
                 </td>
               </tr>
               {% endfor %}
               {% else %}
               <tr style="background-color:sandybrown">
-                <th colspan="8">Outgoing requests to join another ride: (None)</th>
+                <th colspan="8">Head over to the Browse page to find compatible rides!</th>
               </tr>
               {% endif %}
             </tbody>

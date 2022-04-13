@@ -25,6 +25,7 @@ import auth
 
 #-----------------------------------------------------------------------
 
+# Displays the index page
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
@@ -35,6 +36,8 @@ def index():
 
 #-----------------------------------------------------------------------
 
+# Displays the add page
+# Does NOT do the actual adding
 @app.route('/add', methods=['GET'])
 def add():
 
@@ -61,6 +64,9 @@ def add():
 
 #-----------------------------------------------------------------------
 
+# Attempt to add a ride to the database
+# Redirect to the Dashboard if successful
+# Redirect to the Add page if not successful
 @app.route('/addride', methods=['GET'])
 def addride():
     my_netid = auth.authenticate().strip()
@@ -90,6 +96,8 @@ def addride():
         return redirect(url_for('account', msg="Ride successfully added!"))
 
 #-----------------------------------------------------------------------
+
+
 @app.route('/addandjoin', methods=['GET'])
 def addandjoin():
     my_netid = auth.authenticate().strip()
@@ -117,15 +125,15 @@ def addandjoin():
         return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time has already passed. Please enter a ride with a start time in the future!"))
 
     else:
-        my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
-        my_ride = from_rideid_get_ride(my_rideid)
+        my_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
         joining_ride = from_rideid_get_ride(joining_rideid)
 
         if joining_ride.hasOverlapWith(my_ride) and joining_ride.matchesRouteOf(my_ride):
+            my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
             send_request(joining_rideid, my_rideid)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
-            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="The ride you just tried to add is not compatible with the following ride."))
+            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not compatible with the above ride! Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
 
 
 #-----------------------------------------------------------------------
