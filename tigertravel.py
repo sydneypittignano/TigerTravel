@@ -6,6 +6,7 @@
 #-----------------------------------------------------------------------
 
 import os
+from datetime import datetime
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
@@ -70,13 +71,23 @@ def addride():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
 
-    # including this for now, to stop lots of inserts
-    if (origin is not None and dest is not None and starttime is not None and endtime is not None
-    and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest):
+    if (origin == '' or dest == '' or starttime == '' or endtime == ''):
+        return redirect(url_for('add', msg="Your ride was not added! You left one or more fields neccessary to add a ride blank. Try again!"))
+    if (origin == dest):
+        return redirect(url_for('add', msg="Your ride was not added! Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
+    
+    starttime_datetime = datetime.strptime(starttime, '%m/%d/%Y, %I:%M %p')
+    endtime_datetime = datetime.strptime(endtime, '%m/%d/%Y, %I:%M %p')
+
+    if (starttime_datetime > endtime_datetime):
+        return redirect(url_for('add', msg="Your ride was not added! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
+
+    if (starttime_datetime < datetime.now()):
+        return redirect(url_for('add', msg="Your ride was not added! Your start time has already passed. Please enter a ride with a start time in the future!"))
+    
+    else: 
         add_ride(my_netid, origin, dest, starttime, endtime)
         return redirect(url_for('account', msg="Ride successfully added!"))
-    else:
-        return redirect(url_for('add', msg="Ride not added!"))
 
 #-----------------------------------------------------------------------
 @app.route('/addandjoin', methods=['GET'])
@@ -88,14 +99,26 @@ def addandjoin():
     dest = request.args.get('dest')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
+    joining_rideid = request.args.get('joining_rideid')
 
-    # including this for now, to stop lots of inserts
-    if (origin is not None and dest is not None and starttime is not None and endtime is not None
-    and origin != '' and dest != '' and starttime != '' and endtime != '' and origin != dest):
+    if (origin == '' or dest == '' or starttime == '' or endtime == ''):
+        return redirect(url_for('add', joining_rideid= joining_rideid, msg2="Your ride was not added! You left one or more fields neccessary to add a ride blank. Try again!"))
+    if (origin == dest):
+        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
+    
+    starttime_datetime = datetime.strptime(starttime, '%m/%d/%Y, %I:%M %p')
+    print(starttime_datetime)
+    endtime_datetime = datetime.strptime(endtime, '%m/%d/%Y, %I:%M %p')
+
+    if (starttime_datetime > endtime_datetime):
+        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
+    
+    if (starttime_datetime < datetime.now()):
+        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time has already passed. Please enter a ride with a start time in the future!"))
+
+    else:
         my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
         my_ride = from_rideid_get_ride(my_rideid)
-
-        joining_rideid = request.args.get('joining_rideid')
         joining_ride = from_rideid_get_ride(joining_rideid)
 
         if joining_ride.hasOverlapWith(my_ride) and joining_ride.matchesRouteOf(my_ride):
@@ -103,8 +126,6 @@ def addandjoin():
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
             return redirect(url_for('add', joining_rideid=joining_rideid, msg2="The ride you just tried to add is not compatible with the following ride."))
-    else:
-        return redirect(url_for('add', msg="Ride not added!"))
 
 
 #-----------------------------------------------------------------------
@@ -137,7 +158,11 @@ def browseresults():
 
     # array of Ride objects
     rides = get_rides(None, origin, dest, starttime, endtime)
-    html = render_template('browseresults.html', rides=rides, my_netid=my_netid)
+    future_rides = []
+    for ride in rides:
+        if ride.get_endtime() >= datetime.now():
+            future_rides.append(ride)
+    html = render_template('browseresults.html', rides=future_rides, my_netid=my_netid)
     response = make_response(html)
     return response
 
@@ -179,8 +204,10 @@ def account():
         msg = ''
 
     rides = from_netid_get_rides(my_netid)
+
     
-    full_rides = []
+    future_rides = []
+    past_rides = []
     for ride in rides:
         incoming = []
         outgoing = []
@@ -189,9 +216,12 @@ def account():
         for reqsent in ride.get_reqsent():
             outgoing.append(get_rides(reqsent, None, None, None, None)[0])
         full_ride = [ride, incoming, outgoing]
-        full_rides.append(full_ride)
+        if ride.get_endtime() < datetime.now():
+            past_rides.append(full_ride)
+        else:
+            future_rides.append(full_ride)
 
-    html = render_template('account.html', full_rides=full_rides, msg=msg)
+    html = render_template('account.html', full_rides=future_rides, past_rides=past_rides, msg=msg)
     response = make_response(html)
     return response
 

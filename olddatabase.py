@@ -68,8 +68,10 @@ def from_netid_get_rides(my_netid):
 
         with connection.cursor() as cursor:
 
-            stmt_str = "SELECT rideid FROM riders "
-            stmt_str += "WHERE netid LIKE %s"
+            stmt_str = "SELECT riders.rideid FROM riders, rides "
+            stmt_str += "WHERE riders.netid LIKE %s AND riders.rideid = rides.rideid "
+            stmt_str += "ORDER BY rides.starttime ASC, "
+            stmt_str += "rides.origin ASC;"
 
             cursor.execute(stmt_str, ['%'+my_netid+'%'])
             rideid = cursor.fetchone()

@@ -37,13 +37,12 @@
         <!-- ======================================================= -->
         <br>
         <div class="container-fluid">
-          <h1>MY RIDES</h1>
+          <h1>MY CURRENT RIDES</h1>
         </div>
-        <br>
 
         <div class="container-fluid">
         {% if full_rides|length == 0: %}
-          <h3 style="color:red"> You don't have any rides yet! Go to "Add Ride" to add your first ride.</h3>
+          <h3 style="color:red"> You don't have any current rides! Go to "Add Ride" to add a ride.</h3>
         {% else %}
         <h3 style="color:green">{{ msg }}</h3>
         <br>
@@ -198,8 +197,6 @@
               {% endif %}
             </tbody>
           </table>
-          <br>
-          <br>
           <br>
           <br>
         {% endfor %}
