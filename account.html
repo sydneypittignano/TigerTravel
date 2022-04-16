@@ -3,7 +3,7 @@
 <!-- account.html                                                    -->
 <!-- Author: Sydney Pittignano                                       -->
 <!-- =============================================================== -->
-<html>
+<html style="min-height:100%">
     <head>
         <title>TigerTravel</title>
         <meta name="viewport"
@@ -17,7 +17,7 @@
          </script>
     </head>
 
-    <body>
+    <body style="min-height:100%">
         <!-- ======================================================= -->
 
 
@@ -51,12 +51,18 @@
           .nav-item>a:hover {
               color: rgb(0, 145, 255);
           }
-    
-      </style>
+        </style>
 
-        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); height: 100vh; background-size: 100% 100%; color:rgb(0, 0, 0)">
+        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); background-size:auto; min-height:100%; color:rgb(0, 0, 0)">
           <br>
           <h1 class = "text-center fw-bold">MY RIDES</h1>
+          {% if msg!="" %}
+          <table class="table" style="border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">
+            <tbody>
+              <td style="color:rgb(6, 100, 14)" class="text-center fs-4"> {{ msg }}.</td>
+            </tbody>
+          </table>
+          {% endif %}
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" data-bs-toggle="tab" href="#Upcoming">Upcoming Rides</a>
@@ -75,12 +81,6 @@
                     <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> You don't have any current rides! Go to "Add Ride" to add a ride.</td>
                   </tbody>
                 </table>
-              {% elif msg!="" %}
-              <table class="table" style="border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">
-                <tbody>
-                  <td style="color:rgb(6, 100, 14)" class="text-center fs-4"> {{ msg }}.</td>
-                </tbody>
-              </table>
               {% else %}
               <br>
               {% for full_ride in full_rides %}
@@ -247,12 +247,6 @@
                 </tbody>
               </table>
               <h3 style="color:red"> You don't have any current rides! Go to "Add Ride" to add a ride.</h3>
-            {% elif msg!="" %}
-            <table class="table" style="border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">
-              <tbody>
-                <td style="color:rgb(6, 100, 14)" class="text-center fs-4"> {{ msg }}.</td>
-              </tbody>
-            </table>
             {% else %}
             <br>
             {% for full_ride in past_rides %}
