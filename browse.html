@@ -63,7 +63,7 @@
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: sandybrown; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand" href="index"></a>
-                <img src="/static/ttSmall.png" alt="">
+                <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -209,7 +209,7 @@
 
             function getResults()
             {
-                let n = $('#origin').val();
+                let origin = $('#origin').val();
                 let dest = $('#dest').val();
                 let starttime = picker1.dates.formatInput(picker1.dates.lastPicked);
                 let endtime = picker2.dates.formatInput(picker2.dates.lastPicked);

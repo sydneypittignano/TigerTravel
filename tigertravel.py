@@ -248,7 +248,7 @@ def tryrequest():
     for ride in rides:
         # joining ride has requested to join ride
         if ride.get_rideid() in reqsent:
-            accept_request(ride.get_rideid, joining_rideid)
+            accept_request(ride.get_rideid(), joining_rideid)
             return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
         if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
             send_request(joining_rideid, ride.get_rideid())
