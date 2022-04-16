@@ -57,31 +57,39 @@
     <body>
         <!-- ======================================================= -->
         
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: sandybrown; color:rgb(0, 0, 0)">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9be9ee; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand" href="index"></a>
                 <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                   <a class="nav-link" href="account">Dashboard</a>
                   <a class="nav-link" href="browse">Browse</a>
                   <a class="nav-link active" aria-current="page" href="add">Add Ride</a>
                   <a class="nav-link" href="about">About</a>
                   <a class="nav-link" href="tutorial">Tutorial</a>
+                  <form class="form-inline" action="logout">
+                    <button class="btn btn-dark" type="submit">logout</button>
+                  </form>
                 </div>
               </div>
             </div>
           </nav>
 
-        <br>
-
-        <div class="container-fluid">
-          <h1>ADD RIDE</h1>
+        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); height: 100vh; background-size: 100% 100%; color:rgb(0, 0, 0)">
           <br>
-          <h3 style="color:red">{{ msg }}</h3>
+          <h1 class = "text-center fw-bold">ADD RIDE</h1>
+          <br>
+          {% if msg!=""%}
+          <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+            <tbody>
+              <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{msg}}</td>
+            </tbody>
+          </table>
+          {% endif %}
           <br>
           {% if joining_ride != "" %}
           <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
@@ -118,8 +126,16 @@
             </tbody>
           </table>
           <br>
-          <h3 style="color:red">{{msg2}}</h3>
-          <h3 style="color:red">Add a compatible ride below and press the "ADD & REQUEST" button.</h3>
+          <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+            <tbody>
+              <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{msg2}}</td>
+            </tbody>
+          </table>
+          <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+            <tbody>
+              <td style="color:rgb(220, 7, 7)" class="text-center fs-4">Add a compatible ride below and press the "ADD & REQUEST" button.</td>
+            </tbody>
+          </table>
           <br>
           <br>
           <form action="addandjoin" method="get">

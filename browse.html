@@ -60,131 +60,136 @@
     <body>
         <!-- ======================================================= -->
 
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: sandybrown; color:rgb(0, 0, 0)">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9be9ee; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand" href="index"></a>
                 <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                   <a class="nav-link" href="account">Dashboard</a>
                   <a class="nav-link active" aria-current="page" href="browse">Browse</a>
                   <a class="nav-link" href="add">Add Ride</a>
                   <a class="nav-link" href="about">About</a>
                   <a class="nav-link" href="tutorial">Tutorial</a>
+                  <form class="form-inline" action="logout">
+                    <button class="btn btn-dark" type="submit">logout</button>
+                  </form>
                 </div>
               </div>
             </div>
           </nav>
     
         <!-- ======================================================= -->
-        <br>
-        <div class="container-fluid">
-          <h1>BROWSE RIDES</h1>
-          <br>
-          <h3>Filter by...</h3>
-          <br>
-          <form action="browse" method="get">
-            <div class="row">
-              <div class="col-sm-2">
-                <h5>Origin:</h5>
-              </div>
-              <div class="col-sm-2">
-                <h5>Destination:</h5>
-              </div>
-              <div class="col-sm-2">
-                <h5>Rides that leave after:</h5>
-              </div>
-              <div class="col-sm-2">
-                <h5>Rides that leave before:</h5>
-              </div>
-            </div>
-            <div class="row">
-
-              <div class="col-sm-2">
-                <select class="form-select" id="origin">
-                  <option selected></option>
-                  <option>Princeton University</option>
-                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                  <option>Trenton-Mercer Airport (TTN)</option>
-                  <option>Philadelphia International Airport (PHL)</option>
-                  <option>LaGuardia Airport (LGA)</option>
-                  <option>Newark Liberty International Airport (EWR)</option>
-                  <option>John F. Kennedy International Airport (JFK)</option>
-                </select>
-              </div>
-
-              <div class="col-sm-2">
-                <select class="form-select" id="dest">
-                  <option selected></option>
-                  <option>Princeton University</option>
-                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                  <option>Trenton-Mercer Airport (TTN)</option>
-                  <option>Philadelphia International Airport (PHL)</option>
-                  <option>LaGuardia Airport (LGA)</option>
-                  <option>Newark Liberty International Airport (EWR)</option>
-                  <option>John F. Kennedy International Airport (JFK)</option>
-                </select>
-              </div>
-
-              <div class="col-sm-2">
-                <div
-                    class='input-group'
-                    id='datetimepicker1'
-                    data-td-target-input='nearest'
-                    data-td-target-toggle='nearest'
-                >
-                  <input
-                    id='datetimepicker1Input'
-                    type='text'
-                    class='form-control'
-                    data-td-target='#datetimepicker1'
-                  />
-                  <span
-                    class='input-group-text'
-                    data-td-target='#datetimepicker1'
-                    data-td-toggle='datetimepicker'
-                    style="cursor:pointer"
-                  >
-                    <span class='fa-solid fa-calendar'></span>
-                  </span>
+        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); height: 100vh; background-size: 100% 100%; color:rgb(0, 0, 0)">
+          <div class="container-fluid">
+            <br>
+            <h1 class = "text-center fw-bold">BROWSE RIDES</h1>
+            <br>
+            <h3>Filter by...</h3>
+            <br>
+            <form action="browse" method="get">
+              <div class="row">
+                <div class="col-sm-2">
+                  <h5>Origin:</h5>
+                </div>
+                <div class="col-sm-2">
+                  <h5>Destination:</h5>
+                </div>
+                <div class="col-sm-2">
+                  <h5>Rides that leave after:</h5>
+                </div>
+                <div class="col-sm-2">
+                  <h5>Rides that leave before:</h5>
                 </div>
               </div>
+              <div class="row">
 
-              <div class="col-sm-2">
-                <div
-                    class='input-group'
-                    id='datetimepicker2'
-                    data-td-target-input='nearest'
-                    data-td-target-toggle='nearest'
-                >
-                  <input
-                    id='datetimepicker2Input'
-                    type='text'
-                    class='form-control'
-                    data-td-target='#datetimepicker2'
-                  />
-                  <span
-                    class='input-group-text'
-                    data-td-target='#datetimepicker2'
-                    data-td-toggle='datetimepicker'
-                    style="cursor:pointer"
-                  >
-                    <span class='fa-solid fa-calendar'></span>
-                  </span>
+                <div class="col-sm-2">
+                  <select class="form-select" id="origin">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
                 </div>
-              </div>
 
-            </div>
-          </form>
-        </div>
-        <br>
+                <div class="col-sm-2">
+                  <select class="form-select" id="dest">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-2">
+                  <div
+                      class='input-group'
+                      id='datetimepicker1'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker1Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker1'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker1'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-sm-2">
+                  <div
+                      class='input-group'
+                      id='datetimepicker2'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker2Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker2'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker2'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+          <br>
 
         <!-- ======================================================= -->
 
         <div class="container-fluid" id="browseresults"></div>
+      </div>
 
 
         <script>

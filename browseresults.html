@@ -1,5 +1,9 @@
 {% if rides|length == 0: %}
-<h3 style="color:red">No rides match your filtering criteria!</h3>
+<table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+    <tbody>
+      <td style="color:rgb(220, 7, 7)" class="text-center fs-4">No rides match your filtering criteria!</td>
+    </tbody>
+  </table>
 {% else %}
 <table class="table table-striped">
 <tbody>

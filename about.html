@@ -20,20 +20,23 @@
     <body>
         <!-- ======================================================= -->
 
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: sandybrown; color:rgb(0, 0, 0)">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9be9ee; color:rgb(0, 0, 0)">
             <div class="container-fluid">
               <a class="navbar-brand" href="index"></a>
               <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                   <a class="nav-link" href="account">Dashboard</a>
                   <a class="nav-link" href="browse">Browse</a>
                   <a class="nav-link" href="add">Add Ride</a>
                   <a class="nav-link active" aria-current="page" href="about">About</a>
                   <a class="nav-link" href="tutorial">Tutorial</a>
+                  <form class="form-inline" action="logout">
+                    <button class="btn btn-dark" type="submit">logout</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -41,10 +44,10 @@
         
         <!-- ======================================================= -->
 
-        <div class="container-fluid" style="background-color: #ece4bc; color:rgb(0, 0, 0)">
-            <center>
-                <img src="/static/about.png" class="img-fluid pt-3 pb-3" alt="Responsive image">
-            </center>
+        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); height: 100vh; background-size: 100% 100%; color:rgb(0, 0, 0)">
+            <br>
+            <h1 class = "text-center fw-bold">ABOUT US</h1>
+            <br>
             <div class="container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
