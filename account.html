@@ -3,7 +3,7 @@
 <!-- account.html                                                    -->
 <!-- Author: Sydney Pittignano                                       -->
 <!-- =============================================================== -->
-<html style="min-height:100%">
+<html>
     <head>
         <title>TigerTravel</title>
         <meta name="viewport"
@@ -17,7 +17,7 @@
          </script>
     </head>
 
-    <body style="min-height:100%">
+    <body style="background-color:rgb(148,188,199)">
         <!-- ======================================================= -->
 
 
@@ -53,7 +53,7 @@
           }
         </style>
 
-        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); background-size:auto; min-height:100%; color:rgb(0, 0, 0)">
+        <div class="container-fluid" style="color:rgb(0, 0, 0)">
           <br>
           <h1 class = "text-center fw-bold">MY RIDES</h1>
           {% if msg!="" %}
@@ -246,7 +246,6 @@
                   <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> You don't have any past rides.</td>
                 </tbody>
               </table>
-              <h3 style="color:red"> You don't have any current rides! Go to "Add Ride" to add a ride.</h3>
             {% else %}
             <br>
             {% for full_ride in past_rides %}
