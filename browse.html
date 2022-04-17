@@ -83,7 +83,6 @@
           </nav>
     
         <!-- ======================================================= -->
-        <div class="container-fluid" style="color:rgb(0, 0, 0)">
           <div class="container-fluid">
             <br>
             <h1 class = "text-center fw-bold">BROWSE RIDES</h1>
@@ -91,96 +90,103 @@
             <h3>Filter by...</h3>
             <br>
             <form action="browse" method="get">
-              <div class="row">
-                <div class="col-sm-2">
-                  <h5>Origin:</h5>
+              <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-3">
+                      <div class="row">
+                      <h5>Origin:</h5>
+                      </div>
+                      <div class="row">
+                        <div>
+                        <select class="form-select" id="origin">
+                          <option selected></option>
+                          <option>Princeton University</option>
+                          <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                          <option>Trenton-Mercer Airport (TTN)</option>
+                          <option>Philadelphia International Airport (PHL)</option>
+                          <option>LaGuardia Airport (LGA)</option>
+                          <option>Newark Liberty International Airport (EWR)</option>
+                          <option>John F. Kennedy International Airport (JFK)</option>
+                        </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                      <div class="row">
+                      <h5>Destination:</h5>
+                      </div>
+                      <div class="row">
+                        <div>
+                        <select class="form-select" id="dest">
+                          <option selected></option>
+                          <option>Princeton University</option>
+                          <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                          <option>Trenton-Mercer Airport (TTN)</option>
+                          <option>Philadelphia International Airport (PHL)</option>
+                          <option>LaGuardia Airport (LGA)</option>
+                          <option>Newark Liberty International Airport (EWR)</option>
+                          <option>John F. Kennedy International Airport (JFK)</option>
+                        </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                      <div class="row">
+                        <h5>Rides that leave after:</h5>
+                      </div>
+                      <div class="row">
+                        <div
+                            class='input-group'
+                            id='datetimepicker1'
+                            data-td-target-input='nearest'
+                            data-td-target-toggle='nearest'
+                        >
+                          <input
+                            id='datetimepicker1Input'
+                            type='text'
+                            class='form-control'
+                            data-td-target='#datetimepicker1'
+                          />
+                          <span
+                            class='input-group-text'
+                            data-td-target='#datetimepicker1'
+                            data-td-toggle='datetimepicker'
+                            style="cursor:pointer"
+                          >
+                            <span class='fa-solid fa-calendar'></span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                      <div class="row">
+                        <h5>Rides that leave before:</h5>
+                      </div>
+                      <div class="row">
+                        <div
+                            class='input-group'
+                            id='datetimepicker2'
+                            data-td-target-input='nearest'
+                            data-td-target-toggle='nearest'
+                        >
+                          <input
+                            id='datetimepicker2Input'
+                            type='text'
+                            class='form-control'
+                            data-td-target='#datetimepicker2'
+                          />
+                          <span
+                            class='input-group-text'
+                            data-td-target='#datetimepicker2'
+                            data-td-toggle='datetimepicker'
+                            style="cursor:pointer"
+                          >
+                            <span class='fa-solid fa-calendar'></span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>        
                 </div>
-                <div class="col-sm-2">
-                  <h5>Destination:</h5>
-                </div>
-                <div class="col-sm-2">
-                  <h5>Rides that leave after:</h5>
-                </div>
-                <div class="col-sm-2">
-                  <h5>Rides that leave before:</h5>
-                </div>
-              </div>
-              <div class="row">
-
-                <div class="col-sm-2">
-                  <select class="form-select" id="origin">
-                    <option selected></option>
-                    <option>Princeton University</option>
-                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                    <option>Trenton-Mercer Airport (TTN)</option>
-                    <option>Philadelphia International Airport (PHL)</option>
-                    <option>LaGuardia Airport (LGA)</option>
-                    <option>Newark Liberty International Airport (EWR)</option>
-                    <option>John F. Kennedy International Airport (JFK)</option>
-                  </select>
-                </div>
-
-                <div class="col-sm-2">
-                  <select class="form-select" id="dest">
-                    <option selected></option>
-                    <option>Princeton University</option>
-                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                    <option>Trenton-Mercer Airport (TTN)</option>
-                    <option>Philadelphia International Airport (PHL)</option>
-                    <option>LaGuardia Airport (LGA)</option>
-                    <option>Newark Liberty International Airport (EWR)</option>
-                    <option>John F. Kennedy International Airport (JFK)</option>
-                  </select>
-                </div>
-
-                <div class="col-sm-2">
-                  <div
-                      class='input-group'
-                      id='datetimepicker1'
-                      data-td-target-input='nearest'
-                      data-td-target-toggle='nearest'
-                  >
-                    <input
-                      id='datetimepicker1Input'
-                      type='text'
-                      class='form-control'
-                      data-td-target='#datetimepicker1'
-                    />
-                    <span
-                      class='input-group-text'
-                      data-td-target='#datetimepicker1'
-                      data-td-toggle='datetimepicker'
-                      style="cursor:pointer"
-                    >
-                      <span class='fa-solid fa-calendar'></span>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="col-sm-2">
-                  <div
-                      class='input-group'
-                      id='datetimepicker2'
-                      data-td-target-input='nearest'
-                      data-td-target-toggle='nearest'
-                  >
-                    <input
-                      id='datetimepicker2Input'
-                      type='text'
-                      class='form-control'
-                      data-td-target='#datetimepicker2'
-                    />
-                    <span
-                      class='input-group-text'
-                      data-td-target='#datetimepicker2'
-                      data-td-toggle='datetimepicker'
-                      style="cursor:pointer"
-                    >
-                      <span class='fa-solid fa-calendar'></span>
-                    </span>
-                  </div>
-                </div>
-
               </div>
             </form>
           </div>

@@ -54,7 +54,7 @@
         <!-- end FA -->
     </head>
 
-    <body style="height:100vh">
+    <body style="height:100vh; background-color:rgb(148,188,199)">
         <!-- ======================================================= -->
         
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9be9ee; color:rgb(0, 0, 0)">
@@ -79,7 +79,7 @@
             </div>
           </nav>
 
-        <div class="container-fluid" style="background-image: url('/static/backgroundlow.png'); height:100%; background-size: 100% 100%; color:rgb(0, 0, 0)">
+        <div class="container-fluid">
           <br>
           <h1 class = "text-center fw-bold">ADD RIDE</h1>
           <br>
@@ -92,12 +92,16 @@
           {% endif %}
           <br>
           {% if joining_ride != "" %}
-          <table class="table" style="border:6px solid black; background-color:rgb(226, 226, 226)">
-            <tbody>
+          <div class="table-responsive">
+            <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
+              <tbody>
+              <td style="padding:0; margin:0; border:0">
+              <table class="table" style="margin:0">
+              <tbody>
                 <tr style="background-color: sandybrown">
                   <th colspan="6" align-right>Ride from {{joining_ride.get_origin()}} to {{joining_ride.get_dest()}}</th>
                 </tr>
-                <tr>
+                <tr style="border-bottom:2px solid black; vertical-align:bottom">
                     <th>Current Riders</th>
                     <th>Origin</th>
                     <th>Destination</th>
@@ -123,124 +127,235 @@
                   {% endif %}
                   <td>{{joining_ride.get_num()}}</td>
                 </tr>
-            </tbody>
-          </table>
+              </tbody>
+              </table>
+              </td>
+              </tbody>
+              </table>
+            </div>
           <br>
           <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
             <tbody>
               <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{msg2}}</td>
             </tbody>
           </table>
-          <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
-            <tbody>
-              <td style="color:rgb(220, 7, 7)" class="text-center fs-4">Add a compatible ride below and press the "ADD & REQUEST" button.</td>
-            </tbody>
-          </table>
-          <br>
           <br>
           <form action="addandjoin" method="get">
             <input type="hidden" name="joining_rideid" id="joining_rideid" value="{{joining_ride.get_rideid()}}">
-          {% else %}
-          <form action="addride" method="get">
-            {% endif %}
             <input type="hidden" name="starttime" id="starttime">
             <input type="hidden" name="endtime" id="endtime">
             <div class="row">
-              <div class="col-sm-2">
-                <h5>I'm leaving from:</h5>
+              <div class="col-sm-12 col-lg-2">
+                <div class="row">
+                <h5>Origin:</h5>
+                </div>
+                <div class="row">
+                  <div>
+                  <select class="form-select" name="origin">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
+                  </div>
+                </div>
               </div>
-              <div class="col-sm-2">
-                <h5>I'm going to:</h5>
+              <div class="col-sm-12 col-lg-2">
+                <div class="row">
+                <h5>Destination:</h5>
+                </div>
+                <div class="row">
+                  <div>
+                  <select class="form-select" name="dest">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
+                  </div>
+                </div>
               </div>
-              <div class="col-sm-2">
-                <h5>The earliest I would be willing to leave is:</h5>
+              <div class="col-sm-12 col-lg-3">
+                <div class="row">
+                  <h5>Rides that leave after:</h5>
+                </div>
+                <div class="row">
+                  <div
+                      class='input-group'
+                      id='datetimepicker1'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker1Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker1'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker1'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div class="col-sm-2">
-                <h5>The latest I would be willing to leave is:</h5>
+              <div class="col-sm-12 col-lg-3">
+                <div class="row">
+                  <h5>Rides that leave before:</h5>
+                </div>
+                <div class="row">
+                  <div
+                      class='input-group'
+                      id='datetimepicker2'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker2Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker2'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker2'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
+              </div> 
+              <div class="col-sm-12 col-lg-2">
+                <div class="row"><h5><br></h5></div>
+                <div class="row" style="margin:1px">
+                  <input type="submit" value="ADD & REQUEST">
+                </div>
               </div>
             </div>
+          </form>
+          {% else %}
+          <form action="addride" method="get">
+            <input type="hidden" name="starttime" id="starttime">
+            <input type="hidden" name="endtime" id="endtime">
+
             <div class="row">
-              <div class="col-sm-2">
-                <select class="form-select" name="origin">
-                  <option selected></option>
-                  <option>Princeton University</option>
-                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                  <option>Trenton-Mercer Airport (TTN)</option>
-                  <option>Philadelphia International Airport (PHL)</option>
-                  <option>LaGuardia Airport (LGA)</option>
-                  <option>Newark Liberty International Airport (EWR)</option>
-                  <option>John F. Kennedy International Airport (JFK)</option>
-                </select>
-              </div>
-              <div class="col-sm-2">
-                <select class="form-select" name="dest">
-                  <option selected></option>
-                  <option>Princeton University</option>
-                  <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                  <option>Trenton-Mercer Airport (TTN)</option>
-                  <option>Philadelphia International Airport (PHL)</option>
-                  <option>LaGuardia Airport (LGA)</option>
-                  <option>Newark Liberty International Airport (EWR)</option>
-                  <option>John F. Kennedy International Airport (JFK)</option>
-                </select>
-              </div>
-              <div class="col-sm-2">
-                <div
-                    class='input-group'
-                    id='datetimepicker1'
-                    data-td-target-input='nearest'
-                    data-td-target-toggle='nearest'
-                >
-                  <input
-                    id='datetimepicker1Input'
-                    type='text'
-                    class='form-control'
-                    data-td-target='#datetimepicker1'
-                  />
-                  <span
-                    class='input-group-text'
-                    data-td-target='#datetimepicker1'
-                    data-td-toggle='datetimepicker'
-                    style="cursor:pointer"
-                  >
-                    <span class='fa-solid fa-calendar'></span>
-                  </span>
+              <div class="col-sm-12 col-lg-2">
+                <div class="row">
+                <h5>Origin:</h5>
+                </div>
+                <div class="row">
+                  <div>
+                  <select class="form-select" name="origin">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-2">
-                <div
-                    class='input-group'
-                    id='datetimepicker2'
-                    data-td-target-input='nearest'
-                    data-td-target-toggle='nearest'
-                >
-                  <input
-                    id='datetimepicker2Input'
-                    type='text'
-                    class='form-control'
-                    data-td-target='#datetimepicker2'
-                  />
-                  <span
-                    class='input-group-text'
-                    data-td-target='#datetimepicker2'
-                    data-td-toggle='datetimepicker'
-                    style="cursor:pointer"
-                  >
-                    <span class='fa-solid fa-calendar'></span>
-                  </span>
+              <div class="col-sm-12 col-lg-2">
+                <div class="row">
+                <h5>Destination:</h5>
+                </div>
+                <div class="row">
+                  <div>
+                  <select class="form-select" name="dest">
+                    <option selected></option>
+                    <option>Princeton University</option>
+                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option>Trenton-Mercer Airport (TTN)</option>
+                    <option>Philadelphia International Airport (PHL)</option>
+                    <option>LaGuardia Airport (LGA)</option>
+                    <option>Newark Liberty International Airport (EWR)</option>
+                    <option>John F. Kennedy International Airport (JFK)</option>
+                  </select>
+                  </div>
                 </div>
               </div>
-              {% if joining_ride != "" %}
-              <div class="col-sm-2">
-                <input type="submit" value="ADD & REQUEST">
+              <div class="col-sm-12 col-lg-3">
+                <div class="row">
+                  <h5>Rides that leave after:</h5>
+                </div>
+                <div class="row">
+                  <div
+                      class='input-group'
+                      id='datetimepicker1'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker1Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker1'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker1'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
               </div>
-              {% else %}
-              <div class="col-sm-2">
-                <input type="submit" value="ADD">
+              <div class="col-sm-12 col-lg-3">
+                <div class="row">
+                  <h5>Rides that leave before:</h5>
+                </div>
+                <div class="row">
+                  <div
+                      class='input-group'
+                      id='datetimepicker2'
+                      data-td-target-input='nearest'
+                      data-td-target-toggle='nearest'
+                  >
+                    <input
+                      id='datetimepicker2Input'
+                      type='text'
+                      class='form-control'
+                      data-td-target='#datetimepicker2'
+                    />
+                    <span
+                      class='input-group-text'
+                      data-td-target='#datetimepicker2'
+                      data-td-toggle='datetimepicker'
+                      style="cursor:pointer"
+                    >
+                      <span class='fa-solid fa-calendar'></span>
+                    </span>
+                  </div>
+                </div>
+              </div> 
+              <div class="col-sm-12 col-lg-2">
+                <div class="row"><h5><br></h5></div>
+                <div class="row" style="margin:1px">
+                  <input type="submit" value="ADD">
+                </div>
               </div>
-              {% endif %}
-              </div>
-         </form>
+            </div>
+          </form>
+          {% endif %}
         </div>
 
         <!-- ======================================================= -->

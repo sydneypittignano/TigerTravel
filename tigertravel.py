@@ -53,7 +53,7 @@ def add():
     joining_ride = ""
     if joining_rideid is not None:
         joining_ride = from_rideid_get_ride(joining_rideid)
-        msg = 'You want to join this ride:'
+        msg = 'None of your current rides are compatible!'
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
@@ -121,8 +121,8 @@ def addandjoin():
     if (starttime_datetime > endtime_datetime):
         return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
     
-    if (starttime_datetime < datetime.now()):
-        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time has already passed. Please enter a ride with a start time in the future!"))
+    if (endtime_datetime < datetime.now()):
+        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time has already passed. Please enter a ride with an end time in the future!"))
 
     else:
         my_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
@@ -247,14 +247,15 @@ def tryrequest():
     reqsent = joining_ride.get_reqsent()
     for ride in rides:
         # joining ride has requested to join ride
-        if ride.get_rideid() in reqsent:
-            accept_request(ride.get_rideid(), joining_rideid)
-            return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
-        if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
-            send_request(joining_rideid, ride.get_rideid())
-            return redirect(url_for('account', msg="Request successfully sent!"))
+        if ride.get_endtime() > datetime.now():
+            if ride.get_rideid() in reqsent:
+                accept_request(ride.get_rideid(), joining_rideid)
+                return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
+            if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
+                send_request(joining_rideid, ride.get_rideid())
+                return redirect(url_for('account', msg="Request successfully sent!"))
     
-    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your current rides are not compatible with this one."))
+    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))
 
 #-----------------------------------------------------------------------
 
