@@ -98,7 +98,7 @@
                     <table class="table" style="margin:0">
                     <tbody>
                         <tr style="background-color: sandybrown">
-                          <th colspan="6" align-right>My Ride from {{ride.get_origin()}} to {{ride.get_dest()}}</th>
+                          <th colspan="6" align-right>My Ride from <div id="prevorigin">{{ride.get_origin()}}</div> to {{ride.get_dest()}}</th>
                           <th colspan="1" class="text-end">
                             <form action="deleteride" method="get">
                               <input type = "hidden" name = "rideid" value = {{ride.get_rideid()}} />
@@ -234,8 +234,8 @@
             }
 
             function setup() {
-                var origin="Nassau Park Pavilion (Wegmans, Party City, etc.)";
-                $("#origin option[value='" + origin + "']").prop('selected', true);
+                var prevorigin= $('#prevorigin').text();
+                $("#origin option[value='" + prevorigin + "']").prop('selected', true);
                 document.body.addEventListener('click', insertTimes);
             }
             
