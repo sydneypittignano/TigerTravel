@@ -1,13 +1,13 @@
-DROP TABLE IF EXISTS riders;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS rides;
-
 --
 -- PostgreSQL database dump
 --
 
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
+
+DROP TABLE IF EXISTS riders;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS rides;
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -30,9 +30,10 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.riders (
     netid text,
-    rideid text
+    rideid text,
+    starttime timestamp without time zone,
+    endtime timestamp without time zone
 );
-
 
 --
 -- Name: rides; Type: TABLE; Schema: public; Owner: ttadmins
@@ -49,7 +50,6 @@ CREATE TABLE public.rides (
     reqsent text[]
 );
 
-
 --
 -- Name: students; Type: TABLE; Schema: public; Owner: ttadmins
 --
@@ -64,18 +64,18 @@ CREATE TABLE public.students (
     count integer
 );
 
-
 --
 -- Data for Name: riders; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.riders (netid, rideid) FROM stdin;
-cpm6	cpm6-1
-jbob	jbob-1
-bbob	bbob-1
-manyaz	manyaz-1
-sydneyp	sydneyp-1
-otravis	otravis-1
+COPY public.riders (netid, rideid, starttime, endtime) FROM stdin;
+sydneyp	sydneyp-2	2022-04-16 01:00:00	2022-04-17 01:00:00
+otravis	otravis-6	2022-04-25 19:15:00	2022-04-25 22:15:00
+beid	beid-2	2022-04-16 11:51:00	2022-04-16 12:51:00
+otravis	beid-2	2022-04-16 11:17:00	2022-04-16 12:17:00
+sl55	otravis-6	2022-04-25 19:15:00	2022-04-25 19:45:00
+otravis	otravis-9	2022-04-21 16:37:00	2022-04-21 17:37:00
+otravis	otravis-10	2022-04-26 10:00:00	2022-04-26 11:30:00
 \.
 
 
@@ -84,12 +84,11 @@ otravis	otravis-1
 --
 
 COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
-LGA	Princeton	2021-05-22 13:00:00	2021-05-22 15:00:00	1	manyaz-1	{}	{}
-Princeton	JFK	2020-06-24 12:00:00	2020-06-24 14:00:00	1	sydneyp-1	{}	{}
-Forbes	Dinky	2022-03-23 10:00:00	2022-03-23 10:01:00	1	cpm6-1	{}	{}
-Evanston	Princeton	2022-06-07 14:00:00	2022-06-07 15:00:00	1	jbob-1	{}	{}
-Princeton	Pennsylvania	2022-05-22 15:00:00	2022-05-22 18:00:00	1	bbob-1	{}	{}
-Princeton	JFK	2020-06-24 10:00:00	2020-06-24 13:00:00	1	otravis-1	{}	{}
+LaGuardia Airport (LGA)	John F. Kennedy International Airport (JFK)	2022-04-25 19:15:00	2022-04-25 19:45:00	2	otravis-6	{}	{}
+Nassau Park Pavilion (Wegmans, Party City, etc.)	Philadelphia International Airport (PHL)	2022-04-21 16:37:00	2022-04-21 17:37:00	1	otravis-9	{}	{}
+Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-16 01:00:00	2022-04-17 01:00:00	1	sydneyp-2	{}	{}
+Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-16 11:51:00	2022-04-16 12:17:00	2	beid-2	{}	{}
+Princeton University	LaGuardia Airport (LGA)	2022-04-26 10:00:00	2022-04-26 11:30:00	1	otravis-10	{}	{}
 \.
 
 
@@ -98,12 +97,10 @@ Princeton	JFK	2020-06-24 10:00:00	2020-06-24 13:00:00	1	otravis-1	{}	{}
 --
 
 COPY public.students (netid, firstname, lastname, email, phone, strikes, count) FROM stdin;
-sydneyp	Sydney	Pittignano	sydneyp@princeton.edu	(203)-914-7848	0	1
-cpm6					0	1
-manyaz					0	1
-bbob					0	1
-jbob					0	1
-otravis					0	1
+sydneyp					0	2
+sl55					0	2
+beid					0	2
+otravis					0	10
 \.
 
 
