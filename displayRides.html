@@ -7,7 +7,7 @@
         <tr style="background-color: sandybrown">
           <th colspan="5" align-right>My Ride from {{full_ride[0].get_origin()}} to {{full_ride[0].get_dest()}}</th>
           <th colspan="1" class="text-end">
-            <form action="editride" method="get">
+            <form action="edit" method="get">
               <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
               <input type="submit" value="Edit Ride" style="background-color:lightblue">
             </form>

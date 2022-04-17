@@ -377,11 +377,17 @@
             let endtime = picker2.dates.formatInput(picker2.dates.lastPicked);
             document.getElementById("starttime").value = starttime;
             document.getElementById("endtime").value = endtime;
-            console.log(document.getElementById("starttime").value)
-            console.log(document.getElementById("endtime").value)
           }
-          document.body.addEventListener('click', insertTimes);
+
+          function setup() {
+                document.body.addEventListener('click', insertTimes);
+            }
+            
+          $('document').ready(setup);
+        
         </script>
+
+        
 
 
     </body>
