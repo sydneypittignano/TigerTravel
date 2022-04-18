@@ -15,6 +15,7 @@ from olddatabase import get_rides, add_ride, from_netid_get_rides, from_rideid_g
 from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
 from ride import Ride
 from keys import APP_SECRET_KEY
+from emails import email_request_received
 
 #-----------------------------------------------------------------------
 
@@ -257,6 +258,8 @@ def tryrequest():
                 return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
             if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
                 send_request(joining_rideid, ride.get_rideid())
+                # recipient_netids = from_rideid_get_riders(joining_rideid)
+                # email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
     return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))
