@@ -132,6 +132,8 @@ def addandjoin():
         if joining_ride.hasOverlapWith(my_ride) and joining_ride.matchesRouteOf(my_ride):
             my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
             send_request(joining_rideid, my_rideid)
+            recipient_netids = from_rideid_get_riders(joining_rideid)
+            email_request_received(recipient_netids)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
             return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not compatible with the above ride! Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
@@ -258,8 +260,8 @@ def tryrequest():
                 return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
             if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
                 send_request(joining_rideid, ride.get_rideid())
-                # recipient_netids = from_rideid_get_riders(joining_rideid)
-                # email_request_received(recipient_netids)
+                recipient_netids = from_rideid_get_riders(joining_rideid)
+                email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
     return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))

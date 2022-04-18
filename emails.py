@@ -16,6 +16,7 @@ from emailtemplates import REQUEST_RECEIVED_TEMPLATE
 #-----------------------------------------------------------------------
 
 # This gets called by every function below
+# Do not change this
 def send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port):
     msg = MIMEText(html, "html")
     msg['Subject'] = subject
@@ -31,12 +32,11 @@ def send_message_mailgun(html, subject, recipient, sender, smtp_login, password,
 def email_request_received(recipient_netids):
     html = REQUEST_RECEIVED_TEMPLATE
     subject = "Someone has requested to join your ride!"
-    sender = "TigerTravel <admin@princetontigertravel.herokuapp.com>"
+    sender = "TigerTravel <princetontigertravel@gmail.com>"
     smtp_login = MAILGUN_SMTP_LOGIN
     smtp_server = MAILGUN_SMTP_SERVER
     password = MAILGUN_SMTP_PASSWORD
     port = MAILGUN_SMTP_PORT
     for recipient_netid in recipient_netids:
-        recipient = str(recipient_netid) + "@princeton.edu"
-        print(recipient)
+        recipient = recipient_netid + "@princeton.edu"
         send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
