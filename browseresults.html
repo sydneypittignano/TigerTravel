@@ -6,7 +6,7 @@
   </table>
 {% else %}
 <div class="table-responsive">
-<table class="table table-striped table-responsive" style="background-color:lightgray">
+<table class="table table-striped table-responsive" style="background-color:lightgrey">
 <tbody>
     <tr>
         <th>Current Riders</th>
@@ -25,15 +25,13 @@
 
     {% if  rides[i].get_starttime().date() == rides[i].get_endtime().date() %}
     <td>
-        {{rides[i].get_starttime().strftime('%A')}}, {{rides[i].get_starttime().strftime('%B')}} {{rides[i].get_starttime().strftime('%d')}} between
-        {{rides[i].get_starttime().strftime('%I')}}:{{rides[i].get_starttime().strftime('%M')}} {{rides[i].get_starttime().strftime('%p')}} and {{rides[i].get_endtime().strftime('%I')}}:{{rides[i].get_endtime().strftime('%M')}} {{rides[i].get_endtime().strftime('%p')}}        
+        {{rides[i].get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+        {{rides[i].get_endtime().strftime('%I:%M %p')}}     
     </td>
     {% else %}
     <td>
-        Between {{rides[i].get_starttime().strftime('%A')}}, {{rides[i].get_starttime().strftime('%B')}} {{rides[i].get_starttime().strftime('%d')}} at 
-        {{rides[i].get_starttime().strftime('%I')}}:{{rides[i].get_starttime().strftime('%M')}} {{rides[i].get_starttime().strftime('%p')}} and 
-        {{rides[i].get_endtime().strftime('%A')}}, {{rides[i].get_endtime().strftime('%B')}} {{rides[i].get_endtime().strftime('%d')}} at 
-        {{rides[i].get_endtime().strftime('%I')}}:{{rides[i].get_endtime().strftime('%M')}} {{rides[i].get_endtime().strftime('%p')}}
+        Between {{rides[i].get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+        {{rides[i].get_endtime().strftime('%A, %B %d at %I:%M %p')}}
     </td>
     {% endif %}
 

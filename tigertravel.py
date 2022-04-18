@@ -271,7 +271,7 @@ def cancelrequest():
     joining_rideid = request.args.get('joining_rideid')
     sending_rideid = request.args.get('sending_rideid')
     cancel_request(joining_rideid, sending_rideid)
-    return redirect(url_for('account'))
+    return redirect(url_for('account', msg="Request cancelled!"))
 
 #-----------------------------------------------------------------------
 @app.route('/acceptrequest', methods=['GET'])

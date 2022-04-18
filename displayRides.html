@@ -39,15 +39,13 @@
 
           {% if  full_ride[0].get_starttime().date() == full_ride[0].get_endtime().date() %}
           <td>
-              {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} between
-              {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}        
+            {{full_ride[0].get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+            {{full_ride[0].get_endtime().strftime('%I:%M %p')}}  
           </td>
           {% else %}
           <td>
-              Between {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} at 
-              {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and 
-              {{full_ride[0].get_endtime().strftime('%A')}}, {{full_ride[0].get_endtime().strftime('%B')}} {{full_ride[0].get_endtime().strftime('%d')}} at 
-              {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}
+            Between {{full_ride[0].get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+            {{full_ride[0].get_endtime().strftime('%A, %B %d at %I:%M %p')}}
           </td>
           {% endif %}
 
@@ -56,7 +54,7 @@
           <td></td>
         </tr>
       {% if full_ride[1]|length != 0 %}
-      <tr style="background-color: sandybrown">
+      <tr style="background-color: rgb(242, 187, 140)">
         <th colspan="7">Incoming requests: Others have requested to join your ride!</th>
       </tr>
       <tr style="border-bottom:2px solid black; vertical-align:bottom">
@@ -76,15 +74,13 @@
 
         {% if  incoming_ride.get_starttime().date() == incoming_ride.get_endtime().date() %}
         <td>
-            {{incoming_ride.get_starttime().strftime('%A')}}, {{incoming_ride.get_starttime().strftime('%B')}} {{incoming_ride.get_starttime().strftime('%d')}} between
-            {{incoming_ride.get_starttime().strftime('%I')}}:{{incoming_ride.get_starttime().strftime('%M')}} {{incoming_ride.get_starttime().strftime('%p')}} and {{incoming_ride.get_endtime().strftime('%I')}}:{{incoming_ride.get_endtime().strftime('%M')}} {{incoming_ride.get_endtime().strftime('%p')}}        
+          {{incoming_ride.get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+          {{incoming_ride.get_endtime().strftime('%I:%M %p')}}  
         </td>
         {% else %}
         <td>
-            Between {{incoming_ride.get_starttime().strftime('%A')}}, {{incoming_ride.get_starttime().strftime('%B')}} {{incoming_ride.get_starttime().strftime('%d')}} at 
-            {{incoming_ride.get_starttime().strftime('%I')}}:{{incoming_ride.get_starttime().strftime('%M')}} {{incoming_ride.get_starttime().strftime('%p')}} and 
-            {{incoming_ride.get_endtime().strftime('%A')}}, {{incoming_ride.get_endtime().strftime('%B')}} {{incoming_ride.get_endtime().strftime('%d')}} at 
-            {{incoming_ride.get_endtime().strftime('%I')}}:{{incoming_ride.get_endtime().strftime('%M')}} {{incoming_ride.get_endtime().strftime('%p')}}
+          Between {{incoming_ride.get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+          {{incoming_ride.get_endtime().strftime('%A, %B %d at %I:%M %p')}}
         </td>
         {% endif %}
 
@@ -106,12 +102,14 @@
       </tr>
       {% endfor %}
       {% else %}
-      <tr style="background-color: sandybrown">
+      <!--
+      <tr style="background-color: rgb(242, 187, 140)">
         <th colspan="7">Nobody is requesting to join this ride.</th>
       </tr>
+      -->
       {% endif %}
       {% if full_ride[2]|length != 0 %}
-      <tr style="background-color:sandybrown">
+      <tr style="background-color:rgb(242, 187, 140)">
         <th colspan="7">You have requested to join the following rides:</th>
       </tr>
       <tr style="border-bottom:2px solid black; vertical-align:bottom">
@@ -131,15 +129,13 @@
 
         {% if  outgoing_ride.get_starttime().date() == outgoing_ride.get_endtime().date() %}
         <td>
-            {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} between
-            {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}        
+          {{outgoing_ride.get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+          {{outgoing_ride.get_endtime().strftime('%I:%M %p')}}     
         </td>
         {% else %}
         <td>
-            Between {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} at 
-            {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and 
-            {{outgoing_ride.get_endtime().strftime('%A')}}, {{outgoing_ride.get_endtime().strftime('%B')}} {{outgoing_ride.get_endtime().strftime('%d')}} at 
-            {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}
+          Between {{outgoing_ride.get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+          {{outgoing_ride.get_endtime().strftime('%A, %B %d at %I:%M %p')}}
         </td>
         {% endif %}
 
@@ -155,12 +151,14 @@
       </tr>
       {% endfor %}
       {% else %}
-      <tr style="background-color:sandybrown">
+      <!-- 
+      <tr style="background-color:rgb(242, 187, 140)">
         <th colspan="7">You are not requesting to join any rides.</th>
       </tr>
+      -->
       {% endif %}
       {% if full_ride[3]|length != 0 %}
-      <tr style="background-color:sandybrown">
+      <tr style="background-color:rgb(242, 187, 140)">
         <th colspan="7">Suggested rides to join:</th>
       </tr>
       <tr style="border-bottom:2px solid black; vertical-align:bottom">
@@ -172,39 +170,37 @@
         <th></th>
         <th></th>
       </tr>
-      {% for outgoing_ride in full_ride[3] %}
+      {% for past_ride in full_ride[3] %}
       <tr>
-        <td>{{', '.join(outgoing_ride.get_riders())}}</td>
-        <td>{{outgoing_ride.get_origin()}}</td>
-        <td>{{outgoing_ride.get_dest()}}</td>
+        <td>{{', '.join(past_ride.get_riders())}}</td>
+        <td>{{past_ride.get_origin()}}</td>
+        <td>{{past_ride.get_dest()}}</td>
 
-        {% if  outgoing_ride.get_starttime().date() == outgoing_ride.get_endtime().date() %}
+        {% if  past_ride.get_starttime().date() == past_ride.get_endtime().date() %}
         <td>
-            {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} between
-            {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}        
+          {{past_ride.get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+          {{past_ride.get_endtime().strftime('%I:%M %p')}}   
         </td>
         {% else %}
         <td>
-            Between {{outgoing_ride.get_starttime().strftime('%A')}}, {{outgoing_ride.get_starttime().strftime('%B')}} {{outgoing_ride.get_starttime().strftime('%d')}} at 
-            {{outgoing_ride.get_starttime().strftime('%I')}}:{{outgoing_ride.get_starttime().strftime('%M')}} {{outgoing_ride.get_starttime().strftime('%p')}} and 
-            {{outgoing_ride.get_endtime().strftime('%A')}}, {{outgoing_ride.get_endtime().strftime('%B')}} {{outgoing_ride.get_endtime().strftime('%d')}} at 
-            {{outgoing_ride.get_endtime().strftime('%I')}}:{{outgoing_ride.get_endtime().strftime('%M')}} {{outgoing_ride.get_endtime().strftime('%p')}}
+          Between {{past_ride.get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+          {{past_ride.get_endtime().strftime('%A, %B %d at %I:%M %p')}}
         </td>
         {% endif %}
 
-        <td>{{outgoing_ride.get_num()}}</td>
+        <td>{{past_ride.get_num()}}</td>
 
         <td colspan="2" style="vertical-align: middle; text-align: center">
             <form action="tryrequest" method="get">
-                <input type = "hidden" name = "rideid" value = {{outgoing_ride.get_rideid()}} />
+                <input type = "hidden" name = "rideid" value = {{past_ride.get_rideid()}} />
                 <input type="submit" value="Request to Join" style="background-color:#9be9ee">
             </form>
         </td>
       </tr>
       {% endfor %}
       {% else %}
-      <tr style="background-color:sandybrown">
-        <th colspan="7">There are no suggestions.</th>
+      <tr style="background-color:rgb(242, 187, 140)">
+        <th colspan="7">There are no compatible rides at this time.</th>
       </tr>
       {% endif %}
     </tbody>
