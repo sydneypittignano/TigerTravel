@@ -6,7 +6,7 @@
   </table>
 {% else %}
 <div class="table-responsive">
-<table class="table table-striped table-responsive">
+<table class="table table-striped table-responsive" style="background-color:lightgray">
 <tbody>
     <tr>
         <th>Current Riders</th>
@@ -44,7 +44,7 @@
     <td>
         <form action="tryrequest" method="get">
         <input type = "hidden" name = "rideid" value = {{rides[i].get_rideid()}} />
-        <input type="submit" value="Request to Join">
+        <input type="submit" value="Request to Join" style="background-color:#9be9ee">
         </form>
     </td>
     {% endif %}

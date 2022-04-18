@@ -102,7 +102,69 @@
               <br>
               {% for full_ride in past_rides %}
               <fieldset disabled>
-              {% include 'displayRides.html' %}
+                <div class="table-responsive">
+                  <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
+                      <tbody>
+                      <td style="padding:0; margin:0; border:0">
+                      <table class="table" style="margin:0">
+                      <tbody>
+                          <tr style="background-color: sandybrown">
+                            <th colspan="5" align-right>My Ride from {{full_ride[0].get_origin()}} to {{full_ride[0].get_dest()}}</th>
+                            <th colspan="1" class="text-end">
+                              <form action="edit" method="get">
+                                <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
+                                <input type="submit" value="Edit Ride" style="background-color:#9be9ee">
+                              </form>
+                            </th>
+                            <th colspan="1" class="text-end">
+                              <form action="deleteorleaveride" method="get">
+                                <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
+                                {% if full_ride[0].get_riders()|length == 1 %}
+                                <input type="submit" value="Delete Ride" style="background-color:tomato">
+                                {% else %}
+                                <input type="submit" value="Leave Ride" style="background-color:tomato">
+                                {% endif %}
+                              </form>
+                            </th>
+                          </tr>
+                          <tr style="border-bottom:2px solid black; vertical-align:bottom">
+                              <th>Current Riders</th>
+                              <th>Origin</th>
+                              <th>Destination</th>
+                              <th>Departure Time</th>
+                              <th># of Riders</th>
+                              <th></th>
+                              <th></th>
+                          </tr>
+                          <tr>
+                            <td>{{', '.join(full_ride[0].get_riders())}}</td>
+                            <td>{{full_ride[0].get_origin()}}</td>
+                            <td>{{full_ride[0].get_dest()}}</td>
+                  
+                            {% if  full_ride[0].get_starttime().date() == full_ride[0].get_endtime().date() %}
+                            <td>
+                                {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} between
+                                {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}        
+                            </td>
+                            {% else %}
+                            <td>
+                                Between {{full_ride[0].get_starttime().strftime('%A')}}, {{full_ride[0].get_starttime().strftime('%B')}} {{full_ride[0].get_starttime().strftime('%d')}} at 
+                                {{full_ride[0].get_starttime().strftime('%I')}}:{{full_ride[0].get_starttime().strftime('%M')}} {{full_ride[0].get_starttime().strftime('%p')}} and 
+                                {{full_ride[0].get_endtime().strftime('%A')}}, {{full_ride[0].get_endtime().strftime('%B')}} {{full_ride[0].get_endtime().strftime('%d')}} at 
+                                {{full_ride[0].get_endtime().strftime('%I')}}:{{full_ride[0].get_endtime().strftime('%M')}} {{full_ride[0].get_endtime().strftime('%p')}}
+                            </td>
+                            {% endif %}
+                  
+                            <td>{{full_ride[0].get_num()}}</td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </td>
+                      </tbody>
+                      </table>
+                    </div>
               </fieldset>
               <br>
               <br>

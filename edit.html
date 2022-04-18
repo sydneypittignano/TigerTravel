@@ -91,6 +91,13 @@
           <br>
           <h1 class = "text-center fw-bold">EDIT RIDE</h1>
           <div class="container-fluid">
+            {% if msg!="" %}
+            <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+                <tbody>
+                  <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{msg}}</td>
+                </tbody>
+            </table>
+            {% endif %}
             <div class="table-responsive">
                 <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
                     <tbody>
@@ -98,12 +105,20 @@
                     <table class="table" style="margin:0">
                     <tbody>
                         <tr style="background-color: sandybrown">
-                          <th colspan="6" align-right>My Ride from <div id="prevorigin">{{ride.get_origin()}}</div> to {{ride.get_dest()}}</th>
+                          <th colspan="6" align-right>My Ride from <span id="prevorigin">{{ride.get_origin()}}</span> to <span id="prevdest">{{ride.get_dest()}}</span></th>
                           <th colspan="1" class="text-end">
-                            <form action="deleteride" method="get">
-                              <input type = "hidden" name = "rideid" value = {{ride.get_rideid()}} />
-                              <input type="submit" value="Delete Ride" style="background-color:tomato">
+                            <form action="account" method="get">
+                              <input type="submit" value="Cancel Edit" style="background-color:#9be9ee">
                             </form>
+                          </th>
+                          <th colspan="1" class="text-end">
+                            <form action="deleteorleaveride" method="get">
+                              <input type = "hidden" name = "rideid" value = {{ride.get_rideid()}} />
+                              {% if ride.get_riders()|length == 1 %}
+                              <input type="submit" value="Delete Ride" style="background-color:tomato">
+                              {% else %}
+                              <input type="submit" value="Leave Ride" style="background-color:tomato">
+                              {% endif %}                            </form>
                           </th>
                         </tr>
                         <div class="container-fluid">
@@ -115,11 +130,15 @@
                             <th></th>
                             <th># of Riders</th>
                             <th></th>
+                            <th></th>
                         </tr>
                         <form action="editride" method="get">
+                        <input type="hidden" name="rideid" id="rideid" value="{{ride.get_rideid()}}">
+                        <input type="hidden" name="starttime" id="starttime">
+                        <input type="hidden" name="endtime" id="endtime">
                         <tr>
-                          <td style="vertical-align:bottom">{{', '.join(ride.get_riders())}}</td>
-                          <td style="vertical-align:bottom">
+                          <td style="vertical-align:middle">{{', '.join(ride.get_riders())}}</td>
+                          <td style="vertical-align:middle">
                             <div>
                                 <select class="form-select" name="origin" id="origin">
                                     <option value = "Princeton University">Princeton University</option>
@@ -132,7 +151,7 @@
                                 </select>
                             </div>
                           </td>
-                          <td style="vertical-align:bottom">
+                          <td style="vertical-align:middle">
                             <div>
                                 <select class="form-select" name="dest" id="dest">
                                   <option value = "Princeton University">Princeton University</option>
@@ -147,7 +166,7 @@
                           </td>
                 
                           <td>
-                            Between
+                            Earliest:
                             <div
                             class='input-group'
                             id='datetimepicker1'
@@ -169,9 +188,10 @@
                                 <span class='fa-solid fa-calendar'></span>
                             </span>
                             </div>
+                            (Prev: {{ride.get_starttime().strftime('%x, %I:%M %p')}})
                           </td>
                           <td style="vertical-align:middle">
-                            and
+                            Latest:
                             <div
                                 class='input-group'
                                 id='datetimepicker2'
@@ -193,12 +213,13 @@
                                 <span class='fa-solid fa-calendar'></span>
                                 </span>
                             </div>
+                            (Prev: {{ride.get_endtime().strftime('%x, %I:%M %p')}})
                           </td>
                 
-                          <td style="vertical-align:bottom">{{ride.get_num()}}</td>
+                          <td style="vertical-align:middle">{{ride.get_num()}}</td>
 
-                          <td style="vertical-align:bottom">
-                              <input type="submit" value="CONFIRM EDIT" style="background-color:lightblue">
+                          <td style="vertical-align:middle; text-align: center" colspan="2">
+                              <input type="submit" value="CONFIRM EDIT" style="background-color:#9be9ee">
                           </td>
                         </tr>
                         </form>
@@ -234,8 +255,8 @@
             }
 
             function setup() {
-                var prevorigin= $('#prevorigin').text();
-                $("#origin option[value='" + prevorigin + "']").prop('selected', true);
+                $("#origin option[value='" + $('#prevorigin').text() + "']").prop('selected', true);
+                $("#dest option[value='" + $('#prevdest').text() + "']").prop('selected', true);
                 document.body.addEventListener('click', insertTimes);
             }
             

@@ -224,8 +224,9 @@ def accept_request(joining_rideid, sending_rideid):
            sending_ride = from_rideid_get_ride(sending_rideid)
            lateststart = max(joining_ride.get_starttime(), sending_ride.get_starttime())
            earliestend = min(joining_ride.get_endtime(), sending_ride.get_endtime())
-           stmt_str = "UPDATE rides SET starttime = %s, endtime=%s, num=num+1, reqrec='{}', reqsent='{}' WHERE rideid=%s"
-           cursor.execute(stmt_str, [lateststart, earliestend, joining_rideid])
+           newnum = joining_ride.get_num() + sending_ride.get_num()
+           stmt_str = "UPDATE rides SET starttime = %s, endtime=%s, num=%s, reqrec=array_remove(reqrec, %s) WHERE rideid=%s"
+           cursor.execute(stmt_str, [lateststart, earliestend, newnum, sending_rideid, joining_rideid])
 
            # delete sending ride
            stmt_str = "DELETE FROM rides WHERE rideid = %s"
@@ -257,6 +258,86 @@ def decline_request(joining_rideid, sending_rideid):
     cancel_request(joining_rideid, sending_rideid)
 
 #-----------------------------------------------------------------------
+
+def leave_ride(rideid, netid):
+    with connect(
+        host='localhost', port=5432, user='ttadmins',
+        password='071020010307200204262002oms', database='tigertravel') as connection:
+ 
+        with connection.cursor() as cursor:
+            # give new_rideid in riders table
+            count = from_netid_get_count(cursor, netid)
+            new_rideid = netid + '-' + str(count+1)
+            stmt_str = "UPDATE riders SET rideid=%s WHERE netid=%s AND rideid=%s"
+            cursor.execute(stmt_str, [new_rideid, netid, rideid])
+            from_netid_increment_count(cursor, netid)
+
+            # get my starttime/endtime
+            stmt_str = "SELECT starttime, endtime FROM riders WHERE rideid=%s"
+            cursor.execute(stmt_str, [new_rideid])
+            row = cursor.fetchone()
+            my_starttime = row[0]
+            my_endtime = row[1]
+
+            # make new ride in rides table
+            ride = from_rideid_get_ride(rideid)
+            info = [new_rideid, ride.get_origin(), ride.get_dest(), my_starttime, my_endtime]
+            stmt_str = "INSERT INTO rides (rideid, origin, dest, "
+            stmt_str += "starttime, endtime, num, reqrec, reqsent) VALUES (%s, %s, %s, %s, %s, 1, '{}', '{}');"
+            cursor.execute(stmt_str, info)
+
+            # find new starttime/endtime
+            stmt_str = "SELECT starttime, endtime FROM riders WHERE rideid=%s"
+            cursor.execute(stmt_str, [rideid])
+            row = cursor.fetchone()
+            starttimes = []
+            endtimes = []
+            while row is not None:
+                starttimes.append(row[0])
+                endtimes.append(row[1])
+                row = cursor.fetchone()
+            lateststart = max(starttimes)
+            earliestend = min(endtimes)
+
+            # update starttime/endtime/num
+            stmt_str = "UPDATE rides SET starttime=%s, endtime=%s, num=num-1 WHERE rideid=%s"
+            cursor.execute(stmt_str, [lateststart, earliestend, rideid])
+
+            
+#-----------------------------------------------------------------------
+
+def get_suggested(ride, incoming, outgoing):
+    suggested = []
+    my_origin = ride.get_origin()
+    my_dest = ride.get_dest()
+    my_starttime = ride.get_starttime()
+    my_endtime = ride.get_endtime()
+
+    unfiltered_suggestions = get_rides(None, my_origin, my_dest, my_starttime, my_endtime)
+
+    for suggestion in unfiltered_suggestions:
+        valid = True
+        if suggestion.get_rideid() == ride.get_rideid():
+            valid = False
+            continue
+        for incomingride in incoming:
+            if suggestion.get_rideid() == incomingride.get_rideid():
+                valid = False
+                break
+        if valid == False:
+            continue
+        for outgoingride in outgoing:
+            if suggestion.get_rideid() == outgoingride.get_rideid():
+                valid = False
+                break
+        if valid == True:
+            suggested.append(suggestion)
+
+    return suggested
+
+#-----------------------------------------------------------------------
+
+
 
 
 
