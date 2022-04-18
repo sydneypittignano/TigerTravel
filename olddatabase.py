@@ -13,8 +13,8 @@ from ride import Ride
 #-----------------------------------------------------------------------
 
 
-#-----------------------------------------------------------------------
 
+#-----------------------------------------------------------------------
 
 # returns a list of Ride objects that contain all relevant information
 # about the rides. takes filters as arguments.
