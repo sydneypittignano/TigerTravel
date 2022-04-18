@@ -20,11 +20,18 @@
     <body style="background-color:rgb(148,188,199)">
         <!-- ======================================================= -->
 
+        <style>
+          .navbar.navbar-expand-lg.navbar-light .collapse.navbar-collapse.justify-content-end .navbar-nav .nav-link.active {
+              background-color: white;
+          }
+          .navbar.navbar-expand-lg.navbar-light .collapse.navbar-collapse.justify-content-end .navbar-nav .nav-link {
+              padding: 20px 10px 20px 10px;
+          }
+        </style>
 
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#9be9ee; color:rgb(0, 0, 0)">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#9be9ee; color:rgb(0, 0, 0); margin:0px; padding:0px 0px 0px 0px">
               <a class="navbar-brand" href="index"></a>
-                <a href="index"><img src="/static/ttSmall.png" alt=""></a>
+              <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -36,20 +43,22 @@
                   <a class="nav-link" href="about">About</a>
                   <a class="nav-link" href="tutorial">Tutorial</a>
                   <form class="form-inline" action="logout">
-                    <button class="btn btn-dark" type="submit">logout</button>
+                    <button class="btn btn-dark" type="submit" style="padding: 8px 8px 8px 8px; margin:10px">logout</button>
                   </form>
                 </div>
-              </div>
             </div>
           </nav>
         
         <!-- ======================================================= -->
         <style>
           .nav-link {
-              color: blue;
+              color: black;
+          }
+          .nav-tabs .nav-item .nav-link.active {
+              color: black;
           }
           .nav-item>a:hover {
-              color: rgb(0, 145, 255);
+              color: white;
           }
         </style>
 
@@ -64,10 +73,10 @@
           </table>
           {% endif %}
           <ul class="nav nav-tabs justify-content-center" role="tablist" style="border-bottom:1px solid white; border-collapse:collapse">
-            <li class="nav-item" style="border-bottom:4px solid white">
+            <li class="nav-item" style="border-bottom:5px solid white">
               <a class="nav-link active" data-bs-toggle="tab" href="#Upcoming"><h5>Upcoming Rides</h6></a>
             </li>
-            <li class="nav-item" style="border-bottom:4px solid white">
+            <li class="nav-item" style="border-bottom:5px solid white">
               <a class="nav-link" data-bs-toggle="tab" href="#Past"><h5>Past Rides</h5></a>
             </li>
           </ul>

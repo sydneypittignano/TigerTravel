@@ -59,26 +59,32 @@
 
     <body style="background-color:rgb(148,188,199)">
         <!-- ======================================================= -->
+        <style>
+          .navbar.navbar-expand-lg.navbar-light .collapse.navbar-collapse.justify-content-end .navbar-nav .nav-link.active {
+              background-color: white;
+          }
+          .navbar.navbar-expand-lg.navbar-light .collapse.navbar-collapse.justify-content-end .navbar-nav .nav-link {
+              padding: 20px 10px 20px 10px;
+          }
+        </style>
 
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9be9ee; color:rgb(0, 0, 0)">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#9be9ee; color:rgb(0, 0, 0); margin:0px; padding:0px 0px 0px 0px">
               <a class="navbar-brand" href="index"></a>
-                <a href="index"><img src="/static/ttSmall.png" alt=""></a>
+              <a href="index"><img src="/static/ttSmall.png" alt=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                  <a class="nav-link" href="account">Dashboard</a>
-                  <a class="nav-link active" aria-current="page" href="browse">Browse</a>
+                  <a class="nav-link" aria-current="page" href="account">Dashboard</a>
+                  <a class="nav-link active" href="browse">Browse</a>
                   <a class="nav-link" href="add">Add Ride</a>
                   <a class="nav-link" href="about">About</a>
                   <a class="nav-link" href="tutorial">Tutorial</a>
                   <form class="form-inline" action="logout">
-                    <button class="btn btn-dark" type="submit">logout</button>
+                    <button class="btn btn-dark" type="submit" style="padding: 8px 8px 8px 8px; margin:10px">logout</button>
                   </form>
                 </div>
-              </div>
             </div>
           </nav>
     
