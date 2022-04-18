@@ -8,12 +8,21 @@
 # https://fedingo.com/how-to-send-html-mail-with-attachment-using-python/
 #-----------------------------------------------------------------------
 
+import os
 import smtplib
 from email.mime.text import MIMEText
-from keys import MAILGUN_SMTP_LOGIN, MAILGUN_SMTP_PASSWORD, MAILGUN_SMTP_PORT, MAILGUN_SMTP_SERVER
+# from keys import MAILGUN_SMTP_LOGIN, MAILGUN_SMTP_PASSWORD, MAILGUN_SMTP_PORT, MAILGUN_SMTP_SERVER
 from emailtemplates import REQUEST_RECEIVED_TEMPLATE
 
 #-----------------------------------------------------------------------
+
+MAILGUN_SMTP_LOGIN = os.environ['MAILGUN_SMTP_LOGIN']
+MAILGUN_SMTP_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
+MAILGUN_SMTP_PORT = os.environ['MAILGUN_SMTP_PORT']
+MAILGUN_SMTP_SERVER = os.environ['MAILGUN_SMTP_SERVER']
+
+#-----------------------------------------------------------------------
+
 
 # This gets called by every function below
 # Do not change this
