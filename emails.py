@@ -11,15 +11,15 @@
 import os
 import smtplib
 from email.mime.text import MIMEText
-# from keys import MAILGUN_SMTP_LOGIN, MAILGUN_SMTP_PASSWORD, MAILGUN_SMTP_PORT, MAILGUN_SMTP_SERVER
+from keys import MAILGUN_SMTP_LOGIN, MAILGUN_SMTP_PASSWORD, MAILGUN_SMTP_PORT, MAILGUN_SMTP_SERVER
 from emailtemplates import REQUEST_RECEIVED_TEMPLATE
 
 #-----------------------------------------------------------------------
 
-MAILGUN_SMTP_LOGIN = os.environ['MAILGUN_SMTP_LOGIN']
-MAILGUN_SMTP_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
-MAILGUN_SMTP_PORT = os.environ['MAILGUN_SMTP_PORT']
-MAILGUN_SMTP_SERVER = os.environ['MAILGUN_SMTP_SERVER']
+# MAILGUN_SMTP_LOGIN = os.environ['MAILGUN_SMTP_LOGIN']
+# MAILGUN_SMTP_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
+# MAILGUN_SMTP_PORT = os.environ['MAILGUN_SMTP_PORT']
+# MAILGUN_SMTP_SERVER = os.environ['MAILGUN_SMTP_SERVER']
 
 #-----------------------------------------------------------------------
 
