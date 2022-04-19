@@ -11,11 +11,11 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
-from olddatabase import get_rides, add_ride, from_netid_get_rides, from_rideid_get_riders, leave_ride, get_suggested
+from olddatabase import from_netid_get_reqnum, get_rides, add_ride, from_netid_get_rides, from_rideid_get_riders, leave_ride, get_suggested
 from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
 from ride import Ride
 from keys import APP_SECRET_KEY
-from emails import email_request_received
+#from emails import email_request_received
 
 #-----------------------------------------------------------------------
 
@@ -58,8 +58,10 @@ def add():
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
+
+    req_num = from_netid_get_reqnum(my_netid)
     
-    html = render_template('add.html', msg=msg, joining_ride = joining_ride, msg2=msg2)
+    html = render_template('add.html', msg=msg, joining_ride = joining_ride, req_num = req_num, msg2=msg2)
     response = make_response(html)
     return response
 
@@ -72,7 +74,7 @@ def add():
 def addride():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
-
+    
     origin = request.args.get('origin')
     dest = request.args.get('dest')
     starttime = request.args.get('starttime')
@@ -133,7 +135,7 @@ def addandjoin():
             my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
             send_request(joining_rideid, my_rideid)
             recipient_netids = from_rideid_get_riders(joining_rideid)
-            email_request_received(recipient_netids)
+            #email_request_received(recipient_netids)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
             return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not compatible with the above ride! Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
@@ -146,12 +148,12 @@ def browse():
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
-
+    req_num = from_netid_get_reqnum(my_netid)
     msg = request.args.get('msg')
     if msg is None:
         msg = ''
 
-    html = render_template('browse.html', msg=msg)
+    html = render_template('browse.html', msg=msg, req_num = req_num)
     response = make_response(html)
     return response
 
@@ -184,8 +186,8 @@ def about():
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
-    
-    html = render_template('about.html')
+    req_num = from_netid_get_reqnum(my_netid)
+    html = render_template('about.html', req_num = req_num)
     response = make_response(html)
     return response
 
@@ -196,8 +198,8 @@ def tutorial():
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
-    
-    html = render_template('tutorial.html')
+    req_num = from_netid_get_reqnum(my_netid)
+    html = render_template('tutorial.html', req_num = req_num)
     response = make_response(html)
     return response
 
@@ -236,7 +238,9 @@ def account():
         else:
             future_rides.append(full_ride)
 
-    html = render_template('account.html', full_rides=future_rides, past_rides=past_rides, msg=msg)
+    req_num = from_netid_get_reqnum(my_netid)
+
+    html = render_template('account.html', full_rides=future_rides, past_rides=past_rides, req_num = req_num, msg=msg)
     response = make_response(html)
     return response
 
@@ -261,7 +265,6 @@ def tryrequest():
             if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
                 send_request(joining_rideid, ride.get_rideid())
                 recipient_netids = from_rideid_get_riders(joining_rideid)
-                email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
     return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))

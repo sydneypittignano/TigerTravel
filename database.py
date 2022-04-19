@@ -9,6 +9,7 @@ import os
 from sys import stderr
 from psycopg2 import connect
 from ride import Ride
+from datetime import datetime
 
 #-----------------------------------------------------------------------
 
@@ -326,7 +327,19 @@ def get_suggested(ride, incoming, outgoing):
 
 #-----------------------------------------------------------------------
 
+def from_netid_get_reqnum(my_netid):
+    my_rides = from_netid_get_rides(my_netid)
+    future_rides = []
+    for ride in my_rides:
+        if ride.get_endtime() >= datetime.now():
+            future_rides.append(ride)
 
+    request_num = 0
+    for ride in future_rides:
+        request_num += len(ride.get_reqrec())
+    return request_num
+
+#-----------------------------------------------------------------------
 
 
 # For testing:
