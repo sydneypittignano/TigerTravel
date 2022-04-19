@@ -232,7 +232,7 @@ def account():
             outgoing.append(get_rides(reqsent, None, None, None, None)[0])
         
         #make suggested, which is an array of rides that have same origin, dest, and overlap
-        suggested = get_suggested(ride, incoming, outgoing)
+        suggested = get_suggested(my_netid, ride, incoming, outgoing)
 
         full_ride = [ride, incoming, outgoing, suggested]
         if ride.get_endtime() < datetime.now():
