@@ -9,7 +9,11 @@
           <th colspan="1" class="text-end">
             <form action="edit" method="get">
               <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
+              {% if full_ride[0].get_riders()|length > 1 %}
+              <input type="submit" value="Edit Ride" style="background-color:#9be9ee" disabled>
+              {% else %}
               <input type="submit" value="Edit Ride" style="background-color:#9be9ee">
+              {% endif %} 
             </form>
           </th>
           <th colspan="1" class="text-end">

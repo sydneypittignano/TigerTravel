@@ -12,10 +12,10 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from olddatabase import from_netid_get_reqnum, get_rides, add_ride, from_netid_get_rides, from_rideid_get_riders, leave_ride, get_suggested
-from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request
+from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request, edit_ride
 from ride import Ride
 from keys import APP_SECRET_KEY
-#from emails import email_request_received
+from emails import email_request_received, email_request_accepted, email_request_declined, email_ride_left, email_request_cancelled
 
 #-----------------------------------------------------------------------
 
@@ -135,7 +135,7 @@ def addandjoin():
             my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
             send_request(joining_rideid, my_rideid)
             recipient_netids = from_rideid_get_riders(joining_rideid)
-            #email_request_received(recipient_netids)
+            email_request_received(recipient_netids)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
             return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not compatible with the above ride! Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
@@ -262,11 +262,14 @@ def tryrequest():
         # joining ride has requested to join ride
         if ride.get_endtime() > datetime.now():
             if ride.get_rideid() in reqsent:
+                recipient_netids = from_rideid_get_riders(joining_rideid)
+                email_request_accepted(recipient_netids)
                 accept_request(ride.get_rideid(), joining_rideid)
                 return redirect(url_for('account', msg="Ride successfully joined! You both requested each other :)"))
             if joining_ride.hasOverlapWith(ride) and joining_ride.matchesRouteOf(ride):
                 send_request(joining_rideid, ride.get_rideid())
                 recipient_netids = from_rideid_get_riders(joining_rideid)
+                email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
     return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))
@@ -280,6 +283,10 @@ def cancelrequest():
 
     joining_rideid = request.args.get('joining_rideid')
     sending_rideid = request.args.get('sending_rideid')
+
+    recipient_netids = from_rideid_get_riders(joining_rideid)
+    email_request_cancelled(recipient_netids)
+
     cancel_request(joining_rideid, sending_rideid)
     return redirect(url_for('account', msg="Request cancelled!"))
 
@@ -292,7 +299,11 @@ def acceptrequest():
     joining_rideid = request.args.get('joining_rideid')
     sending_rideid = request.args.get('sending_rideid')
 
+    recipient_netids = from_rideid_get_riders(sending_rideid)
+    email_request_accepted(recipient_netids)
+
     accept_request(joining_rideid, sending_rideid)
+
     return redirect(url_for('account'))
 
 #-----------------------------------------------------------------------
@@ -303,13 +314,14 @@ def deleteorleaveride():
     check_student(my_netid)
 
     rideid = request.args.get('rideid')
-    netid = request.args.get('netid')
     
     if len(from_rideid_get_riders(rideid)) == 1:
         delete_ride(rideid)
         return redirect(url_for('account', msg="Ride deleted!"))
     else:
         leave_ride(rideid, my_netid)
+        recipient_netids = from_rideid_get_riders(rideid)
+        email_ride_left(recipient_netids)
         return redirect(url_for('account', msg="Ride successfully left!"))
 
 #-----------------------------------------------------------------------
@@ -320,6 +332,9 @@ def declinerequest():
 
     joining_rideid = request.args.get('joining_rideid')
     sending_rideid = request.args.get('sending_rideid')
+
+    recipient_netids = from_rideid_get_riders(sending_rideid)
+    email_request_declined(recipient_netids)
 
     decline_request(joining_rideid, sending_rideid)
     return redirect(url_for('account'))
@@ -338,9 +353,11 @@ def edit():
     rideid = request.args.get('rideid')
     ride = from_rideid_get_ride(rideid)
     if my_netid not in ride.get_riders():
-        return redirect(url_for('account', msg="Naughty, naughty... you malicious user ;)"))
+        return redirect(url_for('account'))
+    
+    req_num = from_netid_get_reqnum(my_netid)
 
-    html = render_template('edit.html', msg=msg, ride=ride)
+    html = render_template('edit.html', msg=msg, ride=ride, req_num=req_num)
     response = make_response(html)
     return response
 
@@ -350,27 +367,29 @@ def editride():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
-    origin = request.args.get('origin')
-    dest = request.args.get('dest')
-    starttime = request.args.get('starttime')
-    endtime = request.args.get('endtime')
-    rideid = request.args.get('rideid')
+    new_origin = request.args.get('origin')
+    new_dest = request.args.get('dest')
+    new_starttime = request.args.get('starttime')
+    new_endtime = request.args.get('endtime')
+    # old rideid
+    old_rideid = request.args.get('rideid')
 
-    if (origin == '' or dest == '' or starttime == '' or endtime == ''):
-        return redirect(url_for('edit', rideid=rideid, msg="Your ride was not edited! You left one or more fields blank. Try again!"))
-    if (origin == dest):
-        return redirect(url_for('edit', rideid=rideid, msg="Your ride was not edited! Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
+    if (new_origin == '' or new_dest == '' or new_starttime == '' or new_endtime == ''):
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! You left one or more fields blank. Try again!"))
+    if (new_origin == new_dest):
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
     
-    starttime_datetime = datetime.strptime(starttime, '%m/%d/%Y, %I:%M %p')
-    endtime_datetime = datetime.strptime(endtime, '%m/%d/%Y, %I:%M %p')
+    starttime_datetime = datetime.strptime(new_starttime, '%m/%d/%Y, %I:%M %p')
+    endtime_datetime = datetime.strptime(new_endtime, '%m/%d/%Y, %I:%M %p')
 
     if (starttime_datetime > endtime_datetime):
-        return redirect(url_for('edit', rideid=rideid, msg="Your ride was not edited! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
 
     if (starttime_datetime < datetime.now()):
-        return redirect(url_for('edit', rideid=rideid, msg="Your ride was not edited! Your start time has already passed. Please enter a ride with a start time in the future!"))
-    
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your start time has already passed. Please enter a ride with a start time in the future!"))
+
     else: 
-        add_ride(my_netid, origin, dest, starttime, endtime)
-        delete_ride(request.args.get('rideid'))
+        edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime)
+        #add_ride(my_netid, origin, dest, starttime, endtime)
+        #delete_ride(request.args.get('rideid'))
         return redirect(url_for('account', msg="Ride successfully edited!"))
