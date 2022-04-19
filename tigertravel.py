@@ -404,7 +404,7 @@ def editride():
     my_rides = from_netid_get_rides(my_netid)
     temp_new_ride = Ride(None, None, new_origin, new_dest, starttime_datetime, endtime_datetime, None, None, None)
     for my_ride in my_rides:
-        if my_ride.hasOverlapWith(temp_new_ride):
+        if (my_ride.get_rideid() != old_rideid) and (my_ride.hasOverlapWith(temp_new_ride)):
             return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! You already have a ride that overlaps with these times. Please do not create conflicting rides."))
 
     else:
