@@ -10,7 +10,9 @@
             <form action="edit" method="get">
               <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
               {% if full_ride[0].get_riders()|length > 1 %}
-              <input type="submit" value="Edit Ride" style="background-color:#9be9ee" disabled>
+              <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Edit is disabled when there is more than one rider">
+              <input type="submit" value="Edit Ride" style="background-color:#9be9ee; pointer-events:none" disabled>
+              </div>
               {% else %}
               <input type="submit" value="Edit Ride" style="background-color:#9be9ee">
               {% endif %} 
@@ -37,7 +39,13 @@
             <th></th>
         </tr>
         <tr>
-          <td>{{', '.join(full_ride[0].get_riders())}}</td>
+          <td data-toggle="tooltip" data-placement="top"
+          title="
+          {% for rider in full_ride[0].get_riders() %}
+          {{rider}}@princeton.edu
+          {% endfor %}
+          ">
+            {{', '.join(full_ride[0].get_riders())}}</td>
           <td>{{full_ride[0].get_origin()}}</td>
           <td>{{full_ride[0].get_dest()}}</td>
 
@@ -174,29 +182,29 @@
         <th></th>
         <th></th>
       </tr>
-      {% for past_ride in full_ride[3] %}
+      {% for suggested_ride in full_ride[3] %}
       <tr>
-        <td>{{', '.join(past_ride.get_riders())}}</td>
-        <td>{{past_ride.get_origin()}}</td>
-        <td>{{past_ride.get_dest()}}</td>
+        <td>{{', '.join(suggested_ride.get_riders())}}</td>
+        <td>{{suggested_ride.get_origin()}}</td>
+        <td>{{suggested_ride.get_dest()}}</td>
 
-        {% if  past_ride.get_starttime().date() == past_ride.get_endtime().date() %}
+        {% if  suggested_ride.get_starttime().date() == suggested_ride.get_endtime().date() %}
         <td>
-          {{past_ride.get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
-          {{past_ride.get_endtime().strftime('%I:%M %p')}}   
+          {{suggested_ride.get_starttime().strftime('%A, %B %d between %I:%M %p and ')}}
+          {{suggested_ride.get_endtime().strftime('%I:%M %p')}}   
         </td>
         {% else %}
         <td>
-          Between {{past_ride.get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
-          {{past_ride.get_endtime().strftime('%A, %B %d at %I:%M %p')}}
+          Between {{suggested_ride.get_starttime().strftime('%A, %B %d at %I:%M %p and ')}}
+          {{suggested_ride.get_endtime().strftime('%A, %B %d at %I:%M %p')}}
         </td>
         {% endif %}
 
-        <td>{{past_ride.get_num()}}</td>
+        <td>{{suggested_ride.get_num()}}</td>
 
         <td colspan="2" style="vertical-align: middle; text-align: center">
             <form action="tryrequest" method="get">
-                <input type = "hidden" name = "rideid" value = {{past_ride.get_rideid()}} />
+                <input type = "hidden" name = "rideid" value = {{suggested_ride.get_rideid()}} />
                 <input type="submit" value="Request to Join" style="background-color:#9be9ee">
             </form>
         </td>

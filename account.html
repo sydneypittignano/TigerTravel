@@ -12,9 +12,15 @@
         <link rel="stylesheet" href=
         "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Popperjs -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+
         <script src=
         "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
          </script>
+         
     </head>
 
     <body style="background-color:rgb(148,188,199)">
@@ -104,7 +110,6 @@
               {% else %}
               <br>
               {% for full_ride in past_rides %}
-              <fieldset disabled>
                 <div class="table-responsive">
                   <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
                       <tbody>
@@ -116,17 +121,22 @@
                             <th colspan="1" class="text-end">
                               <form action="edit" method="get">
                                 <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
-                                <input type="submit" value="Edit Ride" style="background-color:#9be9ee">
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="You cannot edit past rides">
+                                <input type="submit" value="Edit Ride" style="background-color:#9be9ee; pointer-events:none" disabled>
+                                </div>
                               </form>
                             </th>
                             <th colspan="1" class="text-end">
                               <form action="deleteorleaveride" method="get">
                                 <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
                                 {% if full_ride[0].get_riders()|length == 1 %}
-                                <input type="submit" value="Delete Ride" style="background-color:tomato">
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="You cannot delete past rides">
+                                <input type="submit" value="Delete Ride" style="background-color:tomato; pointer-events:none" disabled>
                                 {% else %}
-                                <input type="submit" value="Leave Ride" style="background-color:tomato">
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="You cannot leave past rides">
+                                <input type="submit" value="Leave Ride" style="background-color:tomato; pointer-events:none" disabled>
                                 {% endif %}
+                                </div>
                               </form>
                             </th>
                           </tr>
@@ -140,7 +150,14 @@
                               <th></th>
                           </tr>
                           <tr>
-                            <td>{{', '.join(full_ride[0].get_riders())}}</td>
+                            <td data-toggle="tooltip" data-placement="top"
+                              title="
+                              {% for rider in full_ride[0].get_riders() %}
+                              {{rider}}@princeton.edu
+                              {% endfor %}
+                              ">
+                              {{', '.join(full_ride[0].get_riders())}}
+                            </td>
                             <td>{{full_ride[0].get_origin()}}</td>
                             <td>{{full_ride[0].get_dest()}}</td>
                   
@@ -166,7 +183,6 @@
                       </tbody>
                       </table>
                     </div>
-              </fieldset>
               <br>
               <br>
               {% endfor %}
@@ -176,6 +192,21 @@
         </div>
 
         <!-- ======================================================= -->
+        <script>
+
+          'use strict';
+
+          function setup()
+          {
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+          }
+
+          $('document').ready(setup);
+
+        </script>
+
 
     </body>
 </html>
