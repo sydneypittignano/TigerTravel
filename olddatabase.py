@@ -315,7 +315,7 @@ def leave_ride(rideid, netid):
             
 #-----------------------------------------------------------------------
 
-def get_suggested(my_netid, ride, incoming, outgoing):
+def get_suggested(ride, incoming, outgoing):
     suggested = []
     my_origin = ride.get_origin()
     my_dest = ride.get_dest()
@@ -326,7 +326,7 @@ def get_suggested(my_netid, ride, incoming, outgoing):
 
     for suggestion in unfiltered_suggestions:
         valid = True
-        if my_netid in from_rideid_get_riders(suggestion.get_rideid()):
+        if suggestion.get_rideid() == ride.get_rideid():
             valid = False
             continue
         for incomingride in incoming:

@@ -94,6 +94,13 @@ def addride():
     if (starttime_datetime < datetime.now()):
         return redirect(url_for('add', msg="Your ride was not added! Your start time has already passed. Please enter a ride with a start time in the future!"))
     
+    # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
+    my_rides = from_netid_get_rides(my_netid)
+    temp_new_ride = Ride(None, None, None, None, starttime_datetime, endtime_datetime, None, None, None)
+    for my_ride in my_rides:
+        if my_ride.hasOverlapWith(temp_new_ride):
+            return redirect(url_for('add', msg="Your ride was not added! You already have a ride that overlaps with these times. Please do not create conflicing rides."))
+    
     else: 
         add_ride(my_netid, origin, dest, starttime, endtime)
         return redirect(url_for('account', msg="Ride successfully added!"))
@@ -232,7 +239,7 @@ def account():
             outgoing.append(get_rides(reqsent, None, None, None, None)[0])
         
         #make suggested, which is an array of rides that have same origin, dest, and overlap
-        suggested = get_suggested(my_netid, ride, incoming, outgoing)
+        suggested = get_suggested(ride, incoming, outgoing)
 
         full_ride = [ride, incoming, outgoing, suggested]
         if ride.get_endtime() < datetime.now():
