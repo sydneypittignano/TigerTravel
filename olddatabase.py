@@ -5,7 +5,6 @@
 # Author: Owen Travis
 #-----------------------------------------------------------------------
 
-from operator import truediv
 import os
 from sys import stderr
 from psycopg2 import connect
