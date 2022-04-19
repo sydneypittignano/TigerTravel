@@ -193,13 +193,18 @@ def cancel_request(joining_rideid, sending_rideid):
        DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
-           stmt_str = "UPDATE rides SET reqrec=array_remove(reqrec, %s)"
-           stmt_str += " WHERE rideid = %s"
-           cursor.execute(stmt_str, [sending_rideid, joining_rideid])
+           cancel_request_stmt(cursor, joining_rideid, sending_rideid)
 
-           stmt_str = "UPDATE rides SET reqsent=array_remove(reqsent, %s)"
-           stmt_str += " WHERE rideid = %s"
-           cursor.execute(stmt_str, [joining_rideid, sending_rideid])
+#-----------------------------------------------------------------------
+
+def cancel_request_stmt(cursor, joining_rideid, sending_rideid):
+    stmt_str = "UPDATE rides SET reqrec=array_remove(reqrec, %s)"
+    stmt_str += " WHERE rideid = %s"
+    cursor.execute(stmt_str, [sending_rideid, joining_rideid])
+
+    stmt_str = "UPDATE rides SET reqsent=array_remove(reqsent, %s)"
+    stmt_str += " WHERE rideid = %s"
+    cursor.execute(stmt_str, [joining_rideid, sending_rideid])
 
 #-----------------------------------------------------------------------
 
@@ -220,6 +225,15 @@ def accept_request(joining_rideid, sending_rideid):
            stmt_str = "UPDATE rides SET starttime = %s, endtime=%s, num=%s, reqrec=array_remove(reqrec, %s) WHERE rideid=%s"
            cursor.execute(stmt_str, [lateststart, earliestend, newnum, sending_rideid, joining_rideid])
 
+           # when we delete sending ride, we need to cancel things
+           for sending_reqrec in sending_ride.get_reqrec():
+               if sending_reqrec != joining_rideid:
+                   cancel_request_stmt(cursor, sending_rideid, sending_reqrec)
+           
+           for sending_reqsent in sending_ride.get_reqsent():
+               if sending_reqsent != joining_rideid:
+                   cancel_request_stmt(cursor, sending_reqsent, sending_rideid)
+                   
            # delete sending ride
            stmt_str = "DELETE FROM rides WHERE rideid = %s"
            cursor.execute(stmt_str, [sending_rideid])
@@ -376,7 +390,10 @@ def edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime):
 
             stmt_str = "UPDATE rides SET origin=%s, dest=%s, starttime=%s, endtime=%s WHERE rideid=%s"
             cursor.execute(stmt_str, [new_origin, new_dest, new_starttime, new_endtime, old_rideid])
-
+            
+            # only works if editing as a single rider, which is all we permit at the moment
+            stmt_str = "UPDATE riders SET starttime=%s, endtime=%s WHERE rideid=%s"
+            cursor.execute(stmt_str, [new_starttime, new_endtime, old_rideid])
 
 #-----------------------------------------------------------------------
 
