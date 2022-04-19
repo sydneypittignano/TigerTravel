@@ -38,6 +38,8 @@
     <td>{{rides[i].get_num()}}</td>
     {% if my_netid in rides[i].get_riders() %}
     <td><i>My Ride</i></td>
+    {% elif rides[i].current_req_sent(my_rides) %}
+    <td><i>Request Sent</i></td>
     {% else %}
     <td>
         <form action="tryrequest" method="get">

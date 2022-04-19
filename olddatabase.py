@@ -5,6 +5,7 @@
 # Author: Owen Travis
 #-----------------------------------------------------------------------
 
+from operator import truediv
 import os
 from sys import stderr
 from psycopg2 import connect
@@ -349,6 +350,10 @@ def from_netid_get_reqnum(my_netid):
     for ride in future_rides:
         request_num += len(ride.get_reqrec())
     return request_num
+
+#-----------------------------------------------------------------------
+
+
 
 #-----------------------------------------------------------------------
 

@@ -171,11 +171,13 @@ def browseresults():
 
     # array of Ride objects
     rides = get_rides(None, origin, dest, starttime, endtime)
+    my_rides = from_netid_get_rides(my_netid)
     future_rides = []
     for ride in rides:
         if ride.get_endtime() >= datetime.now():
             future_rides.append(ride)
-    html = render_template('browseresults.html', rides=future_rides, my_netid=my_netid)
+
+    html = render_template('browseresults.html', rides=future_rides, my_netid=my_netid, my_rides=my_rides)
     response = make_response(html)
     return response
 

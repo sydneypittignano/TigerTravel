@@ -29,7 +29,9 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-link" href="account">Dashboard
-                <span class="badge bg-secondary">{{req_num}}</span>
+                {% if req_num > 0 %}
+                <span class="badge bg-danger">{{req_num}}</span>
+                {% endif %}
               </a>
               <a class="nav-link" href="browse">Browse</a>
               <a class="nav-link" href="add">Add Ride</a>

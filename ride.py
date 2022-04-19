@@ -69,6 +69,12 @@ class Ride:
        if (self.get_dest() != other.get_dest()) or (self.get_origin() != other.get_origin()):
            return False
        return True
+    
+   def current_req_sent(self, my_rides):
+        for my_ride in my_rides:
+            if my_ride.get_rideid() in self.get_reqrec():
+                return True
+        return False
        
 #-----------------------------------------------------------------------
  
