@@ -99,7 +99,7 @@ def addride():
     temp_new_ride = Ride(None, None, None, None, starttime_datetime, endtime_datetime, None, None, None)
     for my_ride in my_rides:
         if my_ride.hasOverlapWith(temp_new_ride):
-            return redirect(url_for('add', msg="Your ride was not added! You already have a ride that overlaps with these times. Please do not create conflicing rides."))
+            return redirect(url_for('add', msg="Your ride was not added! You already have a ride that overlaps with these times. Please do not create conflicting rides."))
     
     else: 
         add_ride(my_netid, origin, dest, starttime, endtime)
@@ -134,18 +134,23 @@ def addandjoin():
     if (endtime_datetime < datetime.now()):
         return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! Your start time has already passed. Please enter a ride with an end time in the future!"))
 
-    else:
-        my_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
-        joining_ride = from_rideid_get_ride(joining_rideid)
+    # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
+    my_rides = from_netid_get_rides(my_netid)
+    temp_new_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
+    for my_ride in my_rides:
+        if my_ride.hasOverlapWith(temp_new_ride):
+            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! You already have a ride that overlaps with these times. Please do not create conflicting rides."))
 
-        if joining_ride.hasOverlapWith(my_ride) and joining_ride.matchesRouteOf(my_ride):
+    else:
+        joining_ride = from_rideid_get_ride(joining_rideid)
+        if joining_ride.hasOverlapWith(temp_new_ride) and joining_ride.matchesRouteOf(temp_new_ride):
             my_rideid = add_ride(my_netid, origin, dest, starttime, endtime)
             send_request(joining_rideid, my_rideid)
             recipient_netids = from_rideid_get_riders(joining_rideid)
             email_request_received(recipient_netids)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
-            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not compatible with the above ride! Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
+            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! It was not compatible with the above ride. Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
 
 
 #-----------------------------------------------------------------------
@@ -395,7 +400,14 @@ def editride():
     if (starttime_datetime < datetime.now()):
         return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your start time has already passed. Please enter a ride with a start time in the future!"))
 
-    else: 
+    # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
+    my_rides = from_netid_get_rides(my_netid)
+    temp_new_ride = Ride(None, None, new_origin, new_dest, starttime_datetime, endtime_datetime, None, None, None)
+    for my_ride in my_rides:
+        if my_ride.hasOverlapWith(temp_new_ride):
+            return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! You already have a ride that overlaps with these times. Please do not create conflicting rides."))
+
+    else:
         edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime)
         #add_ride(my_netid, origin, dest, starttime, endtime)
         #delete_ride(request.args.get('rideid'))
