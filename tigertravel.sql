@@ -5,10 +5,6 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
-DROP TABLE IF EXISTS riders;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS rides;
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -79,12 +75,16 @@ ALTER TABLE public.students OWNER TO ttadmins;
 
 COPY public.riders (netid, rideid, starttime, endtime) FROM stdin;
 sydneyp	sydneyp-2	2022-04-16 01:00:00	2022-04-17 01:00:00
-otravis	otravis-6	2022-04-25 19:15:00	2022-04-25 22:15:00
-beid	beid-2	2022-04-16 11:51:00	2022-04-16 12:51:00
-otravis	beid-2	2022-04-16 11:17:00	2022-04-16 12:17:00
-sl55	otravis-6	2022-04-25 19:15:00	2022-04-25 19:45:00
-otravis	otravis-9	2022-04-21 16:37:00	2022-04-21 17:37:00
 otravis	otravis-10	2022-04-26 10:00:00	2022-04-26 11:30:00
+otravis	otravis-9	2022-04-21 16:30:00	2022-04-21 17:30:00
+sydneyp	otravis-9	2022-04-21 16:30:00	2022-04-21 17:30:00
+otravis	otravis-11	2022-04-24 23:00:00	2022-04-25 01:00:00
+sydneyp	sydneyp-4	2022-05-04 12:00:00	2022-05-04 15:00:00
+sydneyp	sydneyp-5	2022-04-27 19:00:00	2022-04-27 21:00:00
+otravis	otravis-12	2022-04-29 09:00:00	2022-04-29 12:00:00
+otravis	otravis-13	2022-05-02 11:45:00	2022-05-02 14:15:00
+sydneyp	otravis-13	2022-05-02 11:45:00	2022-05-02 14:15:00
+sydneyp	sydneyp-7	2022-04-29 20:00:00	2022-04-29 21:00:00
 \.
 
 
@@ -93,11 +93,15 @@ otravis	otravis-10	2022-04-26 10:00:00	2022-04-26 11:30:00
 --
 
 COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
-LaGuardia Airport (LGA)	John F. Kennedy International Airport (JFK)	2022-04-25 19:15:00	2022-04-25 19:45:00	2	otravis-6	{}	{}
-Nassau Park Pavilion (Wegmans, Party City, etc.)	Philadelphia International Airport (PHL)	2022-04-21 16:37:00	2022-04-21 17:37:00	1	otravis-9	{}	{}
 Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-16 01:00:00	2022-04-17 01:00:00	1	sydneyp-2	{}	{}
-Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-04-16 11:51:00	2022-04-16 12:17:00	2	beid-2	{}	{}
 Princeton University	LaGuardia Airport (LGA)	2022-04-26 10:00:00	2022-04-26 11:30:00	1	otravis-10	{}	{}
+Nassau Park Pavilion (Wegmans, Party City, etc.)	Philadelphia International Airport (PHL)	2022-04-21 16:30:00	2022-04-21 17:30:00	2	otravis-9	{}	{}
+Philadelphia International Airport (PHL)	Princeton University	2022-04-24 23:00:00	2022-04-25 01:00:00	1	otravis-11	{}	{}
+Princeton University	Trenton-Mercer Airport (TTN)	2022-05-04 12:00:00	2022-05-04 15:00:00	1	sydneyp-4	{}	{}
+Nassau Park Pavilion (Wegmans, Party City, etc.)	Princeton University	2022-04-27 19:00:00	2022-04-27 21:00:00	1	sydneyp-5	{}	{}
+John F. Kennedy International Airport (JFK)	Princeton University	2022-04-29 09:00:00	2022-04-29 12:00:00	1	otravis-12	{}	{}
+Princeton University	Newark Liberty International Airport (EWR)	2022-05-02 11:45:00	2022-05-02 14:15:00	2	otravis-13	{}	{}
+Philadelphia International Airport (PHL)	John F. Kennedy International Airport (JFK)	2022-04-29 20:00:00	2022-04-29 21:00:00	1	sydneyp-7	{}	{}
 \.
 
 
@@ -106,10 +110,9 @@ Princeton University	LaGuardia Airport (LGA)	2022-04-26 10:00:00	2022-04-26 11:3
 --
 
 COPY public.students (netid, firstname, lastname, email, phone, strikes, count) FROM stdin;
-sydneyp					0	2
-sl55					0	2
-beid					0	2
-otravis					0	10
+manyaz					0	2
+otravis					0	13
+sydneyp					0	7
 \.
 
 
