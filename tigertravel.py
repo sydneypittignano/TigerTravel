@@ -201,7 +201,7 @@ def about():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
     req_num = from_netid_get_reqnum(my_netid)
-    html = render_template('about.html', req_num = req_num)
+    html = render_template('about.html', req_num=req_num)
     response = make_response(html)
     return response
 
@@ -254,7 +254,7 @@ def account():
 
     req_num = from_netid_get_reqnum(my_netid)
 
-    html = render_template('account.html', full_rides=future_rides, past_rides=past_rides, req_num = req_num, msg=msg)
+    html = render_template('account.html', full_rides=future_rides, past_rides=past_rides, req_num = req_num, msg=msg, my_netid=my_netid)
     response = make_response(html)
     return response
 

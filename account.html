@@ -150,13 +150,16 @@
                               <th></th>
                           </tr>
                           <tr>
-                            <td data-toggle="tooltip" data-placement="top"
-                              title="
-                              {% for rider in full_ride[0].get_riders() %}
-                              {{rider}}@princeton.edu
+                            <td>
+                              {% for rider in full_ride[0].get_riders()%}
+                              {% if rider != my_netid %}
+                              <a href="javascript:void(0)" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="{{rider}}@princeton.edu">
+                                {{rider}}
+                              </a>
+                              {% else %}
+                                {{rider}}
+                              {% endif %}
                               {% endfor %}
-                              ">
-                              {{', '.join(full_ride[0].get_riders())}}
                             </td>
                             <td>{{full_ride[0].get_origin()}}</td>
                             <td>{{full_ride[0].get_dest()}}</td>
@@ -195,6 +198,11 @@
         <script>
 
           'use strict';
+
+          var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+          var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+          return new bootstrap.Popover(popoverTriggerEl)
+          })
 
           function setup()
           {
