@@ -54,7 +54,6 @@ def add():
     joining_ride = ""
     if joining_rideid is not None:
         joining_ride = from_rideid_get_ride(joining_rideid)
-        msg = 'None of your current rides are compatible!'
 
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
@@ -284,7 +283,7 @@ def tryrequest():
                 email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
-    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You can still request to join! Just tell us your departure window, making sure it overlaps with the above ride."))
+    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="One more step! Tell us your preferred departure window, making sure it overlaps with the above ride."))
 
 #-----------------------------------------------------------------------
 

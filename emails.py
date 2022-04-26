@@ -9,99 +9,81 @@
 #-----------------------------------------------------------------------
 
 import os
-import smtplib
-from email.mime.text import MIMEText
-from keys import MAILGUN_SMTP_LOGIN, MAILGUN_SMTP_PASSWORD, MAILGUN_SMTP_PORT, MAILGUN_SMTP_SERVER
 from emailtemplates import REQUEST_ACCEPTED_TEMPLATE, REQUEST_RECEIVED_TEMPLATE, REQUEST_DECLINED_TEMPLATE, RIDE_LEFT_TEMPLATE, REQUEST_CANCELLED_TEMPLATE
+from keys import SENDGRID_API_KEY
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 #-----------------------------------------------------------------------
 
-# MAILGUN_SMTP_LOGIN = os.environ['MAILGUN_SMTP_LOGIN']
-# MAILGUN_SMTP_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
-# MAILGUN_SMTP_PORT = os.environ['MAILGUN_SMTP_PORT']
-# MAILGUN_SMTP_SERVER = os.environ['MAILGUN_SMTP_SERVER']
+# SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 
 #-----------------------------------------------------------------------
 
 
 # This gets called by every function below
 # Do not change this
-def send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port):
-    msg = MIMEText(html, "html")
-    msg['Subject'] = subject
-    msg['To'] = recipient
-    msg['From'] = sender
-    s = smtplib.SMTP(smtp_server, port)
-    s.login(smtp_login, password)
-    s.sendmail(msg['From'], msg['To'], msg.as_string())
-    s.quit()
+def send_message_mailgun(html, subject, recipient, sender):
+    message = Mail(
+        from_email=sender,
+        to_emails=recipient,
+        subject=subject,
+        html_content=html)
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
 
 #-----------------------------------------------------------------------
 
 def email_request_received(recipient_netids):
     html = REQUEST_RECEIVED_TEMPLATE
     subject = "Someone has requested to join your ride!"
-    sender = "TigerTravel <princetontigertravel@gmail.com>"
-    smtp_login = MAILGUN_SMTP_LOGIN
-    smtp_server = MAILGUN_SMTP_SERVER
-    password = MAILGUN_SMTP_PASSWORD
-    port = MAILGUN_SMTP_PORT
+    sender = "princetontigertravel@gmail.com"
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
-        send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
+        send_message_mailgun(html, subject, recipient, sender)
 #-----------------------------------------------------------------------
 
 def email_request_accepted(recipient_netids):
     html = REQUEST_ACCEPTED_TEMPLATE
     subject = "Your join request has been accepted!"
-    sender = "TigerTravel <princetontigertravel@gmail.com>"
-    smtp_login = MAILGUN_SMTP_LOGIN
-    smtp_server = MAILGUN_SMTP_SERVER
-    password = MAILGUN_SMTP_PASSWORD
-    port = MAILGUN_SMTP_PORT
+    sender = "princetontigertravel@gmail.com"
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
-        send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
+        send_message_mailgun(html, subject, recipient, sender)
 
 #-----------------------------------------------------------------------
 
 def email_request_declined(recipient_netids):
     html = REQUEST_DECLINED_TEMPLATE
     subject = "Your join request has been declined."
-    sender = "TigerTravel <princetontigertravel@gmail.com>"
-    smtp_login = MAILGUN_SMTP_LOGIN
-    smtp_server = MAILGUN_SMTP_SERVER
-    password = MAILGUN_SMTP_PASSWORD
-    port = MAILGUN_SMTP_PORT
+    sender = "princetontigertravel@gmail.com"
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
-        send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
+        send_message_mailgun(html, subject, recipient, sender)
 
 #-----------------------------------------------------------------------
 
 def email_ride_left(recipient_netids):
     html = RIDE_LEFT_TEMPLATE
     subject = "Someone has left your ride."
-    sender = "TigerTravel <princetontigertravel@gmail.com>"
-    smtp_login = MAILGUN_SMTP_LOGIN
-    smtp_server = MAILGUN_SMTP_SERVER
-    password = MAILGUN_SMTP_PASSWORD
-    port = MAILGUN_SMTP_PORT
+    sender = "princetontigertravel@gmail.com"
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
-        send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
+        send_message_mailgun(html, subject, recipient, sender)
 
 def email_request_cancelled(recipient_netids):
     html = REQUEST_CANCELLED_TEMPLATE
     subject = "Someone has cancelled a request to join your ride."
-    sender = "TigerTravel <princetontigertravel@gmail.com>"
-    smtp_login = MAILGUN_SMTP_LOGIN
-    smtp_server = MAILGUN_SMTP_SERVER
-    password = MAILGUN_SMTP_PASSWORD
-    port = MAILGUN_SMTP_PORT
+    sender = "princetontigertravel@gmail.com"
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
-        send_message_mailgun(html, subject, recipient, sender, smtp_login, password, smtp_server, port)
+        send_message_mailgun(html, subject, recipient, sender)
 
 
 
