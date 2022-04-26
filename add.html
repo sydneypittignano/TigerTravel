@@ -72,8 +72,12 @@
 
         <div class="container-fluid" style="color:black">
           <br>
-          <h1 class = "text-center fw-bold">ADD RIDE</h1>
           <br>
+          {% if joining_ride != "" %}
+          <h1 class = "text-center fw-bold">ADD & REQUEST</h1>
+          {% else %}
+          <h1 class = "text-center fw-bold">ADD RIDE</h1>
+          {% endif %}
           {% if msg!="" %}
           <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
             <tbody>
@@ -83,48 +87,6 @@
           {% endif %}
           <br>
           {% if joining_ride != "" %}
-          <div class="table-responsive">
-            <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
-              <tbody>
-              <td style="padding:0; margin:0; border:0">
-              <table class="table" style="margin:0">
-              <tbody>
-                <tr style="background-color: sandybrown">
-                  <th colspan="6" align-right>Ride from <span id="joining_origin">{{joining_ride.get_origin()}}</span> to <span id="joining_dest">{{joining_ride.get_dest()}}</span></th>
-                </tr>
-                <tr style="border-bottom:2px solid black; vertical-align:bottom">
-                    <th>Current Riders</th>
-                    <th>Origin</th>
-                    <th>Destination</th>
-                    <th>Departure Time</th>
-                    <th># of Riders</th>
-                </tr>
-                <tr>
-                  <td>{{', '.join(joining_ride.get_riders())}}</td>
-                  <td>{{joining_ride.get_origin()}}</td>
-                  <td>{{joining_ride.get_dest()}}</td>
-                  {% if  joining_ride.get_starttime().date() == joining_ride.get_endtime().date() %}
-                  <td>
-                      {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} between
-                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}        
-                  </td>
-                  {% else %}
-                  <td>
-                      Between {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} at 
-                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and 
-                      {{joining_ride.get_endtime().strftime('%A')}}, {{joining_ride.get_endtime().strftime('%B')}} {{joining_ride.get_endtime().strftime('%d')}} at 
-                      {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}
-                  </td>
-                  {% endif %}
-                  <td>{{joining_ride.get_num()}}</td>
-                </tr>
-              </tbody>
-              </table>
-              </td>
-              </tbody>
-              </table>
-            </div>
-          <br>
           <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
             <tbody>
               <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{msg2}}</td>
@@ -246,6 +208,51 @@
               </div>
             </div>
           </form>
+          <br>
+          <h5>You are requesting to join:</h5>
+          <div class="table-responsive">
+            <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
+              <tbody>
+              <td style="padding:0; margin:0; border:0">
+              <table class="table" style="margin:0">
+              <tbody>
+                <tr style="background-color: sandybrown">
+                  <th colspan="6" align-right>Ride from <span id="joining_origin">{{joining_ride.get_origin()}}</span> to <span id="joining_dest">{{joining_ride.get_dest()}}</span></th>
+                </tr>
+                <tr style="border-bottom:2px solid black; vertical-align:bottom">
+                    <th>Current Riders</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure Time</th>
+                    <th># of Riders</th>
+                </tr>
+                <tr>
+                  <td>{{', '.join(joining_ride.get_riders())}}</td>
+                  <td>{{joining_ride.get_origin()}}</td>
+                  <td>{{joining_ride.get_dest()}}</td>
+                  {% if  joining_ride.get_starttime().date() == joining_ride.get_endtime().date() %}
+                  <td>
+                      {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} between
+                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}        
+                  </td>
+                  {% else %}
+                  <td>
+                      Between {{joining_ride.get_starttime().strftime('%A')}}, {{joining_ride.get_starttime().strftime('%B')}} {{joining_ride.get_starttime().strftime('%d')}} at 
+                      {{joining_ride.get_starttime().strftime('%I')}}:{{joining_ride.get_starttime().strftime('%M')}} {{joining_ride.get_starttime().strftime('%p')}} and 
+                      {{joining_ride.get_endtime().strftime('%A')}}, {{joining_ride.get_endtime().strftime('%B')}} {{joining_ride.get_endtime().strftime('%d')}} at 
+                      {{joining_ride.get_endtime().strftime('%I')}}:{{joining_ride.get_endtime().strftime('%M')}} {{joining_ride.get_endtime().strftime('%p')}}
+                  </td>
+                  {% endif %}
+                  <td>{{joining_ride.get_num()}}</td>
+                </tr>
+              </tbody>
+              </table>
+              </td>
+              </tbody>
+              </table>
+            </div>
+          <br>
+
           {% else %}
           <span id="joining_origin" hidden>none</span>
           <span id="joining_dest" hidden>none</span>

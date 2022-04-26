@@ -283,7 +283,7 @@ def tryrequest():
                 email_request_received(recipient_netids)
                 return redirect(url_for('account', msg="Request successfully sent!"))
     
-    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="One more step! Tell us your preferred departure window, making sure it overlaps with the above ride."))
+    return redirect(url_for('add', joining_rideid=joining_rideid, msg2="One more step! Tell us your preferred departure window, making sure it overlaps with the ride below."))
 
 #-----------------------------------------------------------------------
 
