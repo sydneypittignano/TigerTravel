@@ -134,8 +134,7 @@ def check_student(netid):
 
 def add_student(cursor, netid):
     info = [netid]
-    stmt_str = "INSERT INTO students (netid, firstname, lastname, "
-    stmt_str += "email, phone, strikes, count) VALUES (%s, '', '', '', '', 0, 1);"
+    stmt_str = "INSERT INTO students (netid, strikes, count) VALUES (%s, 0, 1);"
     cursor.execute(stmt_str, info)
 
 #-----------------------------------------------------------------------
