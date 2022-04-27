@@ -34,7 +34,7 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link active disabled" aria-current="page" href="account" style="font-weight:bold">Dashboard
+              <a class="nav-link active" aria-current="page" href="account" style="font-weight:bold">Dashboard
                 {% if req_num > 0 %}
                 <span class="badge bg-danger">{{req_num}}</span>
                 {% endif %}
@@ -69,6 +69,7 @@
         <div class="container-fluid" style="color:rgb(0, 0, 0)">
           <br>
           <h1 class = "text-center fw-bold">MY RIDES</h1>
+          <h4 class="text-center fw-bold">{{my_netid}}</h4>
           <br>
           {% if msg!="" %}
           <table class="table" style="border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">

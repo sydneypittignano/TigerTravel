@@ -164,6 +164,7 @@
                                 type='text'
                                 class='form-control'
                                 data-td-target='#datetimepicker1'
+                                value="{{ride.get_starttime().strftime('%x, %I:%M %p')}}"
                             />
                             <span
                                 class='input-group-text'
@@ -189,6 +190,7 @@
                                 type='text'
                                 class='form-control'
                                 data-td-target='#datetimepicker2'
+                                value="{{ride.get_endtime().strftime('%x, %I:%M %p')}}"
                                 />
                                 <span
                                 class='input-group-text'
@@ -199,7 +201,7 @@
                                 <span class='fa-solid fa-calendar'></span>
                                 </span>
                             </div>
-                            (Prev: {{ride.get_endtime().strftime('%x, %I:%M %p')}})
+                            (Prev:{{ride.get_endtime().strftime('%x, %I:%M %p')}})
                           </td>
                 
                           <td style="vertical-align:middle">{{ride.get_num()}}</td>

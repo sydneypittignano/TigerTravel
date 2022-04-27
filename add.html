@@ -58,7 +58,7 @@
                 {% endif %}
               </a>
               <a class="nav-link" href="browse">Browse</a>
-              <a class="nav-link active disabled" aria-current="page" href="add" style="font-weight:bold">Add Ride</a>
+              <a class="nav-link active" aria-current="page" href="add" style="font-weight:bold">Add Ride</a>
               <a class="nav-link" href="about">About</a>
               <a class="nav-link" href="tutorial">Tutorial</a>
               <form class="form-inline" action="logout" style="padding-right:10px">
@@ -254,8 +254,8 @@
           <br>
 
           {% else %}
-          <span id="joining_origin" hidden>none</span>
-          <span id="joining_dest" hidden>none</span>
+          <span id="joining_origin" hidden>{{defaults[0]}}</span>
+          <span id="joining_dest" hidden>{{defaults[1]}}</span>
           <form action="addride" method="get">
             <input type="hidden" name="starttime" id="starttime">
             <input type="hidden" name="endtime" id="endtime">
@@ -267,15 +267,15 @@
                 </div>
                 <div class="row">
                   <div>
-                  <select class="form-select" name="origin">
+                  <select class="form-select" name="origin" id="origin">
                     <option selected value="none"></option>
-                    <option>Princeton University</option>
-                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                    <option>Trenton-Mercer Airport (TTN)</option>
-                    <option>Philadelphia International Airport (PHL)</option>
-                    <option>LaGuardia Airport (LGA)</option>
-                    <option>Newark Liberty International Airport (EWR)</option>
-                    <option>John F. Kennedy International Airport (JFK)</option>
+                    <option value = "Princeton University">Princeton University</option>
+                    <option value="Nassau Park Pavilion (Wegmans, Party City, etc.)">Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option value="Trenton-Mercer Airport (TTN)">Trenton-Mercer Airport (TTN)</option>
+                    <option value="Philadelphia International Airport (PHL)">Philadelphia International Airport (PHL)</option>
+                    <option value="LaGuardia Airport (LGA)">LaGuardia Airport (LGA)</option>
+                    <option value="Newark Liberty International Airport (EWR)">Newark Liberty International Airport (EWR)</option>
+                    <option value="John F. Kennedy International Airport (JFK)">John F. Kennedy International Airport (JFK)</option>
                   </select>
                   </div>
                 </div>
@@ -286,15 +286,15 @@
                 </div>
                 <div class="row">
                   <div>
-                  <select class="form-select" name="dest">
+                  <select class="form-select" name="dest" id="dest">
                     <option selected value="none"></option>
-                    <option>Princeton University</option>
-                    <option>Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
-                    <option>Trenton-Mercer Airport (TTN)</option>
-                    <option>Philadelphia International Airport (PHL)</option>
-                    <option>LaGuardia Airport (LGA)</option>
-                    <option>Newark Liberty International Airport (EWR)</option>
-                    <option>John F. Kennedy International Airport (JFK)</option>
+                    <option value = "Princeton University">Princeton University</option>
+                    <option value="Nassau Park Pavilion (Wegmans, Party City, etc.)">Nassau Park Pavilion (Wegmans, Party City, etc.)</option>
+                    <option value="Trenton-Mercer Airport (TTN)">Trenton-Mercer Airport (TTN)</option>
+                    <option value="Philadelphia International Airport (PHL)">Philadelphia International Airport (PHL)</option>
+                    <option value="LaGuardia Airport (LGA)">LaGuardia Airport (LGA)</option>
+                    <option value="Newark Liberty International Airport (EWR)">Newark Liberty International Airport (EWR)</option>
+                    <option value="John F. Kennedy International Airport (JFK)">John F. Kennedy International Airport (JFK)</option>
                   </select>
                   </div>
                 </div>
@@ -315,6 +315,7 @@
                       type='text'
                       class='form-control'
                       data-td-target='#datetimepicker1'
+                      value="{{defaults[2]}}"
                     />
                     <span
                       class='input-group-text'
@@ -343,6 +344,7 @@
                       type='text'
                       class='form-control'
                       data-td-target='#datetimepicker2'
+                      value="{{defaults[3]}}"
                     />
                     <span
                       class='input-group-text'
@@ -405,9 +407,7 @@
         
         </script>
 
-        
-
-
+      
     </body>
 </html>
 
