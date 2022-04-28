@@ -178,13 +178,17 @@ def send_request(joining_rideid, sending_rideid):
        DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
-           stmt_str = "UPDATE rides SET reqrec=array_append(reqrec, %s)"
-           stmt_str += " WHERE rideid = %s"
-           cursor.execute(stmt_str, [sending_rideid, joining_rideid])
+           send_request_stmt(cursor, joining_rideid, sending_rideid)
+#-----------------------------------------------------------------------
 
-           stmt_str = "UPDATE rides SET reqsent=array_append(reqsent, %s)"
-           stmt_str += " WHERE rideid = %s"
-           cursor.execute(stmt_str, [joining_rideid, sending_rideid])
+def send_request_stmt(cursor, joining_rideid, sending_rideid):
+    stmt_str = "UPDATE rides SET reqrec=array_append(reqrec, %s)"
+    stmt_str += " WHERE rideid = %s"
+    cursor.execute(stmt_str, [sending_rideid, joining_rideid])
+
+    stmt_str = "UPDATE rides SET reqsent=array_append(reqsent, %s)"
+    stmt_str += " WHERE rideid = %s"
+    cursor.execute(stmt_str, [joining_rideid, sending_rideid])
 
 #-----------------------------------------------------------------------
 
@@ -213,25 +217,60 @@ def accept_request(joining_rideid, sending_rideid):
        DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
-           # clear reqrec and reqsent of joining ride
-           # in the future, we might want to simply remove one element of reqrec
-           # and any other requests received/sent that no longer overlap
-           # update starttime and endtime of joining ride
+
            joining_ride = from_rideid_get_ride(joining_rideid)
            sending_ride = from_rideid_get_ride(sending_rideid)
+
            lateststart = max(joining_ride.get_starttime(), sending_ride.get_starttime())
+
            earliestend = min(joining_ride.get_endtime(), sending_ride.get_endtime())
+
            newnum = joining_ride.get_num() + sending_ride.get_num()
+
            stmt_str = "UPDATE rides SET starttime = %s, endtime=%s, num=%s, reqrec=array_remove(reqrec, %s) WHERE rideid=%s"
            cursor.execute(stmt_str, [lateststart, earliestend, newnum, sending_rideid, joining_rideid])
 
-           # when we delete sending ride, we need to cancel things
-           for sending_reqrec in sending_ride.get_reqrec():
-               if sending_reqrec != joining_rideid:
-                   cancel_request_stmt(cursor, sending_rideid, sending_reqrec)
+           # look at reqrec and reqsent for joining_ride. if any are not valid, we delete them.
+           temp_new_ride = Ride(None, None, None, None, lateststart, earliestend, None, None, None)
+
+           for reqrec in joining_ride.get_reqrec():
+               reqrec_ride = from_rideid_get_ride(reqrec)
+               
+               if (not reqrec_ride.hasOverlapWith(temp_new_ride)):
+                   cancel_request_stmt(cursor, joining_rideid, reqrec)
            
+           for reqsent in joining_ride.get_reqsent():
+               reqsent_ride = from_rideid_get_ride(reqsent)
+
+               if (not reqsent_ride.hasOverlapWith(temp_new_ride)):
+                   cancel_request_stmt(cursor, reqsent, joining_rideid)
+
+           # look at reqrec and reqsent for sending_ride. we must cancel all of these requests. if any are valid, we check that they are not already in joining_ride reqrec and reqsent and then add them.
+
+           for sending_reqrec in sending_ride.get_reqrec():
+               if (sending_reqrec != joining_rideid):
+                   sending_reqrec_ride = from_rideid_get_ride(sending_reqrec)
+                   if (sending_reqrec_ride.hasOverlapWith(temp_new_ride) and sending_reqrec not in joining_ride.get_reqrec()):
+
+                       # joining_rideid is joining_ride
+                       # sending_reqrec is sending_ride
+                       send_request_stmt(cursor, joining_rideid, sending_reqrec)
+
+                   # sending_rideid is joining_ride
+                   # sending_reqrec is sending_ride
+                   cancel_request_stmt(cursor, sending_rideid, sending_reqrec)
+            
            for sending_reqsent in sending_ride.get_reqsent():
-               if sending_reqsent != joining_rideid:
+               if (sending_reqsent != joining_rideid):
+                   sending_reqsent_ride = from_rideid_get_ride(sending_reqsent)
+                   if (sending_reqsent_ride.hasOverlapWith(temp_new_ride) and sending_reqsent not in joining_ride.get_reqsent()):
+                       
+                       # sending_reqsent is joining_ride
+                       # joining_rideid is sending_ride
+                       send_request_stmt(cursor, sending_reqsent, joining_rideid)
+                    
+                   # sending_reqsent is joining_ride
+                   # sending_rideid is sending_ride
                    cancel_request_stmt(cursor, sending_reqsent, sending_rideid)
                    
            # delete sending ride

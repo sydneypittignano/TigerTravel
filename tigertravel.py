@@ -335,6 +335,20 @@ def acceptrequest():
 
     accept_request(joining_rideid, sending_rideid)
 
+    joining_ride = from_rideid_get_ride(joining_rideid)
+    for reqrec in joining_ride.get_reqrec():
+        for reqsent in joining_ride.get_reqsent():
+            if reqrec == reqsent:
+                # cancel request from reqrec to joining_rideid
+                # joining_rideid is joining_rideid
+                # reqrec is sending_rideid
+                cancel_request(joining_rideid, reqrec)
+
+                # accept request from reqsent to joining_rideid
+                # reqsent is joining_rideid
+                # joining_rideid is reqrec
+                accept_request(reqsent, joining_rideid)
+
     return redirect(url_for('account', msg="Request accepted!"))
 
 #-----------------------------------------------------------------------
