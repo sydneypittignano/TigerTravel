@@ -121,7 +121,19 @@
                       <table class="table" style="margin:0">
                       <tbody>
                           <tr style="background-color: sandybrown">
-                            <th colspan="5" align-right>My Ride from {{full_ride[0].get_origin()}} to {{full_ride[0].get_dest()}}</th>
+                            <th colspan="4" align-right>My Ride from {{full_ride[0].get_origin()}} to {{full_ride[0].get_dest()}}</th>
+                            <th colspan="1" class="text-end">
+                              <form action="reportriders" method="get">
+                                <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />
+                                {% if full_ride[0].get_riders()|length == 1 %}
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="You were the only rider">
+                                <input type="submit" value="Report Riders" style="background-color:lightsteelblue; pointer-events:none" disabled>
+                                </div>
+                                {% else %}
+                                <input type="submit" value="Report Riders" style="background-color:lightsteelblue">
+                                {% endif %}
+                              </form>
+                            </th>
                             <th colspan="1" class="text-end">
                               <form action="edit" method="get">
                                 <input type = "hidden" name = "rideid" value = {{full_ride[0].get_rideid()}} />

@@ -388,7 +388,7 @@ def edit():
     
     req_num = from_netid_get_reqnum(my_netid)
 
-    html = render_template('edit.html', msg=msg, ride=ride, req_num=req_num)
+    html = render_template('edit.html', msg=msg, ride=ride, req_num=req_num, my_netid=my_netid)
     response = make_response(html)
     return response
 
@@ -431,3 +431,22 @@ def editride():
         #add_ride(my_netid, origin, dest, starttime, endtime)
         #delete_ride(request.args.get('rideid'))
         return redirect(url_for('account', msg="Ride successfully edited!"))
+
+#-----------------------------------------------------------------------
+# displays the report riders page
+@app.route('/reportriders', methods=['GET'])
+def reportriders():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    rideid = request.args.get('rideid')
+    ride = from_rideid_get_ride(rideid)
+    riders = ride.get_riders()
+    if my_netid not in riders:
+        return redirect(url_for('account'))
+
+    req_num = from_netid_get_reqnum(my_netid)
+
+    html = render_template('reportriders.html', ride=ride, req_num=req_num, my_netid=my_netid)
+    response = make_response(html)
+    return response
