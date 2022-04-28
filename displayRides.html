@@ -111,14 +111,14 @@
           <form action="acceptrequest" method="get">
             <input type = "hidden" name = "joining_rideid" value = {{full_ride[0].get_rideid()}} />
             <input type = "hidden" name = "sending_rideid" value = {{incoming_ride.get_rideid()}} />
-            <input type="submit" value="ACCEPT" style="background-color:lawngreen" onclick="return confirm('Are you sure you want to accept this rider? Press OK to confirm.');">
+            <input type="submit" value="ACCEPT" style="background-color:lawngreen" onclick="return confirm('Are you sure you want to accept this request? Press OK to confirm.');">
           </form>
         </td>
         <td>
           <form action="declinerequest" method="get">
             <input type = "hidden" name = "joining_rideid" value = {{full_ride[0].get_rideid()}} />
             <input type = "hidden" name = "sending_rideid" value = {{incoming_ride.get_rideid()}} />
-            <input type="submit" value="DECLINE" style="background-color:tomato" onclick="return confirm('Are you sure you want to decline this rider? Press OK to confirm.');">
+            <input type="submit" value="DECLINE" style="background-color:tomato" onclick="return confirm('Are you sure you want to decline this request? Press OK to confirm.');">
           </form>
         </td>
       </tr>

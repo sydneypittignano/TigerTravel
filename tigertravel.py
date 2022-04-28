@@ -335,7 +335,7 @@ def acceptrequest():
 
     accept_request(joining_rideid, sending_rideid)
 
-    return redirect(url_for('account'))
+    return redirect(url_for('account'), msg="Request accepted!")
 
 #-----------------------------------------------------------------------
 
@@ -368,7 +368,7 @@ def declinerequest():
     email_request_declined(recipient_netids)
 
     decline_request(joining_rideid, sending_rideid)
-    return redirect(url_for('account'))
+    return redirect(url_for('account'), msg="Request successfully declined!")
 
 #-----------------------------------------------------------------------
 # displays the editride page
