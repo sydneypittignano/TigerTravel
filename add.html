@@ -72,11 +72,12 @@
 
         <div class="container-fluid" style="color:black">
           <br>
-          <br>
           {% if joining_ride != "" %}
           <h1 class = "text-center fw-bold">ADD & REQUEST</h1>
+          <h4 class="text-center fw-bold">{{my_netid}}</h4>
           {% else %}
           <h1 class = "text-center fw-bold">ADD RIDE</h1>
+          <h4 class="text-center fw-bold">{{my_netid}}</h4>
           {% endif %}
           {% if msg!="" %}
           <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
