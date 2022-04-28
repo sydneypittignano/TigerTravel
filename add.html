@@ -94,6 +94,8 @@
             </tbody>
           </table>
           <br>
+          <span id="joining_origin" hidden>{{defaults[0]}}</span>
+          <span id="joining_dest" hidden>{{defaults[1]}}</span>
           <form action="addandjoin" method="get">
             <input type="hidden" name="joining_rideid" id="joining_rideid" value="{{joining_ride.get_rideid()}}">
             <input type="hidden" name="starttime" id="starttime">
@@ -155,6 +157,7 @@
                       type='text'
                       class='form-control'
                       data-td-target='#datetimepicker1'
+                      value="{{defaults[2]}}"
                     />
                     <span
                       class='input-group-text'
@@ -186,6 +189,7 @@
                       type='text'
                       class='form-control'
                       data-td-target='#datetimepicker2'
+                      value="{{defaults[3]}}"
                     />
                     <span
                       class='input-group-text'
@@ -218,7 +222,7 @@
               <table class="table" style="margin:0">
               <tbody>
                 <tr style="background-color: sandybrown">
-                  <th colspan="6" align-right>Ride from <span id="joining_origin">{{joining_ride.get_origin()}}</span> to <span id="joining_dest">{{joining_ride.get_dest()}}</span></th>
+                  <th colspan="6" align-right>Ride from {{joining_ride.get_origin()}} to {{joining_ride.get_dest()}}</th>
                 </tr>
                 <tr style="border-bottom:2px solid black; vertical-align:bottom">
                     <th>Current Riders</th>

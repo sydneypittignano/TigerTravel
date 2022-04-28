@@ -68,10 +68,10 @@ def add():
     joining_ride = ""
     if joining_rideid is not None:
         joining_ride = from_rideid_get_ride(joining_rideid)
-        defaultorigin = joining_ride.get_origin()
-        defaultdest = joining_ride.get_dest()
-        defaultstarttime = joining_ride.get_starttime()
-        defaultendtime = joining_ride.get_endtime()
+        if defaultorigin == '':
+            defaultorigin = joining_ride.get_origin()
+        if defaultdest == '':
+            defaultdest = joining_ride.get_dest()
     
     defaults= [defaultorigin, defaultdest, defaultstarttime, defaultendtime]
 
@@ -139,26 +139,26 @@ def addandjoin():
     joining_rideid = request.args.get('joining_rideid')
 
     if (origin == '' or dest == '' or starttime == '' or endtime == ''):
-        return redirect(url_for('add', joining_rideid= joining_rideid, msg2="You left one or more fields blank. Try again to add a compatible ride!"))
+        return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid= joining_rideid, msg2="You left one or more fields blank. Try again to add a compatible ride!"))
     if (origin == dest):
-        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your origin and destination are the same. Try again to add a compatible ride!"))
+        return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid=joining_rideid, msg2="Your origin and destination are the same. Try again to add a compatible ride!"))
     
     starttime_datetime = datetime.strptime(starttime, '%m/%d/%Y, %I:%M %p')
     print(starttime_datetime)
     endtime_datetime = datetime.strptime(endtime, '%m/%d/%Y, %I:%M %p')
 
     if (starttime_datetime > endtime_datetime):
-        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your start time occurs after your end time. Try again to add a compatible ride!"))
+        return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid=joining_rideid, msg2="Your start time occurs after your end time. Try again to add a compatible ride!"))
     
     if (endtime_datetime < datetime.now()):
-        return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your start time has already passed. Try again to add a compatible ride!"))
+        return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid=joining_rideid, msg2="Your start time has already passed. Try again to add a compatible ride!"))
 
     # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
     my_rides = from_netid_get_rides(my_netid)
     temp_new_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
     for my_ride in my_rides:
         if my_ride.hasOverlapWith(temp_new_ride):
-            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="You already have a ride that overlaps with these times. Consider editing that ride, or try again to add a compatible ride!"))
+            return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid=joining_rideid, msg2="You already have a ride that overlaps with these times. Consider editing that ride, or try again to add a compatible ride!"))
 
     else:
         joining_ride = from_rideid_get_ride(joining_rideid)
@@ -169,7 +169,7 @@ def addandjoin():
             email_request_received(recipient_netids)
             return redirect(url_for('account', msg="Request successfully sent!"))
         else:
-            return redirect(url_for('add', joining_rideid=joining_rideid, msg2="Your ride was not added! It was not compatible with the ride below. Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
+            return redirect(url_for('add', joining_rideid=joining_rideid, defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, msg2="Your ride was not compatible with the ride below. Try again, or use the \"Add Ride\" menu bar option to add a ride without joining."))
 
 
 #-----------------------------------------------------------------------
@@ -335,7 +335,7 @@ def acceptrequest():
 
     accept_request(joining_rideid, sending_rideid)
 
-    return redirect(url_for('account'), msg="Request accepted!")
+    return redirect(url_for('account', msg="Request accepted!"))
 
 #-----------------------------------------------------------------------
 
@@ -368,7 +368,7 @@ def declinerequest():
     email_request_declined(recipient_netids)
 
     decline_request(joining_rideid, sending_rideid)
-    return redirect(url_for('account'), msg="Request successfully declined!")
+    return redirect(url_for('account', msg="Request successfully declined!"))
 
 #-----------------------------------------------------------------------
 # displays the editride page
@@ -406,25 +406,25 @@ def editride():
     old_rideid = request.args.get('rideid')
 
     if (new_origin == '' or new_dest == '' or new_starttime == '' or new_endtime == ''):
-        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! You left one or more fields blank. Try again!"))
+        return redirect(url_for('edit', rideid=old_rideid, msg="You left one or more fields blank. Try again!"))
     if (new_origin == new_dest):
-        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your origin and destination are the same. Please enter a ride with a different origin and destination!"))
     
     starttime_datetime = datetime.strptime(new_starttime, '%m/%d/%Y, %I:%M %p')
     endtime_datetime = datetime.strptime(new_endtime, '%m/%d/%Y, %I:%M %p')
 
     if (starttime_datetime > endtime_datetime):
-        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your start time occurs after your end time. Please enter a ride with a start time that occurs before the end time!"))
 
     if (starttime_datetime < datetime.now()):
-        return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! Your start time has already passed. Please enter a ride with a start time in the future!"))
+        return redirect(url_for('edit', rideid=old_rideid, msg="Your start time has already passed. Please enter a ride with a start time in the future!"))
 
     # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
     my_rides = from_netid_get_rides(my_netid)
     temp_new_ride = Ride(None, None, new_origin, new_dest, starttime_datetime, endtime_datetime, None, None, None)
     for my_ride in my_rides:
         if (my_ride.get_rideid() != old_rideid) and (my_ride.hasOverlapWith(temp_new_ride)):
-            return redirect(url_for('edit', rideid=old_rideid, msg="Your ride was not edited! You already have a ride that overlaps with these times. Please do not create conflicting rides."))
+            return redirect(url_for('edit', rideid=old_rideid, msg="You already have a ride that overlaps with these times. Please do not create conflicting rides."))
 
     else:
         edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime)
