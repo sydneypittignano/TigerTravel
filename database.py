@@ -288,6 +288,20 @@ def delete_ride(rideid):
        DATABASE_URL, sslmode='require') as connection:
  
        with connection.cursor() as cursor:
+
+           # delete reqrec and reqsent of ride being deleted
+           ride = from_rideid_get_ride(rideid)
+
+           for reqrec in ride.get_reqrec():
+               # joining_rideid is rideid
+               # sending_rideid is reqrec
+               cancel_request_stmt(cursor, rideid, reqrec)
+            
+           for reqsent in ride.get_reqsent():
+               # joining_rideid  is reqsent
+               # sending_rideid is rideid
+               cancel_request_stmt(cursor, reqsent, rideid)
+            
            # delete from rides table
            stmt_str = "DELETE FROM rides WHERE rideid = %s"
            cursor.execute(stmt_str, [rideid])
