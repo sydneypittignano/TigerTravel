@@ -72,14 +72,10 @@
           <h4 class="text-center fw-bold">{{my_netid}}</h4>
           <br>
           {% if msg!="" %}
-          <div>
-          <table class="table" style="border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">
-            <tbody>
-              <td style="color:rgb(6, 100, 14); padding-left:50px" class="text-center fs-4"> {{ msg }}<span id='close' onclick='this.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode.parentNode); return false;'>
-                <div style="float:right" class="btn btn-dark">X</div></span></td>
-            </tbody>
-          </table>
-        </div>
+          <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="padding-left:50px; border:3px solid rgb(6, 100, 14); background-color:rgb(192, 227, 179)">
+            <strong style="font-size:large">{{msg}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
           {% endif %}
           <ul class="nav nav-tabs justify-content-center" role="tablist" style="border-bottom:1px solid white; border-collapse:collapse">
             <li class="nav-item" style="border-bottom:5px solid white">
