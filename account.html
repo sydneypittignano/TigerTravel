@@ -91,10 +91,16 @@
               {% if full_rides|length == 0: %}
                 <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
                   <tbody>
-                    <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> You don't have any upcoming rides! Go to "Add Ride" to add a ride.</td>
+                    <td style="color:rgb(220, 7, 7)" class="text-center fs-4">Looks like you don't have any upcoming rides!</td>
                   </tbody>
                 </table>
-              {% else %}
+                <form class="form-inline text-center" action="add">
+                  <button class="btn btn-dark" type="submit">Add a Ride</button>
+                </form>
+                <br>
+                <form class="form-inline text-center" action="browse">
+                  <button class="btn btn-dark" type="submit">Browse Existing Rides</button>
+                </form>              {% else %}
               <br>
               {% for full_ride in full_rides %}
               {% include 'displayRides.html' %}
