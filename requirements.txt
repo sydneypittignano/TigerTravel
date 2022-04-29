@@ -17,7 +17,10 @@ pylint==2.12.2
 PyQt5==5.15.6
 PyQt5-Qt5==5.15.2
 PyQt5-sip==12.9.1
+python-http-client==3.3.7
 requests==2.27.1
+sendgrid==6.9.7
+starkbank-ecdsa==2.0.3
 toml==0.10.2
 typing_extensions==4.0.1
 urllib3==1.26.9

@@ -13,6 +13,7 @@ from emailtemplates import REQUEST_ACCEPTED_TEMPLATE, REQUEST_RECEIVED_TEMPLATE,
 from keys import SENDGRID_API_KEY
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from flask import render_template
 
 #-----------------------------------------------------------------------
 
@@ -36,7 +37,8 @@ def send_message_mailgun(html, subject, recipient, sender):
         print(response.body)
         print(response.headers)
     except Exception as e:
-        print(e.message)
+        print(html)
+        print(e)
 
 #-----------------------------------------------------------------------
 
@@ -77,6 +79,8 @@ def email_ride_left(recipient_netids):
         recipient = recipient_netid + "@princeton.edu"
         send_message_mailgun(html, subject, recipient, sender)
 
+#-----------------------------------------------------------------------
+
 def email_request_cancelled(recipient_netids):
     html = REQUEST_CANCELLED_TEMPLATE
     subject = "Someone has cancelled a request to join your ride."
@@ -84,6 +88,16 @@ def email_request_cancelled(recipient_netids):
     for recipient_netid in recipient_netids:
         recipient = recipient_netid + "@princeton.edu"
         send_message_mailgun(html, subject, recipient, sender)
+
+#-----------------------------------------------------------------------
+
+def email_report(my_netid, rideid, reported, report_message):
+    html = render_template('report_template.html', my_netid=my_netid, rideid=rideid, reported=reported, report_message=report_message)
+    subject = "A report was filed by " + my_netid
+    sender = "princetontigertravel@gmail.com"
+    recipient = "tigertravel@princeton.edu"
+    send_message_mailgun(html, subject, recipient, sender)
+
 
 
 

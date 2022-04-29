@@ -13,10 +13,10 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template, session
 
 from olddatabase import from_netid_get_reqnum, get_rides, add_ride, from_netid_get_rides, from_rideid_get_riders, leave_ride, get_suggested
-from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request, edit_ride
+from olddatabase import check_student, from_rideid_get_ride, send_request, cancel_request, accept_request, delete_ride, decline_request, edit_ride, report_riders
 from ride import Ride
 from keys import APP_SECRET_KEY
-from emails import email_request_received, email_request_accepted, email_request_declined, email_ride_left, email_request_cancelled
+from emails import email_request_received, email_request_accepted, email_request_declined, email_ride_left, email_request_cancelled, email_report
 
 #-----------------------------------------------------------------------
 
@@ -482,3 +482,28 @@ def reportriders():
     html = render_template('reportriders.html', ride=ride, req_num=req_num, my_netid=my_netid)
     response = make_response(html)
     return response
+
+#-----------------------------------------------------------------------
+@app.route('/tryreport', methods=['GET'])
+def tryreport():
+    my_netid = auth.authenticate().strip()
+    check_student(my_netid)
+
+    rideid = request.args.get('rideid')
+    ride = from_rideid_get_ride(rideid)
+    riders = ride.get_riders()
+
+    reported = []
+    report_message = request.args.get('report_message')
+    for rider in riders:
+        rider_reported = request.args.get(rider)
+        if rider_reported == "True":
+            reported.append(rider)
+
+    if len(reported) == 0:
+        req_num = from_netid_get_reqnum(my_netid)
+        return redirect(url_for('reportriders', ride=ride, req_num=req_num, my_netid=my_netid))
+    else:
+        email_report(my_netid, rideid, reported, report_message)
+        report_riders(reported)
+        return redirect(url_for('account', msg="Riders reported."))

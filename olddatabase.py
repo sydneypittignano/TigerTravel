@@ -446,8 +446,17 @@ def edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime):
             stmt_str = "UPDATE riders SET starttime=%s, endtime=%s WHERE rideid=%s"
             cursor.execute(stmt_str, [new_starttime, new_endtime, old_rideid])
 
+#-----------------------------------------------------------------------
 
-
+def report_riders(reported):
+    with connect(
+        host='localhost', port=5432, user='ttadmins',
+        password='071020010307200204262002oms', database='tigertravel') as connection:
+ 
+        with connection.cursor() as cursor:
+            for reported_rider in reported:
+                stmt_str = "UPDATE students SET strikes=strikes+1 WHERE netid=%s"
+                cursor.execute(stmt_str, [reported_rider])
 
 #-----------------------------------------------------------------------
 

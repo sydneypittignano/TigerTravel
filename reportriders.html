@@ -56,7 +56,65 @@
             <h1 class = "text-center fw-bold">REPORT RIDERS</h1>
             <h4 class="text-center fw-bold">{{my_netid}}</h4>
             <br>
-        </div>
+            <div class="table-responsive">
+                <table class="table" style="border:6px solid black; border-collapse:separate; background-color:rgb(226, 226, 226)">
+                  <tbody>
+                  <td style="padding:0; margin:0; border:0">
+                  <table class="table" style="margin:0">
+                  <tbody>
+                    <tr style="background-color: sandybrown">
+                      <th colspan="6" align-right>Ride from {{ride.get_origin()}} to {{ride.get_dest()}}</th>
+                    </tr>
+                    <tr style="border-bottom:2px solid black; vertical-align:bottom">
+                        <th>Current Riders</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Departure Time</th>
+                        <th># of Riders</th>
+                    </tr>
+                    <tr>
+                      <td>{{', '.join(ride.get_riders())}}</td>
+                      <td>{{ride.get_origin()}}</td>
+                      <td>{{ride.get_dest()}}</td>
+                      {% if  ride.get_starttime().date() == ride.get_endtime().date() %}
+                      <td>
+                          {{ride.get_starttime().strftime('%A')}}, {{ride.get_starttime().strftime('%B')}} {{ride.get_starttime().strftime('%d')}} between
+                          {{ride.get_starttime().strftime('%I')}}:{{ride.get_starttime().strftime('%M')}} {{ride.get_starttime().strftime('%p')}} and {{ride.get_endtime().strftime('%I')}}:{{ride.get_endtime().strftime('%M')}} {{ride.get_endtime().strftime('%p')}}        
+                      </td>
+                      {% else %}
+                      <td>
+                          Between {{ride.get_starttime().strftime('%A')}}, {{ride.get_starttime().strftime('%B')}} {{ride.get_starttime().strftime('%d')}} at 
+                          {{ride.get_starttime().strftime('%I')}}:{{ride.get_starttime().strftime('%M')}} {{ride.get_starttime().strftime('%p')}} and 
+                          {{ride.get_endtime().strftime('%A')}}, {{ride.get_endtime().strftime('%B')}} {{ride.get_endtime().strftime('%d')}} at 
+                          {{ride.get_endtime().strftime('%I')}}:{{ride.get_endtime().strftime('%M')}} {{ride.get_endtime().strftime('%p')}}
+                      </td>
+                      {% endif %}
+                      <td>{{ride.get_num()}}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+                  </td>
+                  </tbody>
+                  </table>
+                </div>
+                <br>
+                <div class="container-fluid">
+                    <h3>Select the riders you wish to report:</h3>
+                    <form action="tryreport">
+                        <input type = "hidden" name = "rideid" value = "{{ride.get_rideid()}}" />
+                        {% for rider in ride.get_riders() %}
+                        {% if rider != my_netid %}
+                        <input type="checkbox" id="{{rider}}" name="{{rider}}" value="True">
+                        <label for="{{rider}}" style="font-size:large">{{rider}}</label><br>
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+                        <h5>Add a message to the TigerTravel admins:</h5>
+                        <textarea name="report_message" cols="50" rows="5"></textarea>                        <br><br>
+                        <input type="submit" value="Submit">
+                      </form>
+                    </div>
+                </div>
 
     </body>
 </html>

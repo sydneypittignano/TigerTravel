@@ -436,6 +436,16 @@ def edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime):
 
 #-----------------------------------------------------------------------
 
+def report_riders(reported):
+    with connect(
+        DATABASE_URL, sslmode='require') as connection:
+ 
+        with connection.cursor() as cursor:
+            for reported_rider in reported:
+                stmt_str = "UPDATE students SET strikes=strikes+1 WHERE netid=%s"
+                cursor.execute(stmt_str, [reported_rider])
+
+#-----------------------------------------------------------------------
 
 # For testing:
 
