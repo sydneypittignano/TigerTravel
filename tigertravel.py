@@ -226,6 +226,15 @@ def about():
 
 #-----------------------------------------------------------------------
 
+@app.route('/viewabout', methods=['GET'])
+def viewabout():
+
+    html = render_template('viewabout.html')
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
 @app.route('/tutorial', methods=['GET'])
 def tutorial():
 
@@ -233,6 +242,15 @@ def tutorial():
     check_student(my_netid)
     req_num = from_netid_get_reqnum(my_netid)
     html = render_template('tutorial.html', req_num = req_num)
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/viewtutorial', methods=['GET'])
+def viewtutorial():
+
+    html = render_template('viewtutorial.html')
     response = make_response(html)
     return response
 

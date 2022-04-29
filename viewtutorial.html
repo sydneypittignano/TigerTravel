@@ -1,0 +1,151 @@
+<!-- =============================================================== -->
+<!-- tutorial.html                                                   -->
+<!-- Author: Sydney Pittignano                                       -->
+<!-- =============================================================== -->
+<html>
+    <head>
+        <title>TigerTravel</title>
+        <meta name="viewport"
+         content="width=device-width, initial-scale=1">
+         <meta property="og:image" content="/static/tt.png" />
+        <link rel="stylesheet" href=
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src=
+        "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+         </script>
+    </head>
+
+    <body style="background-color:rgb(148,188,199)">
+        <!-- ======================================================= -->
+
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#9be9ee; color:rgb(0, 0, 0)">
+            <a class="navbar-brand" href="index"></a>
+            <a href="index"><img src="/static/ttSmall.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link" href="viewabout">About</a>
+                <a class="nav-link" href="viewtutorial">Tutorial</a>
+                <form class="form-inline" action="account" style="padding-right:10px">
+                  <button class="btn btn-dark" type="submit">login</button>
+                </form>
+              </div>
+            </div>
+          </nav>
+        
+        <!-- ======================================================= -->
+
+        
+        <div class="container-fluid">
+          <br>
+          <h1 class = "text-center fw-bold">TUTORIAL</h1>
+          <br>
+          <ul class="nav nav-tabs justify-content-center" role="tablist" style="border-bottom:1px solid white; border-collapse:collapse">
+            <li class="nav-item" style="border-bottom:5px solid white">
+              <a class="nav-link active" data-bs-toggle="tab" href="#Dashboard"><h5>Dashboard</h6></a>
+            </li>
+            <li class="nav-item" style="border-bottom:5px solid white">
+              <a class="nav-link" data-bs-toggle="tab" href="#Browse"><h5>Browse</h5></a>
+            </li>
+            <li class="nav-item" style="border-bottom:5px solid white">
+              <a class="nav-link" data-bs-toggle="tab" href="#AddRide"><h5>Add Ride</h5></a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div id="Dashboard" class="container tab-pane active"><br>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">On this page, you can view your upcoming and past rides. </h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img src="/static/past.png" class="img-fluid pt-4 pb-4 mb-30" alt="Responsive image">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">For your upcoming rides, if there are any rides that match your 
+                    ride’s origin, destination, and the time overlaps, it will appear 
+                    in your suggested rides. You can request to join this ride from this 
+                    page.</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img src="/static/requests.png" class="img-fluid pt-4 pb-4 mb-30" alt="Responsive image">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">If you have any requests from other users, they will appear under
+                     your ride on the dashboard page. If you have requested to join any rides, 
+                     they will also appear under your ride on this page. </h4>
+                </div>
+              </div>
+              
+            </div>
+
+            <div id="Browse" class="container tab-pane fade"><br>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">On this page, you can view the rides of other students and filter according 
+                    to origin, destination, and rides occurring before and after certain dates and times.</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img src="/static/browse.png" class="img-fluid pt-4 pb-4 mb-30" alt="Responsive image">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">
+                    You can request to join a ride. If you have already created a ride that matches 
+                    the ride you are requesting to join, your join request will be sent. Otherwise, 
+                    you will be brought to a page where you can add a ride and if your credentials 
+                    match the ride you are attempting to join, it will automatically send a request.</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img src="/static/browse2.png" class="img-fluid pt-4 pb-4 mb-30" alt="Responsive image">
+                </div>
+              </div>
+            </div>
+
+            <div id="AddRide" class="container tab-pane fade"><br>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <h4 class = "text-center">On this page, you can add a ride, specifying the origin, destination, earliest 
+                    time you are willing to leave and latest time you are willing to leave. This will 
+                    place the ride on your dashboard as well as on the browse page for other users 
+                    to view.</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img src="/static/addride.png" class="img-fluid pt-4 pb-4 mb-30" alt="Responsive image">
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- ======================================================= -->
+
+    </body>
+</html>
