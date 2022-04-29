@@ -471,6 +471,10 @@ def reportriders():
     my_netid = auth.authenticate().strip()
     check_student(my_netid)
 
+    msg = request.args.get('msg')
+    if msg is None:
+        msg = ''
+
     rideid = request.args.get('rideid')
     ride = from_rideid_get_ride(rideid)
     riders = ride.get_riders()
@@ -479,7 +483,7 @@ def reportriders():
 
     req_num = from_netid_get_reqnum(my_netid)
 
-    html = render_template('reportriders.html', ride=ride, req_num=req_num, my_netid=my_netid)
+    html = render_template('reportriders.html', ride=ride, req_num=req_num, my_netid=my_netid, msg=msg)
     response = make_response(html)
     return response
 
@@ -501,7 +505,7 @@ def tryreport():
             reported.append(rider)
 
     if len(reported) == 0:
-        return redirect(url_for('reportriders', rideid=rideid))
+        return redirect(url_for('reportriders', rideid=rideid, msg="No boxes were checked. Email tigertravel@princeton.edu with concerns."))
     else:
         email_report(my_netid, rideid, reported, report_message)
         report_riders(reported)

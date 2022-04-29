@@ -98,6 +98,14 @@
                   </table>
                 </div>
                 <br>
+                {% if msg!="" %}
+                <table class="table" style="border:3px solid rgb(220, 7, 7); background-color:rgb(227, 179, 179)">
+                  <tbody style="vertical-align:center; margin:0">
+                    <td style="color:rgb(220, 7, 7)" class="text-center fs-4"> {{ msg }}</td>
+                  </tbody>
+                </table>
+                <br>
+                {% endif %}
                 <div class="container-fluid">
                     <h3>Select the riders you wish to report:</h3>
                     <form action="tryreport">
