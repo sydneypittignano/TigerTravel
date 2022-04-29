@@ -421,37 +421,40 @@ def from_netid_get_reqnum(my_netid):
 
 def edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime):
 
-    old_ride = from_rideid_get_ride(old_rideid)
-    new_starttime_datetime = datetime.strptime(new_starttime, '%m/%d/%Y, %I:%M %p')
-    new_endtime_datetime = datetime.strptime(new_endtime, '%m/%d/%Y, %I:%M %p')
-    temp_new_ride = Ride(None, None, None, None, new_starttime_datetime, new_endtime_datetime, None, None, None)
-
-    #clear reqrec and reqsent if origin or destination change
-    if ((old_ride.get_origin() != new_origin) or (old_ride.get_dest() != new_dest)):
-
-        for reqrec in old_ride.get_reqrec():
-            # joining_rideid is first param
-            # sending_rideid is second param
-            cancel_request(old_rideid, reqrec)
-        for reqsent in old_ride.get_reqsent():
-            cancel_request(reqsent, old_rideid)
-    
-    #for every reqrec and reqsent
-    else:
-        for reqrec in old_ride.get_reqrec():
-            reqrec_ride = from_rideid_get_ride(reqrec)
-            if (not reqrec_ride.hasOverlapWith(temp_new_ride)):
-                cancel_request(old_rideid, reqrec)
-        for reqsent in old_ride.get_reqsent():
-            reqsent_ride = from_rideid_get_ride(reqsent)
-            if (not reqsent_ride.hasOverlapWith(temp_new_ride)):
-                cancel_request(reqsent, old_rideid)
-
     with connect(
         host='localhost', port=5432, user='ttadmins',
         password='071020010307200204262002oms', database='tigertravel') as connection:
  
         with connection.cursor() as cursor:
+
+            old_ride = from_rideid_get_ride(old_rideid)
+            new_starttime_datetime = datetime.strptime(new_starttime, '%m/%d/%Y, %I:%M %p')
+            new_endtime_datetime = datetime.strptime(new_endtime, '%m/%d/%Y, %I:%M %p')
+            temp_new_ride = Ride(None, None, None, None, new_starttime_datetime, new_endtime_datetime, None, None, None)
+
+            #clear reqrec and reqsent if origin or destination change
+            if ((old_ride.get_origin() != new_origin) or (old_ride.get_dest() != new_dest)):
+
+                for reqrec in old_ride.get_reqrec():
+                    # joining_rideid is old_rideid
+                    # sending_rideid is reqrec
+                    cancel_request_stmt(cursor, old_rideid, reqrec)
+                
+                for reqsent in old_ride.get_reqsent():
+                    # joining_rideid is reqsent
+                    # sending_rideid is old_rideid
+                    cancel_request_stmt(cursor, reqsent, old_rideid)
+    
+            #for every reqrec and reqsent
+            else:
+                for reqrec in old_ride.get_reqrec():
+                    reqrec_ride = from_rideid_get_ride(reqrec)
+                    if (not reqrec_ride.hasOverlapWith(temp_new_ride)):
+                        cancel_request_stmt(cursor, old_rideid, reqrec)
+                for reqsent in old_ride.get_reqsent():
+                    reqsent_ride = from_rideid_get_ride(reqsent)
+                    if (not reqsent_ride.hasOverlapWith(temp_new_ride)):
+                        cancel_request_stmt(cursor, reqsent, old_rideid)
 
             stmt_str = "UPDATE rides SET origin=%s, dest=%s, starttime=%s, endtime=%s WHERE rideid=%s"
             cursor.execute(stmt_str, [new_origin, new_dest, new_starttime, new_endtime, old_rideid])

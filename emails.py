@@ -30,15 +30,15 @@ def send_message_mailgun(html, subject, recipient, sender):
         to_emails=recipient,
         subject=subject,
         html_content=html)
-    try:
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
-    except Exception as e:
-        print(html)
-        print(e)
+    #try:
+        #sg = SendGridAPIClient(SENDGRID_API_KEY)
+        #response = sg.send(message)
+        #print(response.status_code)
+        #print(response.body)
+        #print(response.headers)
+    #except Exception as e:
+        #print(html)
+        #print(e)
 
 #-----------------------------------------------------------------------
 
