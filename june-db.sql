@@ -2,10 +2,6 @@
 -- PostgreSQL database dump
 --
 
-DROP TABLE IF EXISTS riders;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS rides;
-
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
@@ -27,6 +23,10 @@ SET default_table_access_method = heap;
 --
 -- Name: riders; Type: TABLE; Schema: public; Owner: ttadmins
 --
+
+DROP TABLE IF EXISTS riders;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS rides;
 
 CREATE TABLE public.riders (
     netid text,
@@ -74,6 +74,13 @@ ALTER TABLE public.students OWNER TO ttadmins;
 --
 
 COPY public.riders (netid, rideid, starttime, endtime) FROM stdin;
+sydneyp	sydneyp-2	2022-06-16 01:00:00	2022-06-17 01:00:00
+otravis	otravis-6	2022-06-25 19:15:00	2022-06-25 22:15:00
+beid	beid-2	2022-06-16 11:51:00	2022-06-16 12:51:00
+otravis	beid-2	2022-06-16 11:17:00	2022-06-16 12:17:00
+sl55	otravis-6	2022-06-25 19:15:00	2022-06-25 19:45:00
+otravis	otravis-9	2022-06-21 16:37:00	2022-06-21 17:37:00
+otravis	otravis-10	2022-06-26 10:00:00	2022-06-26 11:30:00
 \.
 
 
@@ -82,6 +89,11 @@ COPY public.riders (netid, rideid, starttime, endtime) FROM stdin;
 --
 
 COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
+LaGuardia Airport (LGA)	John F. Kennedy International Airport (JFK)	2022-06-25 19:15:00	2022-06-25 19:45:00	2	otravis-6	{}	{}
+Nassau Park Pavilion (Wegmans, Party City, etc.)	Philadelphia International Airport (PHL)	2022-06-21 16:37:00	2022-06-21 17:37:00	1	otravis-9	{}	{}
+Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-06-16 01:00:00	2022-06-17 01:00:00	1	sydneyp-2	{}	{}
+Princeton University	Nassau Park Pavilion (Wegmans, Party City, etc.)	2022-06-16 11:51:00	2022-06-16 12:17:00	2	beid-2	{}	{}
+Princeton University	LaGuardia Airport (LGA)	2022-06-26 10:00:00	2022-06-26 11:30:00	1	otravis-10	{}	{}
 \.
 
 
@@ -90,6 +102,10 @@ COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsen
 --
 
 COPY public.students (netid, strikes, count) FROM stdin;
+sydneyp	0	2
+sl55	0	2
+beid	0	2
+otravis	0	10
 \.
 
 
