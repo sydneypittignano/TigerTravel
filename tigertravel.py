@@ -501,9 +501,8 @@ def tryreport():
             reported.append(rider)
 
     if len(reported) == 0:
-        req_num = from_netid_get_reqnum(my_netid)
-        return redirect(url_for('reportriders', ride=ride, req_num=req_num, my_netid=my_netid))
+        return redirect(url_for('reportriders', rideid=rideid))
     else:
         email_report(my_netid, rideid, reported, report_message)
         report_riders(reported)
-        return redirect(url_for('account', msg="Riders reported."))
+        return redirect(url_for('account', msg="Thank you. The TigerTravel team will review your message."))
