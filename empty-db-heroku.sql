@@ -5,6 +5,10 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
+DROP TABLE IF EXISTS riders;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS rides;
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -31,9 +35,6 @@ CREATE TABLE public.riders (
     endtime timestamp without time zone
 );
 
-
-ALTER TABLE public.riders OWNER TO ttadmins;
-
 --
 -- Name: rides; Type: TABLE; Schema: public; Owner: ttadmins
 --
@@ -49,9 +50,6 @@ CREATE TABLE public.rides (
     reqsent text[]
 );
 
-
-ALTER TABLE public.rides OWNER TO ttadmins;
-
 --
 -- Name: students; Type: TABLE; Schema: public; Owner: ttadmins
 --
@@ -61,33 +59,6 @@ CREATE TABLE public.students (
     strikes integer,
     count integer
 );
-
-
-ALTER TABLE public.students OWNER TO ttadmins;
-
---
--- Data for Name: riders; Type: TABLE DATA; Schema: public; Owner: ttadmins
---
-
-COPY public.riders (netid, rideid, starttime, endtime) FROM stdin;
-\.
-
-
---
--- Data for Name: rides; Type: TABLE DATA; Schema: public; Owner: ttadmins
---
-
-COPY public.rides (origin, dest, starttime, endtime, num, rideid, reqrec, reqsent) FROM stdin;
-\.
-
-
---
--- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: ttadmins
---
-
-COPY public.students (netid, strikes, count) FROM stdin;
-\.
-
 
 --
 -- PostgreSQL database dump complete

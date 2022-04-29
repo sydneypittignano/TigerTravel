@@ -56,10 +56,6 @@ CREATE TABLE public.rides (
 
 CREATE TABLE public.students (
     netid text,
-    firstname text,
-    lastname text,
-    email text,
-    phone text,
     strikes integer,
     count integer
 );
@@ -96,11 +92,11 @@ Princeton University	LaGuardia Airport (LGA)	2022-06-26 10:00:00	2022-06-26 11:3
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: ttadmins
 --
 
-COPY public.students (netid, firstname, lastname, email, phone, strikes, count) FROM stdin;
-sydneyp					0	2
-sl55					0	2
-beid					0	2
-otravis					0	10
+COPY public.students (netid, strikes, count) FROM stdin;
+sydneyp	0	2
+sl55	0	2
+beid	0	2
+otravis	0	10
 \.
 
 
