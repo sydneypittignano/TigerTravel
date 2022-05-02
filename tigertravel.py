@@ -153,7 +153,7 @@ def addandjoin():
     if (endtime_datetime < datetime.now()):
         return redirect(url_for('add', defaultorigin = origin, defaultdest = dest, defaultstarttime = starttime, defaultendtime = endtime, joining_rideid=joining_rideid, msg2="Your start time has already passed. Try again to add a compatible ride!"))
 
-    # if origin, dest and hasOverlap with existing ride with my_netid, don't create ride
+    # if hasOverlap with existing ride with my_netid, don't create ride
     my_rides = from_netid_get_rides(my_netid)
     temp_new_ride = Ride(None, None, origin, dest, starttime_datetime, endtime_datetime, None, None, None)
     for my_ride in my_rides:

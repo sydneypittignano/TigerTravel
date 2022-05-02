@@ -63,6 +63,9 @@ def get_rides(rideid, origin, dest, starttime, endtime):
 #-----------------------------------------------------------------------
 
 def from_netid_get_rides(my_netid):
+
+    assert my_netid is not None
+
     with connect(
         host='localhost', port=5432, user='ttadmins', 
         password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -86,6 +89,7 @@ def from_netid_get_rides(my_netid):
 #-----------------------------------------------------------------------
 
 def from_rideid_get_ride(rideid):
+    assert rideid is not None
     return get_rides(rideid, None, None, None, None)[0]
 
 #-----------------------------------------------------------------------
@@ -95,6 +99,7 @@ def from_rideid_get_ride(rideid):
 # Given a rideid, return a list containing the netids of all riders
 # that are associated with that rideid
 def from_rideid_get_riders(rideid):
+    assert rideid is not None
     with connect(
         host='localhost', port=5432, user='ttadmins', 
         password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -116,23 +121,26 @@ def from_rideid_get_riders(rideid):
 #-----------------------------------------------------------------------
 
 def check_student(netid):
-        with connect(
-        host='localhost', port=5432, user='ttadmins',
-        password='071020010307200204262002oms', database='tigertravel') as connection:
+    assert netid is not None
+    with connect(
+    host='localhost', port=5432, user='ttadmins',
+    password='071020010307200204262002oms', database='tigertravel') as connection:
  
-            with connection.cursor() as cursor:
+        with connection.cursor() as cursor:
  
-                info = [netid]
-                stmt_str = "SELECT * FROM students WHERE netid = %s"
-                cursor.execute(stmt_str, info)
+            info = [netid]
+            stmt_str = "SELECT * FROM students WHERE netid = %s"
+            cursor.execute(stmt_str, info)
 
-                row = cursor.fetchone()
-                if row is None:
-                    add_student(cursor, netid)
+            row = cursor.fetchone()
+            if row is None:
+                add_student(cursor, netid)
 
 #-----------------------------------------------------------------------
 
 def add_student(cursor, netid):
+    assert cursor is not None
+    assert netid is not None
     info = [netid]
     stmt_str = "INSERT INTO students (netid, strikes, count) VALUES (%s, 0, 1);"
     cursor.execute(stmt_str, info)
@@ -140,6 +148,13 @@ def add_student(cursor, netid):
 #-----------------------------------------------------------------------
  
 def add_ride(netid, origin, dest, starttime, endtime):
+   assert netid is not None 
+   assert origin is not None
+   assert dest is not None
+   assert starttime is not None
+   assert endtime is not None
+
+
    with connect(
        host='localhost', port=5432, user='ttadmins',
        password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -166,6 +181,8 @@ def add_ride(netid, origin, dest, starttime, endtime):
 #-----------------------------------------------------------------------
 
 def from_netid_get_count(cursor, netid):
+    assert cursor is not None
+    assert netid is not None
     stmt_str = "SELECT count FROM students WHERE netid LIKE %s"
     cursor.execute(stmt_str, [netid])
     return cursor.fetchone()[0]
@@ -173,12 +190,16 @@ def from_netid_get_count(cursor, netid):
 #-----------------------------------------------------------------------
 
 def from_netid_increment_count(cursor, netid):
+    assert cursor is not None
+    assert netid is not None
     stmt_str = "UPDATE students SET count=count+1 WHERE netid LIKE %s"
     cursor.execute(stmt_str, [netid])
 
 #-----------------------------------------------------------------------
 
 def send_request(joining_rideid, sending_rideid):
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     with connect(
        host='localhost', port=5432, user='ttadmins',
        password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -189,6 +210,9 @@ def send_request(joining_rideid, sending_rideid):
 #-----------------------------------------------------------------------
 
 def send_request_stmt(cursor, joining_rideid, sending_rideid):
+    assert cursor is not None
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     stmt_str = "UPDATE rides SET reqrec=array_append(reqrec, %s)"
     stmt_str += " WHERE rideid = %s"
     cursor.execute(stmt_str, [sending_rideid, joining_rideid])
@@ -200,6 +224,8 @@ def send_request_stmt(cursor, joining_rideid, sending_rideid):
 #-----------------------------------------------------------------------
 
 def cancel_request(joining_rideid, sending_rideid):
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     with connect(
        host='localhost', port=5432, user='ttadmins',
        password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -210,6 +236,9 @@ def cancel_request(joining_rideid, sending_rideid):
 #-----------------------------------------------------------------------
 
 def cancel_request_stmt(cursor, joining_rideid, sending_rideid):
+    assert cursor is not None
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     stmt_str = "UPDATE rides SET reqrec=array_remove(reqrec, %s)"
     stmt_str += " WHERE rideid = %s"
     cursor.execute(stmt_str, [sending_rideid, joining_rideid])
@@ -221,6 +250,8 @@ def cancel_request_stmt(cursor, joining_rideid, sending_rideid):
 #-----------------------------------------------------------------------
 
 def accept_request(joining_rideid, sending_rideid):
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     with connect(
        host='localhost', port=5432, user='ttadmins',
        password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -293,6 +324,7 @@ def accept_request(joining_rideid, sending_rideid):
 #-----------------------------------------------------------------------
 
 def delete_ride(rideid):
+    assert rideid is not None
     with connect(
        host='localhost', port=5432, user='ttadmins',
        password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -323,11 +355,15 @@ def delete_ride(rideid):
 #-----------------------------------------------------------------------
 
 def decline_request(joining_rideid, sending_rideid):
+    assert joining_rideid is not None
+    assert sending_rideid is not None
     cancel_request(joining_rideid, sending_rideid)
 
 #-----------------------------------------------------------------------
 
 def leave_ride(rideid, netid):
+    assert rideid is not None
+    assert netid is not None
     with connect(
         host='localhost', port=5432, user='ttadmins',
         password='071020010307200204262002oms', database='tigertravel') as connection:
@@ -375,6 +411,9 @@ def leave_ride(rideid, netid):
 #-----------------------------------------------------------------------
 
 def get_suggested(ride, incoming, outgoing):
+    assert ride is not None
+    assert incoming is not None
+    assert outgoing is not None
     suggested = []
     my_origin = ride.get_origin()
     my_dest = ride.get_dest()
@@ -406,6 +445,7 @@ def get_suggested(ride, incoming, outgoing):
 #-----------------------------------------------------------------------
 
 def from_netid_get_reqnum(my_netid):
+    assert my_netid is not None
     my_rides = from_netid_get_rides(my_netid)
     future_rides = []
     for ride in my_rides:
@@ -420,6 +460,11 @@ def from_netid_get_reqnum(my_netid):
 #-----------------------------------------------------------------------
 
 def edit_ride(old_rideid, new_origin, new_dest, new_starttime, new_endtime):
+    assert old_rideid is not None
+    assert new_origin is not None
+    assert new_dest is not None
+    assert new_starttime is not None
+    assert new_endtime is not None
 
     with connect(
         host='localhost', port=5432, user='ttadmins',
